@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Gray with 30% opacity */
+    z-index: 998; /* Ensure it sits below the modal */
+    display: none; /* Initially hidden */
+}
+
+.overlay.active {
+    display: block; /* Show when active */
+}
+
+.modal {
+    z-index: 999; /* Ensure modal is above the overlay */
+}
+
+.bg-dim-red {
+    background-color: rgba(239, 68, 68, 0.5); /* Light red with opacity */
+    cursor: not-allowed; /* Indicate that the button is disabled */
+}
