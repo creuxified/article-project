@@ -67,6 +67,7 @@ class ProfileEdit extends Component
                 'user_id' => $this->user->id,
                 'faculty_id' => $this->user->faculty->id,
                 'program_id' => $this->selectedProgram,
+                'requestrole_id' => $role->id,
                 'action' => 'Request '. $role->name .' Role'
             ]);
 
@@ -75,6 +76,7 @@ class ProfileEdit extends Component
                 'user_id' => $this->user->id,
                 'faculty_id' => $this->user->faculty->id,
                 'program_id' => $this->selectedProgram,
+                'requestrole_id' => $role->id,
                 'action' => 'Request '. $role->name .' Role'
             ]);
 

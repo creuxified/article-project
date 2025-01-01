@@ -20,6 +20,8 @@ return new class extends Migration
             $table->foreign('faculty_id')->references('id')->on('faculties');
             $table->unsignedBigInteger('program_id');
             $table->foreign('program_id')->references('id')->on('study_programs');
+            $table->unsignedBigInteger('requestrole_id')->default(1);
+            $table->foreign('requestrole_id')->references('id')->on('roles');
             $table->string('action');
             $table->boolean('is_reviewed')->default(false);
             $table->timestamps();

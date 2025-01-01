@@ -27,13 +27,31 @@ class StudyProgramSeeder extends Seeder
             'Pendidikan Guru Sekolah Dasar',
             'Pendidikan Guru Pendidikan Anak Usia Dini',
             'Pendidikan Luar Biasa',
-            'Bimbingan dan Konseling'
+            'Bimbingan dan Konseling',
+            'Staff FKIP'
+        ];
+
+        $FISIP_programs = [
+            'Ilmu Administrasi Negara',
+            'Ilmu Komunikasi',
+            'Sosiologi',
+            'Hubungan Internasional',
+            'Ilmu Politik',
+            'Administrasi Bisnis',
+            'Staff FISIP'
         ];
 
         foreach ($FKIP_programs as $programs){
             Study_program::create([
                 'name' => $programs,
                 'faculty_id' => 1
+            ]);
+        }
+
+        foreach ($FISIP_programs as $programs){
+            Study_program::create([
+                'name' => $programs,
+                'faculty_id' => 2
             ]);
         }
     }

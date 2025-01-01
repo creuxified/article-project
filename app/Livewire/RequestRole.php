@@ -12,7 +12,6 @@ use App\Models\RequestLog; // Import the RequestLog model
 class RequestRole extends Component
 {
     public $logs; // Define the logs property
-    public $hlogs; // Define the logs property
     public $userId;
     public $logId;
     public $isModalOpen = false;
@@ -28,9 +27,7 @@ class RequestRole extends Component
 
     public function mount() // Initialize the component
     {
-        $this->logs = ActivityLog::where('type', 1)->where('program_id', Auth::user()->program->id)->with(['user', 'faculty', 'program'])->get();
-        
-        $this->hlogs = ActivityLog::where('program_id', Auth::user()->program->id)->with(['user', 'faculty', 'program'])->get();
+        $this->logs = ActivityLog::where('type', 1)->where('program_id', Auth::user()->program->id)->where('requestrole_id', 2)->with(['user', 'faculty', 'program', 'role'])->get();
     }
 
     public function openModal($user)
