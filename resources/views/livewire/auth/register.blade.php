@@ -58,6 +58,23 @@
                         </div>
                     </div>
                     <div>
+                        <label for="faculty"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faculty</label>
+                        <select id="faculty"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            wire:model="selectedFaculty">
+                            <option selected>Chose your faculty</option>
+                            @foreach ($faculties as $faculty)
+                            <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
+                            @endforeach
+                        </select>
+                        <div class="text-red-600 text-sm font-medium">
+                            @error('selectedFaculty')
+                            {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                    <div>
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                         <input type="password" name="password" id="password" placeholder="••••••••"
@@ -80,12 +97,6 @@
                             @error('password_confirmation')
                             {{ $message }}
                             @enderror
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="flex items-center h-5">
-                            <input id="terms" aria-describedby="terms" type="checkbox"
-                                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
                         </div>
                     </div>
                     <button type="submit"
