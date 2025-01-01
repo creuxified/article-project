@@ -32,11 +32,12 @@ class ScraperService
     {
         $dom = new \DOMDocument();
 
-        // Load HTML and check if it was successful
-        if (@$dom->loadHTML($html)) {
+        // Load HTML dan periksa apakah berhasil
+        libxml_use_internal_errors(true);
+        if ($dom->loadHTML($html)) {
             $xpath = new \DOMXPath($dom);
 
-            // Extract profile data
+            // Ekstrak data profil
             $profileData = [
                 'name' => $this->extractText($xpath, '//div[@id="gsc_prf_i"]//div[@id="gsc_prf_in"]'),
                 'affiliation' => $this->extractText($xpath, '//div[@id="gsc_prf_i"]//div[@class="gsc_prf_il"]'),
@@ -45,7 +46,7 @@ class ScraperService
                 'photo_url' => $this->extractAttribute($xpath, '//div[@id="gsc_prf_pu"]//img', 'src')
             ];
 
-            // Extract citations data
+            // Ekstrak data sitasi
             $citedByData = [
                 'citations_all' => $this->extractTableCell($xpath, '//table[@id="gsc_rsb_st"]//tr[1]//td[2]'),
                 'citations_since_2019' => $this->extractTableCell($xpath, '//table[@id="gsc_rsb_st"]//tr[1]//td[3]'),
@@ -55,47 +56,50 @@ class ScraperService
                 'i10_index_since_2019' => $this->extractTableCell($xpath, '//table[@id="gsc_rsb_st"]//tr[3]//td[3]')
             ];
 
-            // Extract article data
+            // Ekstrak data artikel
             $articleData = $this->extractArticleData($xpath);
 
-            // Return the extracted data
+            // Mengambil data grafik tahun dan jumlah artikel
+            $chartData = $this->extractChartData($xpath);
+
+            // Kembalikan data yang sudah diekstrak
             return [
                 'profile' => $profileData,
                 'cited_by' => $citedByData,
-                'articles' => $articleData
+                'articles' => $articleData,
+                'chart' => $chartData
             ];
         } else {
-            // Return an error or handle failure gracefully
+            // Mengembalikan kesalahan atau menangani kegagalan
             return ['error' => 'Failed to load HTML'];
         }
     }
 
     private function extractArticleData($xpath)
-{
-    // Mengambil elemen judul, tahun, sitasi artikel, dan URL artikel
-    $titles = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_at"]');
-    $years = $xpath->query('//tr[@class="gsc_a_tr"]//span[@class="gsc_a_h gsc_a_hc gs_ibl"]');
-    $citations = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_ac gs_ibl"]');
-    $links = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_at"]'); // Extracting article URL
+    {
+        // Mengambil elemen judul, tahun, sitasi artikel, dan URL artikel
+        $titles = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_at"]');
+        $years = $xpath->query('//tr[@class="gsc_a_tr"]//span[@class="gsc_a_h gsc_a_hc gs_ibl"]');
+        $citations = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_ac gs_ibl"]');
+        $links = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_at"]'); // Extracting article URL
 
-    $articles = [];
-    foreach ($titles as $index => $title) {
-        // Pastikan elemen tahun dan sitasi tersedia sebelum mengambil nilai
-        $year = $years->length > $index ? trim($years->item($index)->nodeValue) : 'Tahun tidak ditemukan';
-        $citationCount = $citations->length > $index ? trim($citations->item($index)->nodeValue) : '0';
+        $articles = [];
+        foreach ($titles as $index => $title) {
+            // Pastikan elemen tahun dan sitasi tersedia sebelum mengambil nilai
+            $year = $years->length > $index ? trim($years->item($index)->nodeValue) : 'Tahun tidak ditemukan';
+            $citationCount = $citations->length > $index ? trim($citations->item($index)->nodeValue) : '0';
 
-        $article = [
-            'title' => trim($title->nodeValue),
-            'year' => $year,
-            'citations' => $citationCount,
-            'url' => $links->length > $index ? 'https://scholar.google.com' . $links->item($index)->getAttribute('href') : null // Getting article link
-        ];
-        $articles[] = $article;
+            $article = [
+                'title' => trim($title->nodeValue),
+                'year' => $year,
+                'citations' => $citationCount,
+                'url' => $links->length > $index ? 'https://scholar.google.com' . $links->item($index)->getAttribute('href') : null // Getting article link
+            ];
+            $articles[] = $article;
+        }
+
+        return $articles;
     }
-
-    return $articles;
-}
-
 
     private function extractText($xpath, $query)
     {
@@ -124,13 +128,18 @@ class ScraperService
         return $html;
     }
 
-    protected function getNextPageUrl($html)
+    private function extractChartData($xpath)
     {
-        // Cek apakah ada tombol "Show more" atau URL berikutnya
-        if (preg_match('/"next":\s*"(.*?)"/', $html, $matches)) {
-            return $matches[1];  // URL halaman berikutnya
+        $years = $xpath->query('//div[@class="gsc_md_hist_b"]//span[@class="gsc_g_t"]');
+        $counts = $xpath->query('//div[@class="gsc_md_hist_b"]//a[@class="gsc_g_a"]//span[@class="gsc_g_al"]');
+
+        $chartData = [];
+        foreach ($years as $index => $year) {
+            $yearText = trim($year->nodeValue);
+            $count = $counts->length > $index ? trim($counts->item($index)->nodeValue) : '0';
+            $chartData[] = ['year' => $yearText, 'count' => $count];
         }
 
-        return null;  // Tidak ada halaman berikutnya
+        return $chartData;
     }
 }
