@@ -27,6 +27,10 @@ Route::get('/request-role/{user:username}', function (User $user) {
     return view('request-role', ['user' => $user,'logs'=> $logs,'title' => 'Welcome '. $user->name .'!']);
 })->middleware('auth')->name('request-role');
 
+Route::get('/user-database/{user:username}', function (User $user) {
+    return view('user-database', ['user' => $user,'title' => 'Welcome '. $user->name .'!']);
+})->middleware('auth')->name('user-database');
+
 Route::get('/register', function () {
     $faculties = Faculty::all();
     return view('auth.register', ['faculties'=> $faculties, 'title' => 'register']);

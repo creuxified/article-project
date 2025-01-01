@@ -12,7 +12,19 @@ class HistoryLogs extends Component
     
     public function mount() // Initialize the component
     {
-        $this->logs = ActivityLog::where('requestrole_id', 2)->where('program_id', Auth::user()->program->id)->with(['user', 'faculty', 'program', 'role'])->get();
+        if(Auth::user()->role->id == 3){
+            $this->logs = ActivityLog::where('requestrole_id', 2)
+            ->where('program_id', Auth::user()
+            ->program->id)->with(['user', 'faculty', 'program', 'role'])
+            ->get();
+        }
+        elseif(Auth::user()->role->id == 4){
+            $this->logs = ActivityLog::whereIn('requestrole_id', [2, 3])
+            ->where('faculty_id', Auth::user()->faculty->id)
+            ->with(['user', 'faculty', 'program', 'role'])
+            ->get();        
+        }
+        elseif(Auth::user()->role->id == 5){}
     }
 
     public function render()

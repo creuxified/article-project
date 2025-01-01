@@ -27,7 +27,12 @@ class RequestRole extends Component
 
     public function mount() // Initialize the component
     {
-        $this->logs = ActivityLog::where('type', 1)->where('program_id', Auth::user()->program->id)->where('requestrole_id', 2)->with(['user', 'faculty', 'program', 'role'])->get();
+        if(Auth::user()->role->id == 3){
+            $this->logs = ActivityLog::where('type', 1)->where('program_id', Auth::user()->program->id)->where('requestrole_id', 2)->with(['user', 'faculty', 'program', 'role'])->get();
+        }
+        elseif(Auth::user()->role->id == 4){
+            $this->logs = ActivityLog::where('type', 1)->where('faculty_id', Auth::user()->faculty->id)->where('requestrole_id', 3)->with(['user', 'faculty', 'program', 'role'])->get();
+        }
     }
 
     public function openModal($user)

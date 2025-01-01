@@ -80,11 +80,11 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'email' => 'fisip@admin',
+            'email' => 'fkip@admin',
             'username' => 'admfakfkip',
             'name' => 'Admin Fakultas FKIP',
             'password' => bcrypt('password'),
-            'faculty_id' => 2,
+            'faculty_id' => 1,
             'program_id' => 1,
             'role_id' => 4,
             'status' => 4,
