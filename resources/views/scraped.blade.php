@@ -7,6 +7,14 @@
     <title>Scraped Data</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Highcharts CSS (Optional for custom styling) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Highcharts JS -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
 </head>
 
 <body>
@@ -39,6 +47,8 @@
                 </div>
             </div>
         @endif
+
+
 
         <!-- Menampilkan data "Cited by" -->
         @if (isset($dataScrapping['cited_by']))
@@ -73,6 +83,48 @@
                     </table>
                 </div>
             </div>
+
+            <!-- Menampilkan Grafik Cited By -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Cited By Metrics (Graph)</h5>
+                    <div id="citedByChart"></div>
+                </div>
+            </div>
+
+            <script>
+                Highcharts.chart('citedByChart', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Cited By Metrics (Citations, h-index, i10-index)'
+                    },
+                    xAxis: {
+                        categories: ['Citations', 'h-index', 'i10-index']
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Count'
+                        }
+                    },
+                    series: [{
+                        name: 'All',
+                        data: [
+                            {{ $dataScrapping['cited_by']['citations_all'] }},
+                            {{ $dataScrapping['cited_by']['h_index_all'] }},
+                            {{ $dataScrapping['cited_by']['i10_index_all'] }}
+                        ]
+                    }, {
+                        name: 'Since 2019',
+                        data: [
+                            {{ $dataScrapping['cited_by']['citations_since_2019'] }},
+                            {{ $dataScrapping['cited_by']['h_index_since_2019'] }},
+                            {{ $dataScrapping['cited_by']['i10_index_since_2019'] }}
+                        ]
+                    }]
+                });
+            </script>
         @endif
 
         <!-- Menampilkan data grafik -->
@@ -99,12 +151,54 @@
                 </div>
             </div>
         @endif
-        <!-- Menampilkan Data Artikel Publikasi -->
+
+        <!-- Menampilkan data grafik (Article Count Over Years) -->
+        @if (isset($dataScrapping['chart']))
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Article Count Over Years</h5>
+                    <div id="articleChart"></div>
+                </div>
+            </div>
+
+            <script>
+                Highcharts.chart('articleChart', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Article Count Over Years'
+                    },
+                    xAxis: {
+                        categories: [
+                            @foreach ($dataScrapping['chart'] as $item)
+                                '{{ $item['year'] }}',
+                            @endforeach
+                        ]
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Number of Articles'
+                        }
+                    },
+                    series: [{
+                        name: 'Articles',
+                        data: [
+                            @foreach ($dataScrapping['chart'] as $item)
+                                {{ $item['count'] }},
+                            @endforeach
+                        ]
+                    }]
+                });
+            </script>
+        @endif
+
+        <!-- Menampilkan Data Artikel Publikasi (DataTable) -->
         @if (isset($dataScrapping['articles']))
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Data Artikel</h5>
-                    <table class="table table-bordered">
+                    <table id="articlesTable" class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Judul</th>
@@ -126,6 +220,12 @@
                     </table>
                 </div>
             </div>
+
+            <script>
+                $(document).ready(function() {
+                    $('#articlesTable').DataTable();
+                });
+            </script>
         @endif
 
     </div>
