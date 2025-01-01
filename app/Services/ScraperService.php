@@ -71,26 +71,31 @@ class ScraperService
     }
 
     private function extractArticleData($xpath)
-    {
-        // Mengambil elemen judul, tahun, sitasi artikel, dan URL artikel
-        $titles = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_at"]');
-        $years = $xpath->query('//tr[@class="gsc_a_tr"]//span[@class="gsc_a_h"]');
-        $citations = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_ac"]');
-        $links = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_at"]'); // Extracting article URL
+{
+    // Mengambil elemen judul, tahun, sitasi artikel, dan URL artikel
+    $titles = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_at"]');
+    $years = $xpath->query('//tr[@class="gsc_a_tr"]//span[@class="gsc_a_h gsc_a_hc gs_ibl"]');
+    $citations = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_ac gs_ibl"]');
+    $links = $xpath->query('//tr[@class="gsc_a_tr"]//a[@class="gsc_a_at"]'); // Extracting article URL
 
-        $articles = [];
-        foreach ($titles as $index => $title) {
-            $article = [
-                'title' => trim($title->nodeValue),
-                'year' => $years->length > $index ? trim($years->item($index)->nodeValue) : null,
-                'citations' => $citations->length > $index ? trim($citations->item($index)->nodeValue) : '0',
-                'url' => $links->length > $index ? 'https://scholar.google.com' . $links->item($index)->getAttribute('href') : null // Getting article link
-            ];
-            $articles[] = $article;
-        }
+    $articles = [];
+    foreach ($titles as $index => $title) {
+        // Pastikan elemen tahun dan sitasi tersedia sebelum mengambil nilai
+        $year = $years->length > $index ? trim($years->item($index)->nodeValue) : 'Tahun tidak ditemukan';
+        $citationCount = $citations->length > $index ? trim($citations->item($index)->nodeValue) : '0';
 
-        return $articles;
+        $article = [
+            'title' => trim($title->nodeValue),
+            'year' => $year,
+            'citations' => $citationCount,
+            'url' => $links->length > $index ? 'https://scholar.google.com' . $links->item($index)->getAttribute('href') : null // Getting article link
+        ];
+        $articles[] = $article;
     }
+
+    return $articles;
+}
+
 
     private function extractText($xpath, $query)
     {
