@@ -91,5 +91,16 @@ class UserSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        User::create([
+            'email' => 'uns@admin',
+            'username' => 'admUniv',
+            'name' => 'Admin univ',
+            'password' => bcrypt('password'),
+            'role_id' => 5,
+            'status' => 4,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
     }
 }
