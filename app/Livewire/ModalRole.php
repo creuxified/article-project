@@ -40,8 +40,27 @@ class ModalRole extends Component
 
     public function accept()
     {
+        $user = $this->user;
+        $user->status = 4;
+        $user->save();
         Log::info('accept method called for user: ' . $this->user->name);
 
+        $log = $this->log;
+        $log->is_reviewed = true;
+        $log->save();
+
+        Log::info('accept method called for log: ' . $this->log->action);
+
+        ActivityLog::create([
+            'user_id' => Auth::user()->id,
+            'type' => 2,
+            'faculty_id' => $log->user->faculty->id,
+            'program_id' => $log->program->id,
+            'requestrole_id' => $log->requestrole_id,
+            'action' => Auth::user()->username. ' gave role '. $user->name . ': [' . $log->action. ']',
+        ]);
+
+        return redirect()->route('request-role', ['user' => Auth::user()->username])->with('message', 'User succesfully accepted!');
     }
 
     public function reject()
@@ -63,12 +82,13 @@ class ModalRole extends Component
             'type' => 2,
             'faculty_id' => $log->user->faculty->id,
             'program_id' => $log->program->id,
+            'requestrole_id' => $log->requestrole_id,
             'action' => Auth::user()->username. ' Rejected '. $user->name . ': [' . $log->action. ']',
         ]);
 
         Log::info('Reject ActivityLog created for : ' . Auth::user()->username. ' toward ' . $user->username);
         
-
+        return redirect()->route('request-role', ['user' => Auth::user()->username])->with('message', 'User succesfully rejected!');
     }
 
     public function render()

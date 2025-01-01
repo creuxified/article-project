@@ -58,7 +58,7 @@ class Register extends Component
             'faculty_id' => $this->selectedFaculty,
         ]);
 
-        // return redirect('/login')->with('message', 'Registration successful! Please log in.');
+        return redirect('/login')->with('message', 'Registration successful! Please log in.');
 
     }
 
