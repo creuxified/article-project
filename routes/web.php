@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Scraper;
 
 Route::get('/', function () {
     return view('landing', ['title' => 'Landing Page']);
@@ -37,10 +38,12 @@ Route::get('/profile-edit/{user:username}', function (User $user) {
 
 Route::post('logout', function (Request $request): RedirectResponse {
     Auth::logout();
- 
+
     $request->session()->invalidate();
- 
+
     $request->session()->regenerateToken();
-    
+
     return redirect('/');
 })->name('logout');
+
+Route::get('/scrap', [Scraper::class, 'index'])->name('scrape');
