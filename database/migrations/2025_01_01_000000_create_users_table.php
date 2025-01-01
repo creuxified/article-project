@@ -24,8 +24,8 @@ return new class extends Migration
             $table->foreign('faculty_id')->references('id')->on('faculties');
             $table->unsignedBigInteger('program_id')->nullable();
             $table->foreign('program_id')->references('id')->on('study_programs');
-            $table->integer('scholar')->nullable();
-            $table->integer('scopus')->nullable();
+            $table->varchar('scholar')->nullable();
+            $table->varchar('scopus')->nullable();
             $table->text('revision')->nullable();
             $table->timestamps();
         });
