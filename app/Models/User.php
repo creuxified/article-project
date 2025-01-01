@@ -23,7 +23,7 @@ class User extends Authenticatable
         'name',
         'username',
         'role',
-        'faculty',
+        'faculty_id',
         'study_program',
         'scholar_id',
         'scopus_id',

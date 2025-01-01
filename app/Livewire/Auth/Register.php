@@ -42,6 +42,13 @@ class Register extends Component
         //     'password' => bcrypt($this->password),
         //     'faculty_id' => $this->selectedFaculty,
         // ]);
+        Log::info('Proposed values:', [
+            'username' => $this->username,
+            'name' => $this->name,
+            'email' => $this->email,
+            'password' => bcrypt($this->password),
+            'faculty_id' => $this->selectedFaculty,
+        ]);
 
         User::create([
             'username' => $this->username,
@@ -51,7 +58,7 @@ class Register extends Component
             'faculty_id' => $this->selectedFaculty,
         ]);
 
-        return redirect('/login')->with('message', 'Registration successful! Please log in.');
+        // return redirect('/login')->with('message', 'Registration successful! Please log in.');
 
     }
 
