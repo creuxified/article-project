@@ -91,3 +91,7 @@ use App\Livewire\EditStudyProgramController;
 
 // Rute untuk mengedit program studi
 Route::get('/study-program/edit/{id}', EditStudyProgramController::class)->name('study-program.edit');
+
+use App\Livewire\AddUserController;
+
+Route::get('/users/add', AddUserController::class)->name('users.add');
