@@ -71,7 +71,12 @@ Route::get('/faculty', function (User $user) {
     return view('faculty-index', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('faculty-index');
 
-Route::get('/faculty/edit/{id}', \App\Livewire\FacultyEdit::class)->middleware('auth')->name('faculty-edit');
+Route::get('/faculty/edit/{id}', function ($id) {
+    return view('faculty-edit', [
+        'title' => 'Faculty Edit',
+        'id' => $id,
+    ]);
+})->middleware('auth')->name('faculty-edit');
 
 Route::get('/faculty/add/', function (User $user) {
     return view('faculty-add', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
@@ -86,7 +91,13 @@ Route::get('/programs/add/', function (User $user) {
     return view('programs-add', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('programs-add');
 
-Route::get('/programs/edit/{id}', \App\Livewire\ProgramsEdit::class)->middleware('auth')->name('programs-edit');
+
+Route::get('/programs/edit/{id}', function ($id) {
+    return view('programs-edit', [
+        'title' => 'programs Edit',
+        'id' => $id,
+    ]);
+})->middleware('auth')->name('programs-edit');
 
 //USER ZONE
 use App\Livewire\AddUserController;
