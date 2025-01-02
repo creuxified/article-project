@@ -124,7 +124,7 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.1);
+            background: white;
             border: none;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -187,6 +187,8 @@
             margin-top: 40px;
         }
 
+
+
     </style>
 </head>
 
@@ -214,7 +216,7 @@
                                 <img src="{{ $dataScrapping['profile']['photo_url'] }}" alt="Profile Photo">
                             </div>
                             <div>
-                                <h5 class="card-title" style="color: white;">Profile Information</h5>
+                                <h5 class="card-title">Profile Information</h5>
                                 <table class="table table-bordered table-striped">
                                     <tbody>
                                         <tr>
@@ -244,7 +246,7 @@
                 @if (isset($dataScrapping['cited_by']))
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
-                            <h5 class="card-title"style="color: white;">Citation Information</h5>
+                            <h5 class="card-title">Citation Information</h5>
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -277,7 +279,7 @@
                     @if (isset($dataScrapping['chart']))
                         <div class="card shadow-sm mb-4">
                             <div class="card-body">
-                                <h5 class="card-title" style="color: white">Article Count Over Years</h5>
+                                <h5 class="card-title">Article Count Over Years</h5>
                                 <div id="articleChart"></div>
                             </div>
                         </div>
@@ -287,7 +289,7 @@
                                     type: 'line'
                                 },
                                 title: {
-                                    text: 'Article Count Over Years'
+                                    text: ''
                                 },
                                 xAxis: {
                                     categories: [
@@ -316,7 +318,7 @@
                     <!-- Displaying "Cited By" Graph -->
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
-                            <h5 class="card-title" style="color: white;">Cited By Metrics (Graph)</h5>
+                            <h5 class="card-title">Cited By Metrics (Graph)</h5>
                             <div id="citedByChart"></div>
                         </div>
                     </div>
@@ -327,7 +329,7 @@
                                 type: 'column'
                             },
                             title: {
-                                text: 'Cited By Metrics (Citations, h-index, i10-index)'
+                                text: ''
                             },
                             xAxis: {
                                 categories: ['Citations', 'h-index', 'i10-index']
@@ -360,7 +362,7 @@
                 @if (isset($dataScrapping['chart']))
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
-                            <h5 class="card-title" style="color: white;">Articles per Year</h5>
+                            <h5 class="card-title">Articles per Year</h5>
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -388,7 +390,7 @@
                 @if (isset($dataScrapping['articles']))
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
-                            <h5 class="card-title" style="color: white;">Article Data</h5>
+                            <h5 class="card-title">Article Data</h5>
                             <table id="articlesTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
