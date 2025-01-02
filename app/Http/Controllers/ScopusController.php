@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Models\Publication;
-use App\Models\User;
 
 class ScopusController extends Controller
 {

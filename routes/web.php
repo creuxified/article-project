@@ -42,7 +42,7 @@ Route::get('/profile-edit/{user:username}', function (User $user) {
 })->middleware('auth')->name('profile-edit');
 
 Route::get('/user-profile-edit/{user:username}', function (User $user) {
-    return view('user-profile-edit', ['user' => $user, 'title' => 'Welcome '. $user->name .'!']);
+    return view('user-profile-edit', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('user-profile-edit');
 
 Route::get('/scrap-data/{user:username}', function (User $user) {
@@ -125,4 +125,11 @@ Route::middleware(['auth'])->group(function () {
 
     // Route untuk menangani form submission dan scraping
     Route::post('/scopus/scrape', [ScopusController::class, 'scrapeAndShow'])->name('scopus.scrape');
+});
+
+use App\Http\Controllers\ScholarController;
+
+Route::middleware(['auth'])->group(function () {
+    // Menampilkan publikasi dari Google Scholar
+    Route::get('/scholar', [ScholarController::class, 'index'])->name('scraper.index');
 });

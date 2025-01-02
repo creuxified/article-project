@@ -7,6 +7,7 @@ use App\Models\Faculty;
 use Livewire\Component;
 use App\Models\study_program;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserAdd extends Component
 {
@@ -58,6 +59,8 @@ class UserAdd extends Component
 
         session()->flash('message', 'User added successfully!');
         $this->reset();
+
+        return redirect()->route('user-database', ['user' => Auth::user()->username]);
     }
 
     public function render()
