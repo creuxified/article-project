@@ -33,6 +33,9 @@ class RequestRole extends Component
         elseif(Auth::user()->role->id == 4){
             $this->logs = ActivityLog::where('type', 1)->where('faculty_id', Auth::user()->faculty->id)->where('requestrole_id', 3)->with(['user', 'faculty', 'program', 'role'])->get();
         }
+        elseif(Auth::user()->role->id == 5){
+            $this->logs = ActivityLog::where('type', 1)->where('requestrole_id', 4)->with(['user', 'faculty', 'program', 'role'])->get();
+        }
     }
 
     public function openModal($user)

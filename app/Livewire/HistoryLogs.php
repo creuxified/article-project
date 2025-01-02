@@ -24,7 +24,11 @@ class HistoryLogs extends Component
             ->with(['user', 'faculty', 'program', 'role'])
             ->get();        
         }
-        elseif(Auth::user()->role->id == 5){}
+        elseif(Auth::user()->role->id == 5){
+            $this->logs = ActivityLog::whereIn('requestrole_id', [2, 3, 4])
+            ->with(['user', 'faculty', 'program', 'role'])
+            ->get();
+        }
     }
 
     public function render()
