@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('publications', function (Blueprint $table) {
-            $table->id();
-            // $table->unsignedBigInteger('user_id');
-            $table->id('user_id');
+            $table->id(); // Primary key
+            $table->unsignedBigInteger('user_id'); // Foreign key
             $table->string('title');
             $table->string('journal_name');
             $table->date('publication_date')->nullable();
@@ -26,7 +25,10 @@ return new class extends Migration
             $table->timestamps();
 
             // Add the foreign key constraint
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade'); // Cascade delete to remove related publications
         });
     }
 

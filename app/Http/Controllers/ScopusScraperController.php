@@ -12,7 +12,7 @@ class ScopusScraperController extends Controller
     public function showForm()
     {
         $publications = Publication::all();
-        return view('scrap.scopus', compact('publications')); // Corrected variable name and dot notation for view
+        return view('scrap.scopus', compact('publications'));
     }
 
     public function scrapeScopus(Request $request)
@@ -23,6 +23,7 @@ class ScopusScraperController extends Controller
 
         $scopus_id = $request->input('scopus_id');
         $api_key = '2f3be97cfe6cc239b0a9f325a660d9c1';
+        // $api_key = env('SCOPUS_API_KEY');
         $base_url = 'https://api.elsevier.com/content/search/scopus';
 
         try {
@@ -49,7 +50,6 @@ class ScopusScraperController extends Controller
                         'user_id' => auth()->id(), // Associate with the currently logged-in user
                     ];
 
-
                     if ($existingPublication) {
                         $existingPublication->update($newData);
                     } else {
@@ -62,7 +62,7 @@ class ScopusScraperController extends Controller
                 return redirect()->back()->with('error', 'No articles found for the provided Scopus ID.');
             }
         } catch (\Exception $e) {
-            Log::error('Error fetching data from Scopus: ' . $e->getMessage());
+            Log::error('Error fetching data from Scopus for Scopus ID: ' . $scopus_id . '. Error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to fetch data from Scopus. Please try again later.');
         }
     }

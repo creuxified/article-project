@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Scraper;
+use App\Http\Controllers\ScholarScraperController;
 use App\Http\Controllers\ScopusScraperController;
 
 Route::get('/', function () {
@@ -20,21 +20,21 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('/dashboard/{user:username}', function (User $user) {
-    return view('dashboard', ['user' => $user, 'title' => 'Welcome '. $user->name .'!']);
+    return view('dashboard', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('dashboard');
 
 Route::get('/request-role/{user:username}', function (User $user) {
     $logs = ActivityLog::with(['user', 'faculty', 'program'])->get();
-    return view('request-role', ['user' => $user,'logs'=> $logs,'title' => 'Welcome '. $user->name .'!']);
+    return view('request-role', ['user' => $user, 'logs' => $logs, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('request-role');
 
 Route::get('/user-database/{user:username}', function (User $user) {
-    return view('user-database', ['user' => $user,'title' => 'Welcome '. $user->name .'!']);
+    return view('user-database', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('user-database');
 
 Route::get('/register', function () {
     $faculties = Faculty::all();
-    return view('auth.register', ['faculties'=> $faculties, 'title' => 'register']);
+    return view('auth.register', ['faculties' => $faculties, 'title' => 'register']);
 })->name('register');
 
 Route::get('/profile-edit/{user:username}', function (User $user) {
@@ -42,7 +42,7 @@ Route::get('/profile-edit/{user:username}', function (User $user) {
 })->middleware('auth')->name('profile-edit');
 
 Route::get('/scrap-data/{user:username}', function (User $user) {
-    return view('scrap-data', ['user' => $user, 'title' => 'Welcome '. $user->name .'!']);
+    return view('scrap-data', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('scrap-data');
 
 Route::post('logout', function (Request $request): RedirectResponse {
@@ -55,8 +55,7 @@ Route::post('logout', function (Request $request): RedirectResponse {
     return redirect('/');
 })->name('logout');
 
-Route::get('/scrap', [Scraper::class, 'index'])->name('scrape');
-
+Route::get('/scrap/scholar', [ScholarScraperController::class, 'index'])->name('scrape');
 
 // Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']); // For displaying the form
 // Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']); // For handling the form submission

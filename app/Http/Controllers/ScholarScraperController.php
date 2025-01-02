@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ScraperService;
 use Illuminate\Http\Request;
 
-class Scraper extends Controller
+class ScholarScraperController extends Controller
 {
 
   protected $scraper;
@@ -17,7 +17,7 @@ class Scraper extends Controller
 
   public function index(Request $request)
   {
-    // Menangkap input ID user dari query string
+    // Menangkap input ID Scholar User dari query string
     $id_user = $request->query('id_user');
 
     // Jika ID user tidak ada, tampilkan form tanpa hasil scraping
