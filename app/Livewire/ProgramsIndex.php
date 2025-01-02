@@ -30,10 +30,10 @@ class ProgramsIndex extends Component
             User::where('program_id', $id)->delete();
             study_program::findOrFail($id)->delete();
             session()->flash('message', 'Study Program deleted successfully!');
-            return redirect()->route('program-index');
+            return redirect()->route('programs-index');
         } catch (\Exception $e) {
             session()->flash('error', 'An error occurred while deleting the study program.');
-            return redirect()->route('program-index');
+            return redirect()->route('programs-index');
         }
     }
 
