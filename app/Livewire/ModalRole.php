@@ -24,7 +24,7 @@ class ModalRole extends Component
     public $userId; // Define userId property
     public $logId;  // Define logId property
 
-    public function mount($user, $log)
+    public function mount($user)
     {
         $this->name = $user->name;
         $this->revision = $user->revision;
