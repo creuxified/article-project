@@ -1,5 +1,5 @@
-<div class="bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 antialiased min-h-screen flex items-center justify-center">
-    <div class="max-w-lg w-full bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+<div class="antialiased flex items-center justify-center px-4">
+    <div class="max-w-lg w-full bg-white dark:bg-gray-900 shadow-lg rounded-lg p-6">
         <!-- Header Card -->
         <div class="bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded-t-lg flex justify-between items-center">
             <h2 class="text-xl font-semibold">
@@ -11,11 +11,11 @@
         </div>
 
         <!-- Form Content -->
-        <div class="p-4">
+        <div class="bg-white p-4 rounded-lg">
             <form wire:submit.prevent="saveStudyProgram" class="space-y-4">
                 <!-- Input Field for Study Program Name -->
                 <div>
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-600">
                         <i class="fas fa-graduation-cap mr-2"></i> Study Program Name
                     </label>
                     <input type="text" wire:model.defer="name" id="name" name="name"
@@ -30,7 +30,7 @@
 
                 <!-- Select Faculty -->
                 <div>
-                    <label for="selectedFaculty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
+                    <label for="selectedFaculty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-600">
                         <i class="fas fa-building mr-2"></i> Faculty
                     </label>
                     <select wire:model="selectedFaculty" id="selectedFaculty"

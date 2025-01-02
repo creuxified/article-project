@@ -1,6 +1,6 @@
-<div class="antialiased flex justify-center items-center">
-    <div class="card bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-lg overflow-hidden w-full max-w-3xl p-3">
-        <div class="card-header text-white p-4 rounded-t-lg">
+<div class="antialiased flex justify-center items-center px-4"> <!-- Add padding-left and padding-right -->
+    <div class="card bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-9xl p-3"> <!-- Max width set to 7xl -->
+        <div class="card-header text-black rounded-t-lg">
             <div class="flex justify-between items-center">
                 <h2 class="text-xl font-semibold">Request Logs</h2>
             </div>
@@ -14,7 +14,7 @@
         @endif
 
         <!-- Table -->
-        <table class="bg-white table-auto w-full border-collapse text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4 rounded-t-lg">
+        <table class="bg-white table-auto w-full border-collapse text-sm text-left rtl:text-right text-gray-500 dark:text-black mt-4 rounded-t-lg">
             <thead>
                 <tr class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-t-lg">
                     <th class="px-6 py-3 text-center rounded-tl-lg">User</th>

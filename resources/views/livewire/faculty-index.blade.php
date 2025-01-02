@@ -1,5 +1,5 @@
-<div class="bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 antialiased min-h-screen flex justify-center items-center p-8">
-    <div class="card bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-3xl p-3">
+<div class="antialiased flex justify-center px-4">
+    <div class="card bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-9xl p-3">
         <div class="card-header text-black p-4 rounded-t-lg">
             <div class="flex justify-between items-center">
                 <h2 class="text-xl font-semibold">Faculty List</h2>
