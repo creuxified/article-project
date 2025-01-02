@@ -22,8 +22,8 @@ class ScopusScraperController extends Controller
         ]);
 
         $scopus_id = $request->input('scopus_id');
-        $api_key = '2f3be97cfe6cc239b0a9f325a660d9c1';
-        // $api_key = env('SCOPUS_API_KEY');
+        // $api_key = '2f3be97cfe6cc239b0a9f325a660d9c1';
+        $api_key = env('SCOPUS_API_KEY');
         $base_url = 'https://api.elsevier.com/content/search/scopus';
 
         try {

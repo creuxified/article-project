@@ -17,7 +17,7 @@ class ScholarScraperController extends Controller
 
   public function index(Request $request)
   {
-    // Menangkap input ID Scholar User dari query string
+    // Menangkap input ID user dari query string
     $id_user = $request->query('id_user');
 
     // Jika ID user tidak ada, tampilkan form tanpa hasil scraping

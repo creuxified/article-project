@@ -68,3 +68,14 @@ Route::middleware('auth')->group(function () {});
 
 Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']);
 Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']);
+
+use App\Livewire\FacultyController;
+
+Route::get('/faculty', FacultyController::class)->name('faculty.index');
+
+use App\Livewire\EditFacultyController;
+
+Route::get('/faculty/edit/{faculty_id}', EditFacultyController::class)->name('faculty.edit');
+
+use App\Livewire\AddFacultyController;
+Route::get('/add/new',AddFacultyController::class);
