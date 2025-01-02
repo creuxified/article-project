@@ -6,7 +6,7 @@
                     <h2>List Users</h2>
                 </div>
                 <div class="col">
-                    <a href="{{ route('user-add') }}" class="btn btn-primary btn-sm float-end">Add Users</a>
+                    <a href="{{ route('users.add') }}" class="btn btn-primary btn-sm float-end">Add Users</a>
                 </div>
             </div>
         </div>
@@ -87,9 +87,9 @@
         </button>
     </div>
     @endif
-    
+
     <div class="overlay {{ $isModalOpen ? 'active' : '' }}"></div>
-    
+
     @if($userRole >= 3)
         <h2>Lecturer Datas</h2>
         @livewire('lecturer-database')
@@ -108,5 +108,5 @@
     @if($isModalOpen)
         @livewire('modal-role', ['user' => $log->user,'log' => $log, 'isModalOpen' => $isModalOpen])
     @endif
-    
+
 </div> --}}

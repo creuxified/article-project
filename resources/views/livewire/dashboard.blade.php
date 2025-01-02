@@ -49,13 +49,6 @@
                 <p class="mt-2 text-gray-600 dark:text-gray-400">Save time with the citation management automation feature.</p>
             </div>
         </div>
-
-        <div class="flex flex-col sm:flex-row justify-center mt-12 gap-4">
-            <a href="/login" title=""
-                class="text-white bg-blue-900 hover:bg-blue-700 inline-flex items-center focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-12 py-5 text-center dark:bg-blue-900 dark:hover:bg-blue-600 dark:focus:ring-blue-800 w-full sm:w-auto">
-                Get Started
-            </a>
-        </div>
     </div>
 
     <footer class="bg-gray-100 dark:bg-gray-800 py-6">

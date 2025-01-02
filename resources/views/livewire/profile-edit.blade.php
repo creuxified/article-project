@@ -24,7 +24,7 @@
             <h2 class="text-xl font-bold text-gray-900 dark:text-white">Role Request</h2>
             <button type="button" disabled
             class="px-3 py-2 text-xs font-medium text-center text-gray-800
-            @if($user->status == 2) bg-green-500 text-white @elseif($user->status == 3) bg-red-600 text-white @else bg-gray-300 cursor-not-allowed opacity-50 @endif rounded-lg">
+            @if($user->status == 2) bg-green-500 text-white @elseif($user->status == 3) bg-red-600 text-white @else bg-gray-300 cursor-not-allowed opacity-50 @endif rounded-lg">
 
                 @if($user->status == 2)
                 Requested
@@ -132,12 +132,12 @@
                         <div class="relative">
                             <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"><i class="fas fa-user"></i></span>
                             <textarea disabled wire:model='revision' name="revision" id="revision" cols="30" rows="10"
-                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg pl-10 focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg pl-10 focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             ></textarea>
                         </div>
                     </div>
                     @endif
-                    
+
                 </div>
             </div>
 
