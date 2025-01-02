@@ -66,15 +66,18 @@ class UserProfileEdit extends Component
         if ($this->username !== $this->user->username) {
             $validatedData['username'] = 'required|unique:users,username,' . $this->user->id;
         }
-    
-        if ($this->selectedFaculty != $this->user->faculty_id) {
-            $validatedData['selectedFaculty'] = 'required|exists:faculties,id';
+        if ($this->user->role_id != 5){
+            if ($this->selectedFaculty != $this->user->faculty_id) {
+                $validatedData['selectedFaculty'] = 'required|exists:faculties,id';
+            }
+            if ($this->user->role_id != 4){
+                if ($this->selectedProgram != $this->user->program_id) {
+                    $validatedData['selectedProgram'] = 'required|exists:study_programs,id,faculty_id,' . $this->selectedFaculty;
+                }
+            
+            }
         }
-    
-        if ($this->selectedProgram != $this->user->program_id) {
-            $validatedData['selectedProgram'] = 'required|exists:study_programs,id,faculty_id,' . $this->selectedFaculty;
-        }
-    
+
         if ($this->scopus !== $this->user->scopus) {
             $validatedData['scopus'] = 'nullable|unique:users,scopus,' . $this->user->id;
         }
