@@ -1,29 +1,54 @@
-<div>
-    <h2>History logs</h2>
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3 text-center">Time</th>
-                <th scope="col" class="px-6 py-3 text-center">Name</th>
-                <th scope="col" class="px-6 py-3 text-center">email</th>
-                <th scope="col" class="px-6 py-3 text-center">programs</th>
-                <th scope="col" class="px-6 py-3 text-center">Logs</th>
-            </tr>
-        </thead>
-        <tbody>
-        @forelse ($logs as $log)
-        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                {{ $log->created_at }}
-            </th>
-            <td class="px-6 py-4 text-center">{{ $log->user->name }}</td>
-            <td class="px-6 py-4 text-center">{{ $log->user->email }}</td>
-            <td class="px-6 py-4 text-center">{{ $log->program->name }}</td>
-            <td class="px-6 py-4 text-center">{{ $log->action }}</td>
+<div class="antialiased flex justify-center items-center p-8">
+    <div class="card bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-lg overflow-hidden w-full max-w-3xl p-3">
+        <div class="card-header text-white p-4 rounded-t-lg">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-semibold">History Logs</h2>
+            </div>
+        </div>
 
-        </tr>
-        @empty
-        @endforelse  
-        </tbody>
-    </table>
+        <!-- Display success message -->
+        @if (session()->has('message'))
+        <div class="alert alert-success bg-green-100 border-l-4 border-green-500 text-green-900 p-3 mb-4 rounded-lg">
+            <span>{{ session('message') }}</span>
+        </div>
+        @endif
+
+        <!-- Table -->
+        <table class="bg-white table-auto w-full border-collapse text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mt-4 rounded-t-lg">
+            <thead>
+                <tr class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-t-lg">
+                    <th class="px-6 py-3 text-center rounded-tl-lg">
+                        Time
+                    </th>
+                    <th class="px-6 py-3 text-center">
+                        Name
+                    </th>
+                    <th class="px-6 py-3 text-center">
+                        Email
+                    </th>
+                    <th class="px-6 py-3 text-center">
+                        Programs
+                    </th>
+                    <th class="px-6 py-3 text-center rounded-tr-lg">
+                        Logs
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($logs as $log)
+                <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-200">
+                    <td class="px-6 py-4 text-center">{{ $log->created_at }}</td>
+                    <td class="px-6 py-4 text-center">{{ $log->user->name }}</td>
+                    <td class="px-6 py-4 text-center">{{ $log->user->email }}</td>
+                    <td class="px-6 py-4 text-center">{{ $log->program->name }}</td>
+                    <td class="px-6 py-4 text-center">{{ $log->action }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">No logs available</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
