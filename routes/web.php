@@ -51,3 +51,8 @@ Route::post('logout', function (Request $request): RedirectResponse {
 })->name('logout');
 
 Route::get('/scrap', [Scraper::class, 'index'])->name('scrape');
+
+use App\Http\Controllers\ScopusScraperController;
+
+Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']); // For displaying the form
+Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']); // For handling the form submission
