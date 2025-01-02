@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Scraper;
+use App\Http\Controllers\ScopusScraperController;
 
 Route::get('/', function () {
     return view('landing', ['title' => 'Landing Page']);
@@ -56,7 +57,11 @@ Route::post('logout', function (Request $request): RedirectResponse {
 
 Route::get('/scrap', [Scraper::class, 'index'])->name('scrape');
 
-use App\Http\Controllers\ScopusScraperController;
 
-Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']); // For displaying the form
-Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']); // For handling the form submission
+// Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']); // For displaying the form
+// Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']); // For handling the form submission
+
+Route::middleware('auth')->group(function () {
+    Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']);
+    Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']);
+});
