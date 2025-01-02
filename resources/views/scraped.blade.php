@@ -193,6 +193,7 @@
 <body>
     <div class="search-container">
         <h1>Scrap Data</h1>
+       <p>Current User ID: {{ auth()->user()->id }}</p>
         <form action="{{ route('scrape') }}" method="GET">
             <input type="text" name="id_user" id="id_user" placeholder="Enter User ID or Name" required>
             <button type="submit" class="btn btn-primary">
