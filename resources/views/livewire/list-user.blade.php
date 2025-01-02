@@ -1,4 +1,5 @@
 <!-- Add DataTables CSS and JS -->
+
 <head>
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
@@ -72,7 +73,7 @@
             "searching": true,
             "ordering": true,
             "lengthChange": true,
-            "pageLength": 10,  // Set default number of rows per page
+            "pageLength": 10, // Set default number of rows per page
         });
     });
 </script>
