@@ -28,7 +28,7 @@ class Login extends Component
             'email' => $this->email,
             'password' => $this->password
             ])){
-            session()->flash('success', 'Registration successful! Please log in.');
+            session()->flash('success', 'Welcome back!');
 
             return Auth::user()->status == 4 ? redirect()->route('dashboard', ['user' => Auth::user()->username]) : redirect()->route('profile-edit', ['user' => Auth::user()->username]);
             }else{
