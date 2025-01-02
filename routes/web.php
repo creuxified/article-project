@@ -60,7 +60,7 @@ Route::get('/scrap/scholar', [ScholarScraperController::class, 'index'])->name('
 // Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']); // For displaying the form
 // Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']); // For handling the form submission
 
-Route::middleware('auth')->group(function () {
-    Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']);
-    Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']);
-});
+Route::middleware('auth')->group(function () {});
+
+Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']);
+Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']);
