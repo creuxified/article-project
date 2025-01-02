@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Models\User;
 use App\Models\Faculty;
-use App\Models\StudyProgram;
+use App\Models\study_program;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 
@@ -44,7 +44,7 @@ class EditUserController extends Component
 
         // Fetch faculties and study programs
         $this->faculties = Faculty::all();
-        $this->studyPrograms = StudyProgram::all();
+        $this->studyPrograms = study_program::all();
     }
 
     public function update()

@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Models\User;
 use App\Models\Faculty;
-use App\Models\StudyProgram;
+use App\Models\study_program;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
@@ -52,7 +52,7 @@ class AddUserController extends Component
     {
         // Get faculties and study programs
         $faculties = Faculty::all();
-        $studyPrograms = StudyProgram::all();
+        $studyPrograms = study_program::all();
 
         return view('livewire.add-user', compact('faculties', 'studyPrograms'));
     }
