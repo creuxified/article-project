@@ -59,6 +59,14 @@
               </a>
             </li>
           @endif
+          @if (Auth::user()->role_id = 5)
+            <li>
+              <a href="/faculty"
+                class="block py-2 px-3 md:p-0 {{ Request::is('request-role/*') ? 'text-blue-700 font-bold md:dark:text-blue-500' : 'text-gray-900 hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500' }}">
+                Faculty Management
+              </a>
+            </li>
+          @endif
           <li>
             <a href="/user-profile-edit/{{ Auth::user()->username }}"
                class="block py-2 px-3 md:p-0 {{ Request::is('user-profile-edit/*') ? 'text-blue-700 font-bold md:dark:text-blue-500' : 'text-gray-900 hover:text-blue-700 dark:text-white md:dark:hover:text-blue-500' }}">
