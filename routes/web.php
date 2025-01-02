@@ -85,4 +85,9 @@ use App\Livewire\AddStudyProgram;
 Route::get('/study-program/add', AddStudyProgram::class)->name('study-program.add');
 
 use App\Livewire\ListStudyProgramController;
-Route::get('/study-program', ListStudyProgramController::class)->name('study-program.index');
+Route::get('/study-program', ListStudyProgramController::class)->name('study-program.list');
+
+use App\Livewire\EditStudyProgramController;
+
+// Rute untuk mengedit program studi
+Route::get('/study-program/edit/{id}', EditStudyProgramController::class)->name('study-program.edit');

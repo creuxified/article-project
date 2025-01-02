@@ -6,14 +6,12 @@
                     <h2>Study Program List</h2>
                 </div>
                 <div class="col">
-                    <!-- Link ke halaman tambah Study Program -->
                     <a href="{{ route('study-program.add') }}" class="btn btn-primary btn-sm float-end">Add Study Program</a>
                 </div>
             </div>
         </div>
 
         <div class="card-body">
-            <!-- Tampilkan pesan sukses atau error -->
             @if(session()->has('message'))
                 <div class="alert alert-success">
                     {{ session('message') }}
@@ -26,8 +24,7 @@
                 </div>
             @endif
 
-            <!-- Tabel untuk daftar Study Program -->
-            <table class="table table-bordered">
+            <table id="studyProgramsTable" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -41,10 +38,7 @@
                             <td>{{ $study_program->name }}</td>
                             <td>{{ $study_program->faculty->name ?? 'N/A' }}</td>
                             <td>
-                                <!-- Tombol Edit -->
                                 <a href="{{ route('study-program.edit', ['id' => $study_program->id]) }}" class="btn btn-warning btn-sm">Edit</a>
-
-                                <!-- Tombol Hapus -->
                                 <button class="btn btn-danger btn-sm" wire:click="delete({{ $study_program->id }})">Delete</button>
                             </td>
                         </tr>
@@ -58,3 +52,23 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script>
+    document.addEventListener('livewire:load', function () {
+        const table = $('#studyProgramsTable').DataTable({
+            responsive: true,
+            stateSave: true,
+        });
+
+        Livewire.hook('message.processed', (message, component) => {
+            table.destroy(); // Hancurkan tabel sebelumnya
+            $('#studyProgramsTable').DataTable({ // Inisialisasi ulang
+                responsive: true,
+                stateSave: true,
+            });
+        });
+    });
+</script>
+@endpush

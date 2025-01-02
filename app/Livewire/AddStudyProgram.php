@@ -36,7 +36,7 @@ class AddStudyProgram extends Component
             session()->flash('message', 'Study Program has been successfully added!');
 
             // Redirect ke halaman daftar Study Program
-            return redirect()->route('study-program.index');
+            return redirect()->route('study-program.list');
         } catch (\Exception $e) {
             // Log atau tampilkan error
             dd($e->getMessage());
