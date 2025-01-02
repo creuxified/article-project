@@ -100,13 +100,14 @@ Route::get('/programs/edit/{id}', function ($id) {
 })->middleware('auth')->name('programs-edit');
 
 //USER ZONE
-use App\Livewire\AddUserController;
+Route::get('/users/add/', function (User $user) {
+    return view('user-add', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
+})->middleware('auth')->name('users-add');
 
-Route::get('/users/add', AddUserController::class)->name('users.add');
 
-use App\Livewire\ListUserController;
+// use App\Livewire\AddUserController;
 
-Route::get('/users', ListUserController::class)->name('users.list');
+// Route::get('/users/add', AddUserController::class)->name('users.add');
 
 use App\Livewire\EditUserController;
 

@@ -6,7 +6,7 @@
                     <h2>List Users</h2>
                 </div>
                 <div class="col">
-                    <a href="{{ route('users.add') }}" class="btn btn-primary btn-sm float-end">Add Users</a>
+                    <a href="{{ route('users-add') }}" class="btn btn-primary btn-sm float-end">Add Users</a>
                 </div>
             </div>
         </div>
