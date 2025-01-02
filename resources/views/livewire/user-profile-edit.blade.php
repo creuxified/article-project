@@ -1,4 +1,4 @@
-<section class="bg-white dark:bg-gray-900 mt-16">
+<section class="bg-white dark:bg-gray-900">
     <div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
         @if (session()->has('message'))
         <div class="flex p-4 mb-4 text-sm text-green-800 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
@@ -20,52 +20,75 @@
         </div>
         @endif
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Role Request</h2>
-            <button type="button" disabled
-                class="px-3 py-2 text-xs font-medium text-center text-gray-800 
-@if($user->status == 2) bg-green-500 text-white @elseif($user->status == 3) bg-dim.red text-white @else bg-gray-300 cursor-not-allowed opacity-50 @endif rounded-lg">
-                @if($user->status == 2)
-                Requested
-                @elseif($user->status == 3)
-                Rejected
-                @else
-                Not Requested
-                @endif
-            </button>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Edit Profile</h2>
         </div>
-        <form wire:submit.prevent="sendRequest">
+        <form wire:submit.prevent="editProfile">
             <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                 <div class="sm:col-span-2">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                    <input disabled type="name" name="name" id="name"
+                    <input type="name" name="name" id="name"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Full Name" wire:model='name'>
+                        <div class="text-red-600 text-sm font-medium">
+                            @error('name')
+                            {{ $message }}
+                            @enderror
+                        </div>
                 </div>
                 <div class="w-full">
-                    <label for="brand"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faculty</label>
-                    <input disabled type="text" name="brand" id="brand"
+                    <label for="username"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                    <input type="username" name="username" id="username"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="faculty" wire:model='faculty'>
+                        placeholder="username" wire:model='username'>
                     </input>
+                    <div class="text-red-600 text-sm font-medium">
+                        @error('username')
+                        {{ $message }}
+                        @enderror
+                    </div>
                 </div>
                 <div class="w-full">
                     <label for="email"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                    <input disabled type="text" name="email" id="email"
+                    <input type="text" name="email" id="email"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Email" wire:model='email'>
                     </input>
+                    <div class="text-red-600 text-sm font-medium">
+                        @error('email')
+                        {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+                <div class="w-full">
+                    <label for="faculty"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faculty</label>
+                        <select id="faculty"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            wire:model="selectedFaculty">
+                            <option value={{ Auth::user()->faculty_id}} selected>{{ Auth::user()->faculty->name }}</option>
+                            @foreach ($faculties as $faculty)
+                            <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
+                            @endforeach
+                        </select>
+                        <div class="text-red-600 text-sm font-medium">
+                            @error('selectedFaculty')
+                            {{ $message }}
+                            @enderror
+                        </div>
                 </div>
                 <div>
                     <label for="selectedProgram"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Study Program</label>
-                    <select @if ($user->status == 2) disabled @endif id="selectedProgram" class="bg-gray-50 border
-                        border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500
-                        block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                        dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    <select @if ($user->status == 2) disabled @endif id="selectedProgram" class="bg-gray-50 borderborder-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
                         wire:model='selectedProgram'>
-                        <option value=0 selected>Chose your Study Program</option>
+                        @if (Auth::user()->program->faculty_id != Auth::user()->faculty_id)
+                            <option selected>Select Study Program</option>
+                        @else
+                        <option value={{ Auth::user()->program_id}} selected>{{ Auth::user()->program->name }}</option>
+
+                        @endif
                         @foreach ($studyPrograms as $program)
                         <option value="{{ $program->id }}">{{ $program->name }}</option>
                         @endforeach
@@ -76,32 +99,10 @@
                         @enderror
                     </div>
                 </div>
-                <div>
-                    <label for="selectedRole" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role
-                        Request</label>
-                    <select @if ($user->status == 2) disabled @endif id="selectedRole" class="bg-gray-50 border
-                        border-gray-300
-                        text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full
-                        p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                        dark:focus:ring-primary-500 dark:focus:border-primary-500" wire:model='selectedRole'>
-                        <option selected>Chose role request</option>
-                        @foreach ($roles as $role)
-                        <option value={{ $role->id }}>{{ $role->name }}</option>
-                        @endforeach>
-                    </select>
-                    <div class="text-red-600 text-sm font-medium">
-                        @error('selectedRole')
-                        {{ $message }}
-                        @enderror
-                    </div>
-                </div>
+                @if(Auth::user()->role_id == 2)
                 <div class="w-full">
-                    <label for="scopus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scopus
-                        ID</label>
-                    <input @if ($user->status == 2) disabled @endif type="text" name="scopus" id="scopus"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600
-                    focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
-                    dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    <label for="scopus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scopus ID</label>
+                    <input type="text" name="scopus" id="scopus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-6 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
                     placeholder="Scopus ID" wire:model='scopus'>
                     </input>
                     <div class="text-red-600 text-sm font-medium">
@@ -111,13 +112,10 @@
                     </div>
                 </div>
                 <div class="w-full">
-                    <label for="scholar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scholar
-                        ID</label>
-                    <input @if ($user->status == 2) disabled @endif type="text" name="scholar" id="scholar"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600
-                    focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
-                    dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Scholar ID" wire:model='scholar'>
+                    <label for="scholar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scholar ID</label>
+                    <input type="text" name="scholar" id="scholar"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder="{{ $user->scholar }}" wire:model='scholar'>
                     </input>
                     <div class="text-red-600 text-sm font-medium">
                         @error('scholar')
@@ -125,13 +123,14 @@
                         @enderror
                     </div>
                 </div>
+                @endif
             </div>
             <div class="flex items-center space-x-4">
                 <button @if ($user->status == 2) disabled @endif type="submit" class="text-white bg-primary-700
                     {{ $user->status == 2 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary-800' }} focus:ring-4
                     focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
                     dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                    Send Request
+                    Update Profile
                 </button>
                 <button @if ($user->status == 2) disabled @endif type="button" class="text-red-600 inline-flex
                     items-center {{ $user->status == 2 ? 'opacity-50 cursor-not-allowed' : ' hover:text-white border

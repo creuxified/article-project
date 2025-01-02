@@ -40,6 +40,10 @@ Route::get('/profile-edit/{user:username}', function (User $user) {
     return view('profile-edit', ['user' => $user, 'title' => 'Welcome to profile editor!']);
 })->middleware('auth')->name('profile-edit');
 
+Route::get('/user-profile-edit/{user:username}', function (User $user) {
+    return view('user-profile-edit', ['user' => $user, 'title' => 'Welcome '. $user->name .'!']);
+})->middleware('auth')->name('user-profile-edit');
+
 Route::get('/scrap-data/{user:username}', function (User $user) {
     return view('scrap-data', ['user' => $user, 'title' => 'Welcome '. $user->name .'!']);
 })->middleware('auth')->name('scrap-data');
