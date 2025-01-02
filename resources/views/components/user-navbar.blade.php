@@ -48,11 +48,6 @@
                             </a>
                         </li>
                     @endif
-                    <li>
-                        <a href="/user-profile-edit/{{ Auth::user()->username }}" class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('user-profile-edit/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
-                            <i class="fas fa-user-edit mr-3"></i> Edit Profile
-                        </a>
-                    </li>
                 </ul>
             </nav>
         </div>
