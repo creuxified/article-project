@@ -86,16 +86,9 @@ Route::get('/programs/add/', function (User $user) {
     return view('programs-add', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('programs-add');
 
-// Route::get('/study-program/add', AddStudyProgram::class)->name('study-program.add');
+Route::get('/programs/edit/{id}', \App\Livewire\ProgramsEdit::class)->middleware('auth')->name('programs-edit');
 
-// use App\Livewire\ListStudyProgramController;
-// Route::get('/study-program', ListStudyProgramController::class)->name('study-program.list');
-
-use App\Livewire\EditStudyProgramController;
-
-// Rute untuk mengedit program studi
-Route::get('/study-program/edit/{id}', EditStudyProgramController::class)->name('study-program.edit');
-
+//USER ZONE
 use App\Livewire\AddUserController;
 
 Route::get('/users/add', AddUserController::class)->name('users.add');
