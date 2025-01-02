@@ -1,32 +1,38 @@
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col">
-                    <h2>Laravel 11.x + Livewire 3.x CRUD</h2>
-                </div>
-                <div class="col">
-                    <!-- Link to faculty list -->
-                    <a href="{{ route('faculty-index') }}" class="btn btn-primary btn-sm float-end">Faculty List</a>
-                </div>
-            </div>
+<div class="bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 antialiased min-h-screen flex items-center justify-center">
+    <div class="max-w-lg w-full bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+        <!-- Header Card -->
+        <div class="bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded-t-lg flex justify-between items-center">
+            <h2 class="text-xl font-semibold">
+                <i class="fas fa-plus-circle mr-2"></i> Add Faculty
+            </h2>
+            <a href="{{ route('faculty-index') }}" class="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200">
+                <i class="fas fa-list mr-2"></i> Faculty List
+            </a>
         </div>
 
-        <div class="card-body">
-            <!-- Form to add a new faculty -->
-            <form wire:submit.prevent="saveFaculty">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Faculty Name</label>
-                    <input type="text" wire:model="name" class="form-control" id="name" name="name" placeholder="Enter faculty name">
+        <!-- Form Content -->
+        <div class="p-4">
+            <form wire:submit.prevent="saveFaculty" class="space-y-4">
+                <!-- Input Field -->
+                <div>
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200">
+                        <i></i> Faculty Name
+                    </label>
+                    <input type="text" wire:model.defer="name" id="name" name="name"
+                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Enter faculty name">
 
-                    <!-- Show validation error message for the name -->
+                    <!-- Validation Error -->
                     @error('name')
-                        <span class="text-danger">{{ $message }}</span>
+                        <span class="text-sm text-red-600">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <!-- Submit button to save the faculty -->
-                <button type="submit" class="btn btn-success">Save</button>
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="w-full flex items-center justify-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200">
+                    <i class="fas fa-save mr-2"></i> Save
+                </button>
             </form>
         </div>
     </div>
