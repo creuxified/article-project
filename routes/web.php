@@ -69,29 +69,3 @@ Route::middleware('auth')->group(function () {});
 Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']);
 Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']);
 
-use App\Livewire\FacultyController;
-
-Route::get('/faculty', FacultyController::class)->name('faculty.index');
-
-use App\Livewire\EditFacultyController;
-
-Route::get('/faculty/edit/{faculty_id}', EditFacultyController::class)->name('faculty.edit');
-
-use App\Livewire\AddFacultyController;
-Route::get('/add/new',AddFacultyController::class);
-
-use App\Livewire\AddStudyProgram;
-
-Route::get('/study-program/add', AddStudyProgram::class)->name('study-program.add');
-
-use App\Livewire\ListStudyProgramController;
-Route::get('/study-program', ListStudyProgramController::class)->name('study-program.list');
-
-use App\Livewire\EditStudyProgramController;
-
-// Rute untuk mengedit program studi
-Route::get('/study-program/edit/{id}', EditStudyProgramController::class)->name('study-program.edit');
-
-use App\Livewire\AddUserController;
-
-Route::get('/users/add', AddUserController::class)->name('users.add');
