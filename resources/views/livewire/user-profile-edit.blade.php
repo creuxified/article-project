@@ -61,6 +61,7 @@
                         @enderror
                     </div>
                 </div>
+                @if(Auth::user()->role_id !== 5)
                 <div class="w-full">
                     <label for="faculty"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faculty</label>
@@ -78,6 +79,7 @@
                             @enderror
                         </div>
                 </div>
+                @if(Auth::user()->role_id !== 4)
                 <div>
                     <label for="selectedProgram"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Study Program</label>
@@ -99,6 +101,8 @@
                         @enderror
                     </div>
                 </div>
+                @endif
+                @endif
                 @if(Auth::user()->role_id == 2)
                 <div class="w-full">
                     <label for="scopus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scopus ID</label>
