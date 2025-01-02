@@ -42,7 +42,7 @@ Route::get('/profile-edit/{user:username}', function (User $user) {
 })->middleware('auth')->name('profile-edit');
 
 Route::get('/user-profile-edit/{user:username}', function (User $user) {
-    return view('user-profile-edit', ['user' => $user, 'title' => 'Welcome '. $user->name .'!']);
+    return view('user-profile-edit', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('user-profile-edit');
 
 Route::get('/scrap-data/{user:username}', function (User $user) {
@@ -113,15 +113,3 @@ use App\Livewire\EditUserController;
 Route::get('/users/edit/{id}', EditUserController::class)->name('users.edit');
 
 
-Route::get('/scopus', [ScopusScraperController::class, 'index'])->name('scopus.index');
-Route::post('/scopus/fetch', [ScopusScraperController::class, 'fetchData'])->name('scopus.fetch');
-
-use App\Http\Controllers\ScopusController;
-
-Route::middleware(['auth'])->group(function () {
-    // Route untuk menampilkan data publikasi
-    Route::get('/scopus', [ScopusController::class, 'showPublications'])->name('scopus.index');
-
-    // Route untuk menangani form submission dan scraping
-    Route::post('/scopus/scrape', [ScopusController::class, 'scrapeAndShow'])->name('scopus.scrape');
-});
