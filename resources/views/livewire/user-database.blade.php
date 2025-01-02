@@ -6,7 +6,7 @@
                     <h2>List Users</h2>
                 </div>
                 <div class="col">
-                    <a href="{{ route('users.add') }}" class="btn btn-primary btn-sm float-end">Add Users</a>
+                    <a href="{{ route('user-add') }}" class="btn btn-primary btn-sm float-end">Add Users</a>
                 </div>
             </div>
         </div>
@@ -16,10 +16,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Role</th>
                         <th>Username</th>
                         <th>Email</th>
                         <th>Name</th>
-                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -27,10 +27,10 @@
                     @forelse ($users as $user)
                         <tr>
                             <td>{{ $user->id }}</td>
+                            <td>{{ $user->role->name }}</td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->name }}</td>
-                            <td>{{ $user->status == 1 ? 'Active' : 'Inactive' }}</td>
                             <td>
                                 <!-- Tombol Edit -->
                                 <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>

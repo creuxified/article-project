@@ -1,3 +1,3 @@
-<x-layout :title="$title">
+<x-layout-landing :title="$title">
     @livewire('landing-page')
-</x-layout>
+</x-layout-landing>
