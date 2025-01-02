@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Highcharts CSS (Optional for custom styling) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Highcharts JS -->
@@ -186,6 +186,7 @@
         .table-container {
             margin-top: 40px;
         }
+
     </style>
 </head>
 
@@ -194,7 +195,9 @@
         <h1>Scrap Data</h1>
         <form action="{{ route('scrape') }}" method="GET">
             <input type="text" name="id_user" id="id_user" placeholder="Enter User ID or Name" required>
-            <button type="submit">🔍</button>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-sync"></i>
+            </button>
         </form>
     </div>
 
