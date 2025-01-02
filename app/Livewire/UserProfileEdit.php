@@ -33,8 +33,12 @@ class UserProfileEdit extends Component
         $this->studyPrograms = study_program::where('faculty_id', Auth::user()->faculty_id)->get();
         $this->scholar = $user->scholar;
         $this->scopus = $user->scopus;
-        $this->selectedFaculty = $user->faculty_id; 
-        $this->selectedProgram = $user->program_id;
+        if ($user->role_id != 5){
+            $this->selectedFaculty = $user->faculty_id;
+            if ($user->role_id != 4) 
+            $this->selectedProgram = $user->program_id;
+        }
+        
 
         Log::info('Study Programs: ' . $this->studyPrograms);
 

@@ -6,7 +6,7 @@
                     <h2>Study Program List</h2>
                 </div>
                 <div class="col">
-                    <a href="{{ route('study-program.add') }}" class="btn btn-primary btn-sm float-end">Add Study Program</a>
+                    <a href="{{ route('programs-add') }}" class="btn btn-primary btn-sm float-end">Add Study Program</a>
                 </div>
             </div>
         </div>

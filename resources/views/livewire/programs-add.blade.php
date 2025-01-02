@@ -6,7 +6,7 @@
                     <h2>Laravel 11.x + Livewire 3.x CRUD</h2>
                 </div>
                 <div class="col">
-                    <a href="{{ route('study-program.index') }}" class="btn btn-primary btn-sm float-end">Study Program List</a>
+                    <a href="{{ route('programs-index') }}" class="btn btn-primary btn-sm float-end">Study Program List</a>
                 </div>
             </div>
         </div>
@@ -21,14 +21,14 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="faculty_id" class="form-label">Faculty</label>
-                    <select wire:model="faculty_id" id="faculty_id" class="form-control">
-                        <option value="">Select Faculty</option>
+                    <label for="selectedFaculty" class="form-label">Faculty</label>
+                    <select wire:model="selectedFaculty" id="selectedFaculty" class="form-control">
+                        <option selected>Select Faculty</option>
                         @foreach ($faculties as $faculty)
                             <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
                         @endforeach
                     </select>
-                    @error('faculty_id') <span class="text-danger">{{ $message }}</span> @enderror
+                    @error('selectedFaculty') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
                 <button type="submit" class="btn btn-success">Save</button>

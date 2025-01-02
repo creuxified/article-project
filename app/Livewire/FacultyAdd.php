@@ -18,7 +18,7 @@ class FacultyAdd extends Component
     {
         // Validate the faculty name
         $this->validate([
-            'name' => 'required|min:3',  // You can also add other validation rules here
+            'name' => 'required|min:3|unique:faculties,name',  // You can also add other validation rules here
         ]);
 
         try {

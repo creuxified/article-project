@@ -16,7 +16,7 @@ class FacultyIndex extends Component
     {
         $this->faculties = Faculty::all(); // You can consider pagination if needed
     }
-    
+
     public function delete($id)
     {
         try {
@@ -31,7 +31,7 @@ class FacultyIndex extends Component
             return redirect()->route('faculty-index');
         }
     }
-    
+
     public function render()
     {
         return view('livewire.faculty-index');
