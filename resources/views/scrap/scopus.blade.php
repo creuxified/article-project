@@ -9,12 +9,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css" rel="stylesheet">
-    <!-- Highcharts CSS (Optional for custom styling) -->
+    <!-- jQuery and DataTables JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
     <!-- Highcharts JS -->
     <script src="https://code.highcharts.com/highcharts.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
     <style>
         body {
             display: flex;
@@ -41,6 +40,7 @@
             margin: auto;
             max-width: 600px;
             padding: 40px 20px;
+            margin-bottom: 30px;
         }
 
         .search-container h1 {
@@ -49,13 +49,14 @@
             margin-bottom: 20px;
         }
 
-        .search-container form {
-            width: 200%;
-            position: relative;
+        .input-group {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
         }
 
-        .search-container input[type="text"] {
-            width: 100%;
+        .input-group input[type="text"] {
+            flex: 1;
             padding: 10px 20px;
             font-size: 1.2rem;
             border-radius: 30px;
@@ -64,102 +65,62 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
-        .search-container button {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+        .input-group button {
             background-color: #2563eb;
             border: none;
             color: #fff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 30px;
+            padding: 10px 20px;
+            margin-left: 10px;
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        .search-container button:hover {
+        .input-group button:hover {
             background-color: #1d4ed8;
         }
 
         .container-content {
             margin: 20px auto;
             padding: 20px;
-            max-width: 900px;
+            max-width: 100%; /* Make the content container take full width */
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-photo {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-photo img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .content-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 20px auto;
-            max-width: 1200px;
-        }
-
-        .left-column,
-        .right-column {
-            flex: 1;
-            min-width: 300px;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.1);
+            background: white;
             border: none;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            width: 100%; /* Ensure the card takes full width of its container */
         }
 
-        /* Style for consistent ":" formatting */
-        .card-body p {
-            font-size: 1.1rem;
-            margin: 8px 0;
-        }
-
-        .card-body p strong {
+        .card-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-color: #1e293b;
             color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
         }
 
-        .table,
-        .table-bordered,
-        .table-hover {
-            background-color: transparent !important; /* Membuat background tabel transparan */
-            color: #fff; /* Menjaga warna teks agar tetap terlihat */
+        .card-body {
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%; /* Ensure the table takes up 100% of the card width */
+            color: #fff;
         }
 
         .table th,
         .table td {
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Menggunakan border putih transparan */
+            border: 1px solid rgba(255, 255, 255, 0.2);
             text-align: center;
             padding: 12px 18px;
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(255, 255, 255, 0.1); /* Warna latar belakang baris ganjil */
-        }
-
-        .table-striped tbody tr:nth-of-type(even) {
-            background-color: rgba(255, 255, 255, 0.2); /* Warna latar belakang baris genap */
         }
 
         .pagination {
@@ -171,7 +132,7 @@
         }
 
         .pagination .page-item a {
-            color: #2563eb;
+            color: #fff;
         }
 
         .pagination .page-item.active a {
@@ -183,128 +144,184 @@
             background-color: #1d4ed8;
         }
 
-        .table-container {
-            margin-top: 40px;
+        .charts-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        .left-column,
+        .right-column {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .left-column {
+            width: 60%; /* Left column will occupy 60% of the container */
+        }
+
+        .right-column {
+            width: 100%; /* Right column will occupy 40% of the container */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .left-column,
+            .right-column {
+                width: 100%;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <h1>Scrape Data dari Scopus</h1>
-       <p>Current User ID: {{ auth()->user()->id }}</p>
+    <div class="search-container">
+        <h1>Scrape Data dari Scopus</h1>
+        <p>Current User ID: {{ auth()->user()->id }}</p>
 
-    <form action="{{ url('/scrap/scopus') }}" method="POST">
-        @csrf
-        <label for="scopus_id">Masukkan Scopus ID:</label>
-        <input type="text" id="scopus_id" name="scopus_id" required>
-        <button type="submit">Scrape</button>
-    </form>
+        <form action="{{ url('/scrap/scopus') }}" method="POST">
+            @csrf
+            <div class="input-group">
+                <input type="text" id="scopus_id" name="scopus_id" required placeholder="Masukkan Scopus ID">
+                <button type="submit">Scrape</button>
+            </div>
+        </form>
+    </div>
 
     @if(session('status'))
-        <div>
+        <div style="color: green; font-weight: bold;">
             <strong>{{ session('status') }}</strong>
         </div>
     @endif
 
     @if(session('error'))
-        <div>
+        <div style="color: red; font-weight: bold;">
             <strong>{{ session('error') }}</strong>
         </div>
     @endif
 
-    <h2>Data Publikasi:</h2>
+    <div class="container">
+        <div class="content-wrapper d-flex">
+            <div class="left-column">
+                <!-- Citations Chart Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Number of Citations per Publication</h5>
+                        <div id="citationsChart"></div>
+                    </div>
+                </div>
 
-    <table id="publikasiTable" class="display">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Journal Name</th>
-                <th>Publication Date</th>
-                <th>Citations</th>
-                <th>DOI</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($publications as $pub) <!-- Changed from $publication to $publications -->
-                <tr>
-                    <td>{{ $pub->title }}</td>
-                    <td>{{ $pub->journal_name }}</td>
-                    <td>{{ $pub->publication_date }}</td>
-                    <td>{{ $pub->citations }}</td>
-                    <td>{{ $pub->doi }}</td>
-                    <td><a href="https://doi.org/{{ $pub->doi }}" target="_blank">Link Article</a></td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+                <!-- Publications Chart Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Number of Publications per Year</h5>
+                        <div id="publicationsChart"></div>
+                    </div>
+                </div>
+            </div>
 
-    <div id="citationsChart" style="width:100%; height:400px;"></div>
-    <div id="publicationsChart" style="width:100%; height:400px;"></div>
+            <div class="right-column">
+                <!-- Publications Data Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Publication Data</h5>
+                        <table id="publikasiTable" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Journal Name</th>
+                                    <th>Publication Date</th>
+                                    <th>Citations</th>
+                                    <th>DOI</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($publications as $pub)
+                                    <tr>
+                                        <td>{{ $pub->title }}</td>
+                                        <td>{{ $pub->journal_name }}</td>
+                                        <td>{{ $pub->publication_date }}</td>
+                                        <td>{{ $pub->citations }}</td>
+                                        <td>{{ $pub->doi }}</td>
+                                        <td><a href="https://doi.org/{{ $pub->doi }}" target="_blank">Link Article</a></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-    $(document).ready(function() {
-        $('#publikasiTable').DataTable();
-    });
+        $(document).ready(function() {
+            $('#publikasiTable').DataTable();
+        });
 
-    Highcharts.chart('citationsChart', {
-        chart: { type: 'column' },
-        title: { text: 'Jumlah Citations per Publikasi' },
-        xAxis: {
-            categories: [
-                @foreach($publications as $pub) <!-- Changed from $publication to $publications -->
-                    '{{ $pub->title }}',
-                @endforeach
-            ],
-            title: { text: 'Publikasi' }
-        },
-        yAxis: {
-            min: 0,
-            title: { text: 'Citations' }
-        },
-        series: [{
-            name: 'Citations',
-            data: [
-                @foreach($publications as $pub) <!-- Changed from $publication to $publications -->
-                    {{ $pub->citations }},
-                @endforeach
-            ]
-        }]
-    });
+        Highcharts.chart('citationsChart', {
+            chart: { type: 'column' },
+            title: { text: '' },
+            xAxis: {
+                categories: [
+                    @foreach($publications as $pub)
+                        '{{ $pub->title }}',
+                    @endforeach
+                ],
+                title: { text: 'Publications' }
+            },
+            yAxis: {
+                min: 0,
+                title: { text: 'Citations' }
+            },
+            series: [{
+                name: 'Citations',
+                data: [
+                    @foreach($publications as $pub)
+                        {{ $pub->citations }},
+                    @endforeach
+                ]
+            }]
+        });
 
-    let publicationData = {};
+        let publicationData = {};
 
-    @foreach($publications as $pub) <!-- Changed from $publication to $publications -->
-        (function() {
-            let date = new Date('{{ $pub->publication_date }}');
-            let year = date.getFullYear();
-            publicationData[year] = (publicationData[year] || 0) + 1;
-        })();
-    @endforeach
+        @foreach($publications as $pub)
+            (function() {
+                let date = new Date('{{ $pub->publication_date }}');
+                let year = date.getFullYear();
+                publicationData[year] = (publicationData[year] || 0) + 1;
+            })();
+        @endforeach
 
-    let years = Object.keys(publicationData);
-    let publications = Object.values(publicationData);
+        let years = Object.keys(publicationData);
+        let publications = Object.values(publicationData);
 
-    Highcharts.chart('publicationsChart', {
-        chart: { type: 'line' },
-        title: { text: 'Jumlah Publikasi per Tahun' },
-        xAxis: {
-            categories: years,
-            title: { text: 'Tahun' }
-        },
-        yAxis: {
-            min: 0,
-            title: { text: 'Jumlah Publikasi' }
-        },
-        series: [{
-            name: 'Publikasi',
-            data: publications
-        }]
-    });
+        Highcharts.chart('publicationsChart', {
+            chart: { type: 'line' },
+            title: { text: '' },
+            xAxis: {
+                categories: years,
+                title: { text: 'Year' }
+            },
+            yAxis: {
+                min: 0,
+                title: { text: 'Number of Publications' }
+            },
+            series: [{
+                name: 'Publications',
+                data: publications
+            }]
+        });
     </script>
 
 </body>
-
 
 </html>
