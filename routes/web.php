@@ -82,4 +82,7 @@ Route::get('/add/new',AddFacultyController::class);
 
 use App\Livewire\AddStudyProgram;
 
-Route::get('/study-program/add', AddStudyProgram::class)->name('study-program.index');
+Route::get('/study-program/add', AddStudyProgram::class)->name('study-program.add');
+
+use App\Livewire\ListStudyProgramController;
+Route::get('/study-program', ListStudyProgramController::class)->name('study-program.index');
