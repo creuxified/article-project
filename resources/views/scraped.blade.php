@@ -197,7 +197,7 @@
         <h1>Scrap Data</h1>
        <p>Current User ID: {{ auth()->user()->id }}</p>
         <form action="{{ route('scrape') }}" method="GET">
-            <input type="text" name="id_user" id="id_user" placeholder="Enter User ID or Name" required>
+            <input type="text" name="id_user_scholar" id="id_user_scholar" placeholder="Enter User ID or Name" required>
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-sync"></i>
             </button>

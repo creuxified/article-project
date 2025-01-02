@@ -121,8 +121,6 @@ class ScraperService
 
     protected function disableShowMoreButton($html)
     {
-        // Menonaktifkan tombol "Show more"
-        // Mencari elemen tombol "Show more" dan menggantinya dengan versi disabled
         $html = preg_replace('/(<button[^>]*id="gsc_bpf_more"[^>]*>)/', '<button type="button" id="gsc_bpf_more" class="gs_btnPD gs_in_ib gs_btn_flat gs_btn_lrge gs_btn_lsu" disabled><span class="gs_wr"><span class="gs_ico"></span><span class="gs_lbl">Show more</span></span></button>', $html);
 
         return $html;
