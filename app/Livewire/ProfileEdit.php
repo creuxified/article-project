@@ -60,7 +60,7 @@ class ProfileEdit extends Component
                 'scopus' => 'required|unique:users',
                 'scholar' => 'required|unique:users',
             ]);
-            
+
             $role = $this->roles->where('id', $this->selectedRole)->first();
 
             Log::info('Proposed values:', [
@@ -89,7 +89,7 @@ class ProfileEdit extends Component
             $user->scopus = $this->scopus;
             $user->status = 2;
             $user->save(); // Save the updated user information
-            
+
             Log::info('Updated values:', [
                 'scopus' => $this->scopus,
                 'scholar' => $this->scholar,
@@ -97,7 +97,7 @@ class ProfileEdit extends Component
                 'selectedRole' => $this->selectedRole,
             ]);
 
-            
+
             return redirect()->route('profile-edit', ['user' => Auth::user()->username])->with('message', 'Request Sucessfully Sent!');
 
     }
@@ -106,7 +106,8 @@ class ProfileEdit extends Component
     {
         User::find(Auth::user())->delete();
 
-        return session()->flash('message', 'wrong email or password');    }
+        return session()->flash('message', 'wrong email or password');
+    }
 
     public function render()
     {

@@ -68,4 +68,3 @@ Route::middleware('auth')->group(function () {});
 
 Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']);
 Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']);
-

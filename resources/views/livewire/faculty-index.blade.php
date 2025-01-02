@@ -6,7 +6,7 @@
                     <h2>Faculty List</h2>
                 </div>
                 <div class="col">
-                    <a href="/add/new" class="btn btn-primary btn-sm float-end">Add Faculty</a>
+                    <a href="{{ route('faculty-add') }}" class="btn btn-primary btn-sm float-end">Add Faculty</a>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                         <tr>
                             <td>{{ $faculty->name }}</td>
                             <td>
-                                <a href="{{ route('faculty.edit', ['faculty_id' => $faculty->id]) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="faculty/edit/{{ $faculty->id }}" class="btn btn-warning btn-sm">Edit</a>
                             </td>
                             <td><button class="btn btn-danger btn-sm" wire:click="delete({{$faculty->id}})" wire:confirm="Are you sure you want to delete this?">Delete</button></td>
                         </tr>
