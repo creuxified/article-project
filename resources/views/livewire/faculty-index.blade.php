@@ -30,8 +30,8 @@
             </thead>
             <tbody>
                 @foreach($faculties as $faculty)
-                    <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-6 py-4 text-black hover:text-white transition duration-200">{{ $faculty->name }}</td>
+                    <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-200 ">
+                        <td class="px-6 py-4 text-black">{{ $faculty->name }}</td>
                         <td class="px-6 py-4 text-black dark:text-gray-200 flex justify-center items-center space-x-2">
                             <a href="faculty/edit/{{ $faculty->id }}"
                                class="btn flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">
