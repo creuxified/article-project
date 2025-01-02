@@ -188,8 +188,11 @@
         }
     </style>
 </head>
+
 <body>
+
     <h1>Scrape Data dari Scopus</h1>
+       <p>Current User ID: {{ auth()->user()->id }}</p>
 
     <form action="{{ url('/scrap/scopus') }}" method="POST">
         @csrf
@@ -201,6 +204,12 @@
     @if(session('status'))
         <div>
             <strong>{{ session('status') }}</strong>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div>
+            <strong>{{ session('error') }}</strong>
         </div>
     @endif
 
@@ -218,7 +227,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($publication as $pub)
+            @foreach($publications as $pub) <!-- Changed from $publication to $publications -->
                 <tr>
                     <td>{{ $pub->title }}</td>
                     <td>{{ $pub->journal_name }}</td>
@@ -244,7 +253,7 @@
         title: { text: 'Jumlah Citations per Publikasi' },
         xAxis: {
             categories: [
-                @foreach($publication as $pub)
+                @foreach($publications as $pub) <!-- Changed from $publication to $publications -->
                     '{{ $pub->title }}',
                 @endforeach
             ],
@@ -257,7 +266,7 @@
         series: [{
             name: 'Citations',
             data: [
-                @foreach($publication as $pub)
+                @foreach($publications as $pub) <!-- Changed from $publication to $publications -->
                     {{ $pub->citations }},
                 @endforeach
             ]
@@ -266,7 +275,7 @@
 
     let publicationData = {};
 
-    @foreach($publication as $pub)
+    @foreach($publications as $pub) <!-- Changed from $publication to $publications -->
         (function() {
             let date = new Date('{{ $pub->publication_date }}');
             let year = date.getFullYear();

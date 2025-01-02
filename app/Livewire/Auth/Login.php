@@ -25,10 +25,12 @@ class Login extends Component
         ]);
 
         if(Auth::attempt([
-            'email' => $this->email, 
+            'email' => $this->email,
             'password' => $this->password
             ])){
-            return Auth::user()->status == 4 ? redirect()->route('dashboard', ['user' => Auth::user()->username]) : redirect()->route('profile-edit', ['user' => Auth::user()->username]);            
+            session()->flash('success', 'Welcome back!');
+
+            return Auth::user()->status == 4 ? redirect()->route('dashboard', ['user' => Auth::user()->username]) : redirect()->route('profile-edit', ['user' => Auth::user()->username]);
             }else{
                 return session()->flash('error', 'wrong email or password');
             }

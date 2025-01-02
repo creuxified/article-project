@@ -14,6 +14,7 @@ class Publication extends Model
 
     // Define the fillable columns
     protected $fillable = [
+        'user_id',
         'title',
         'journal_name',
         'publication_date',
@@ -23,4 +24,12 @@ class Publication extends Model
         'institution',
         'source',
     ];
+
+    /**
+     * Get the user that owns the publication.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

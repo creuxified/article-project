@@ -1,11 +1,13 @@
-
-
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-  <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-      <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-  </a>
+    <a href="https://flowbite.com/" class="flex items-center rtl:space-x-reverse">
+        <img class="w-12 h-12 mr-3" src="{{ asset('images/logo_UNS.png') }}" alt="logo">
+        <div class="flex flex-col">
+            <span class="text-3xl font-bold whitespace-nowrap dark:text-white">UNS</span>
+            <span class="text-xl font-semibold whitespace-nowrap dark:text-white">Citation Management</span>
+        </div>
+    </a>
+
   <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
     @if(Auth::user()->role_id == 5)
       <button disabled type="button" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"><svg class="w-5 h-5 text-gray-800 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>University Admin</button>
@@ -57,6 +59,4 @@
     </ul>
   </div>
   </div>
-  
 </nav>
-

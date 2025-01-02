@@ -54,7 +54,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
+
     public function faculty(): BelongsTo
     {
         return $this->belongsTo(Faculty::class);
@@ -75,5 +75,8 @@ class User extends Authenticatable
         return $this->hasMany(ActivityLog::class, 'user_id');
     }
 
-
+    public function publications(): HasMany
+    {
+        return $this->hasMany(Publication::class, 'user_id', 'id');
+    }
 }
