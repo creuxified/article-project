@@ -26,6 +26,7 @@ class ProfileEdit extends Component
     public $roles;
     public int $selectedProgram;
     public $selectedRole;
+    public $revision;
     public $message; // Property to hold success message
 
     public function mount($user)
@@ -43,6 +44,7 @@ class ProfileEdit extends Component
         $this->proposedRole = $user->role;
         $this->scholar = $user->scholar;
         $this->scopus = $user->scopus;
+        $this->revision = $user->revision;
 
         Log::info('Study Programs: ' . $this->studyPrograms);
 
