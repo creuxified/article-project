@@ -116,3 +116,12 @@ Route::get('/users/edit/{id}', EditUserController::class)->name('users.edit');
 Route::get('/scopus', [ScopusScraperController::class, 'index'])->name('scopus.index');
 Route::post('/scopus/fetch', [ScopusScraperController::class, 'fetchData'])->name('scopus.fetch');
 
+use App\Http\Controllers\ScopusController;
+
+Route::middleware(['auth'])->group(function () {
+    // Route untuk menampilkan data publikasi
+    Route::get('/scopus', [ScopusController::class, 'showPublications'])->name('scopus.index');
+
+    // Route untuk menangani form submission dan scraping
+    Route::post('/scopus/scrape', [ScopusController::class, 'scrapeAndShow'])->name('scopus.scrape');
+});
