@@ -33,13 +33,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($study_programs as $study_program)
+                    @forelse($programs as $program)
                         <tr>
-                            <td>{{ $study_program->name }}</td>
-                            <td>{{ $study_program->faculty->name ?? 'N/A' }}</td>
+                            <td>{{ $program->name }}</td>
+                            <td>{{ $program->faculty->name ?? 'N/A' }}</td>
                             <td>
-                                <a href="{{ route('study-program.edit', ['id' => $study_program->id]) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <button class="btn btn-danger btn-sm" wire:click="delete({{ $study_program->id }})">Delete</button>
+                                <a href="programs/edit/{{ $program->id }}" class="btn btn-warning btn-sm">Edit</a>
+                                <button class="btn btn-danger btn-sm" wire:click="delete({{ $program->id }})">Delete</button>
                             </td>
                         </tr>
                     @empty

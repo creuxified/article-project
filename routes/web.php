@@ -61,31 +61,35 @@ Route::post('logout', function (Request $request): RedirectResponse {
 
 Route::get('/scrap/scholar', [ScholarScraperController::class, 'index'])->name('scrape');
 
-// Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']); // For displaying the form
-// Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']); // For handling the form submission
-
 Route::middleware('auth')->group(function () {});
 
 Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']);
 Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']);
 
-use App\Livewire\FacultyController;
+// FACULTY ZONE 
+Route::get('/faculty', function (User $user) {
+    return view('faculty-index', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
+})->middleware('auth')->name('faculty-index');
 
-Route::get('/faculty', FacultyController::class)->name('faculty.index');
+Route::get('/faculty/edit/{id}', \App\Livewire\FacultyEdit::class)->middleware('auth')->name('faculty-edit');
 
-use App\Livewire\EditFacultyController;
+Route::get('/faculty/add/', function (User $user) {
+    return view('faculty-add', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
+})->middleware('auth')->name('faculty-add');
 
-Route::get('/faculty/edit/{faculty_id}', EditFacultyController::class)->name('faculty.edit');
+//PROGRAMS ZONE
+Route::get('/programs', function (User $user) {
+    return view('programs-index', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
+})->middleware('auth')->name('programs-index');
 
-use App\Livewire\AddFacultyController;
-Route::get('/add/new',AddFacultyController::class);
+Route::get('/programs/add/', function (User $user) {
+    return view('programs-add', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
+})->middleware('auth')->name('programs-add');
 
-use App\Livewire\AddStudyProgram;
+// Route::get('/study-program/add', AddStudyProgram::class)->name('study-program.add');
 
-Route::get('/study-program/add', AddStudyProgram::class)->name('study-program.add');
-
-use App\Livewire\ListStudyProgramController;
-Route::get('/study-program', ListStudyProgramController::class)->name('study-program.list');
+// use App\Livewire\ListStudyProgramController;
+// Route::get('/study-program', ListStudyProgramController::class)->name('study-program.list');
 
 use App\Livewire\EditStudyProgramController;
 
