@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {});
 Route::get('/scrap/scopus', [ScopusScraperController::class, 'showForm']);
 Route::post('/scrap/scopus', [ScopusScraperController::class, 'scrapeScopus']);
 
-// FACULTY ZONE 
+// FACULTY ZONE
 Route::get('/faculty', function (User $user) {
     return view('faculty-index', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('faculty-index');
