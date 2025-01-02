@@ -1,5 +1,5 @@
-<section class="bg-white dark:bg-gray-900 mt-16">
-    <div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
+<section class="bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 antialiased min-h-screen flex items-center justify-center">
+    <div class="max-w-3xl w-full bg-white dark:bg-gray-900 shadow-lg rounded-lg p-8">
         @if (session()->has('message'))
         <div class="flex p-4 mb-4 text-sm text-green-800 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
             role="alert">
@@ -19,11 +19,19 @@
             </button>
         </div>
         @endif
+
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-gray-900 dark:text-white">Role Request</h2>
             <button type="button" disabled
-                class="px-3 py-2 text-xs font-medium text-center text-gray-800 
-@if($user->status == 2) bg-green-500 text-white @elseif($user->status == 3) bg-dim.red text-white @else bg-gray-300 cursor-not-allowed opacity-50 @endif rounded-lg">
+                class="px-3 py-2 text-xs font-medium text-center text-gray-800
+                @if($user->status == 2)
+                bg-green-500 text-white
+                @elseif($user->status == 3)
+                bg-dim.red text-white
+                @else
+                bg-gray-300 cursor-not-allowed opacity-50
+                @endif rounded-lg">
+
                 @if($user->status == 2)
                 Requested
                 @elseif($user->status == 3)
@@ -33,119 +41,103 @@
                 @endif
             </button>
         </div>
+
         <form wire:submit.prevent="sendRequest">
-            <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
-                <div class="sm:col-span-2">
+            <div class="grid gap-6 mb-6">
+                <!-- Name -->
+                <div>
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                    <input disabled type="name" name="name" id="name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Full Name" wire:model='name'>
-                </div>
-                <div class="w-full">
-                    <label for="brand"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faculty</label>
-                    <input disabled type="text" name="brand" id="brand"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="faculty" wire:model='faculty'>
-                    </input>
-                </div>
-                <div class="w-full">
-                    <label for="email"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                    <input disabled type="text" name="email" id="email"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Email" wire:model='email'>
-                    </input>
-                </div>
-                <div>
-                    <label for="selectedProgram"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Study Program</label>
-                    <select @if ($user->status == 2) disabled @endif id="selectedProgram" class="bg-gray-50 border
-                        border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500
-                        block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                        dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        wire:model='selectedProgram'>
-                        <option value=0 selected>Chose your Study Program</option>
-                        @foreach ($studyPrograms as $program)
-                        <option value="{{ $program->id }}">{{ $program->name }}</option>
-                        @endforeach
-                    </select>
-                    <div class="text-red-600 text-sm font-medium">
-                        @error('selectedProgram')
-                        {{ $message }}
-                        @enderror
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"><i class="fas fa-user"></i></span>
+                        <input disabled type="name" id="name"
+                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg pl-10 focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Full Name" wire:model="name">
                     </div>
                 </div>
-                <div>
-                    <label for="selectedRole" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role
-                        Request</label>
-                    <select @if ($user->status == 2) disabled @endif id="selectedRole" class="bg-gray-50 border
-                        border-gray-300
-                        text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full
-                        p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                        dark:focus:ring-primary-500 dark:focus:border-primary-500" wire:model='selectedRole'>
-                        <option selected>Chose role request</option>
-                        @foreach ($roles as $role)
-                        <option value={{ $role->id }}>{{ $role->name }}</option>
-                        @endforeach>
-                    </select>
-                    <div class="text-red-600 text-sm font-medium">
-                        @error('selectedRole')
-                        {{ $message }}
-                        @enderror
+
+                <!-- Faculty and Email -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label for="faculty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faculty</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"><i class="fas fa-building"></i></span>
+                            <input disabled type="text" id="faculty"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg pl-10 focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Faculty" wire:model="faculty">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"><i class="fas fa-envelope"></i></span>
+                            <input disabled type="text" id="email"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg pl-10 focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Email" wire:model="email">
+                        </div>
                     </div>
                 </div>
-                <div class="w-full">
-                    <label for="scopus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scopus
-                        ID</label>
-                    <input @if ($user->status == 2) disabled @endif type="text" name="scopus" id="scopus"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600
-                    focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
-                    dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Scopus ID" wire:model='scopus'>
-                    </input>
-                    <div class="text-red-600 text-sm font-medium">
-                        @error('scopus')
-                        {{ $message }}
-                        @enderror
+
+                <!-- Study Program and Role Request -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label for="selectedProgram"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Study Program</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"><i class="fas fa-graduation-cap"></i></span>
+                            <select id="selectedProgram" wire:model="selectedProgram"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg pl-10 focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="0">Choose your Study Program</option>
+                                @foreach ($studyPrograms as $program)
+                                <option value="{{ $program->id }}">{{ $program->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('selectedProgram')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
+                        </div>
+                    </div>
+                    <div>
+                        <label for="selectedRole" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role Request</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"><i class="fas fa-user-tag"></i></span>
+                            <select id="selectedRole" wire:model="selectedRole"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg pl-10 focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected>Choose role request</option>
+                                @foreach ($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('selectedRole')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
+                        </div>
                     </div>
                 </div>
-                <div class="w-full">
-                    <label for="scholar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scholar
-                        ID</label>
-                    <input @if ($user->status == 2) disabled @endif type="text" name="scholar" id="scholar"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600
-                    focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
-                    dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Scholar ID" wire:model='scholar'>
-                    </input>
-                    <div class="text-red-600 text-sm font-medium">
-                        @error('scholar')
-                        {{ $message }}
-                        @enderror
+
+                <!-- Scopus ID and Scholar ID -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label for="scopus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scopus ID</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"><i class="fas fa-id-card"></i></span>
+                            <input type="text" id="scopus" wire:model="scopus"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg pl-10 focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Scopus ID">
+                            @error('scopus')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
+                        </div>
+                    </div>
+                    <div>
+                        <label for="scholar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scholar ID</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"><i class="fas fa-id-badge"></i></span>
+                            <input type="text" id="scholar" wire:model="scholar"
+                                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg pl-10 focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Scholar ID">
+                            @error('scholar')<span class="text-red-600 text-sm">{{ $message }}</span>@enderror
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="flex items-center space-x-4">
-                <button @if ($user->status == 2) disabled @endif type="submit" class="text-white bg-primary-700
-                    {{ $user->status == 2 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary-800' }} focus:ring-4
-                    focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
-                    dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                    Send Request
-                </button>
-                <button @if ($user->status == 2) disabled @endif type="button" class="text-red-600 inline-flex
-                    items-center {{ $user->status == 2 ? 'opacity-50 cursor-not-allowed' : ' hover:text-white border
-                    border-red-600 hover:bg-red-600' }} focus:ring-4 focus:outline-none focus:ring-red-300
-                    font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500
-                    dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-                    <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                    Delete Account
-                </button>
+
+            <div class="flex justify-end space-x-4">
+                <button type="submit" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300">Send Request</button>
+                <button type="button" class="px-5 py-2 text-sm font-medium text-red-600 border border-red-600 rounded-lg hover:bg-red-600 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300">Delete Account</button>
             </div>
         </form>
     </div>
