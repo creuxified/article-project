@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class study_program extends Model
+class StudyProgram extends Model
 {
-    /** @use HasFactory<\Database\Factories\StudyProgramFactory> */
     use HasFactory;
 
     protected $fillable = [
