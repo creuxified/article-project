@@ -4,8 +4,8 @@ namespace App\Livewire\Auth;
 
 use App\Models\User;
 use App\Models\Faculty;
-use Livewire\Component; 
-use App\Models\RequestLog; 
+use Livewire\Component;
+use App\Models\RequestLog;
 use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Type\Integer;
 
@@ -13,15 +13,15 @@ class Register extends Component
 {
     public $faculties;
     public $username;
-    public $email;    
-    public $name; 
-    public int $selectedFaculty; 
-    public $password; 
-    public $password_confirmation; 
+    public $email;
+    public $name;
+    public int $selectedFaculty;
+    public $password;
+    public $password_confirmation;
 
-    public function mount() 
+    public function mount()
     {
-        $this->faculties = Faculty::all(); 
+        $this->faculties = Faculty::all();
     }
 
     public function register()
@@ -42,6 +42,7 @@ class Register extends Component
         //     'password' => bcrypt($this->password),
         //     'faculty_id' => $this->selectedFaculty,
         // ]);
+
         Log::info('Proposed values:', [
             'username' => $this->username,
             'name' => $this->name,
@@ -58,7 +59,9 @@ class Register extends Component
             'faculty_id' => $this->selectedFaculty,
         ]);
 
-        return redirect('/login')->with('message', 'Registration successful! Please log in.');
+        session()->flash('success', 'Registration successful! Please log in.');
+
+        return redirect('/login');
 
     }
 
