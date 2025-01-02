@@ -79,3 +79,7 @@ Route::get('/faculty/edit/{faculty_id}', EditFacultyController::class)->name('fa
 
 use App\Livewire\AddFacultyController;
 Route::get('/add/new',AddFacultyController::class);
+
+use App\Livewire\AddStudyProgram;
+
+Route::get('/study-program/add', AddStudyProgram::class)->name('study-program.index');
