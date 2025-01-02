@@ -83,7 +83,8 @@
         .container-content {
             margin: 20px auto;
             padding: 20px;
-            max-width: 100%; /* Make the content container take full width */
+            max-width: 100%;
+            /* Make the content container take full width */
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -94,7 +95,8 @@
             border: none;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            width: 100%; /* Ensure the card takes full width of its container */
+            width: 100%;
+            /* Ensure the card takes full width of its container */
         }
 
         .card-header {
@@ -112,7 +114,8 @@
         }
 
         .table {
-            width: 100%; /* Ensure the table takes up 100% of the card width */
+            width: 100%;
+            /* Ensure the table takes up 100% of the card width */
             color: #fff;
         }
 
@@ -162,15 +165,18 @@
         }
 
         .left-column {
-            width: 60%; /* Left column will occupy 60% of the container */
+            width: 60%;
+            /* Left column will occupy 60% of the container */
         }
 
         .right-column {
-            width: 100%; /* Right column will occupy 40% of the container */
+            width: 100%;
+            /* Right column will occupy 40% of the container */
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
+
             .left-column,
             .right-column {
                 width: 100%;
@@ -180,28 +186,29 @@
 </head>
 
 <body>
-
     <div class="search-container">
         <h1>Scrape Data dari Scopus</h1>
         <p>Current User ID: {{ auth()->user()->id }}</p>
+        <p>Scopus ID: {{ auth()->user()->scopus }}</p>
 
         <form action="{{ url('/scrap/scopus') }}" method="POST">
             @csrf
             <div class="input-group">
-                <input type="text" id="scopus_id" name="scopus_id" required placeholder="Masukkan Scopus ID">
+                <label for="scopus_id">Enter Scopus ID:</label>
+                <input type="text" name="scopus_id" id="scopus_id" value="{{ old('scopus_id') }}" required>
                 <button type="submit">Scrape</button>
             </div>
         </form>
     </div>
 
-    @if(session('status'))
-        <div style="color: green; font-weight: bold;">
+    @if (session('status'))
+        <div class="alert alert-success">
             <strong>{{ session('status') }}</strong>
         </div>
     @endif
 
-    @if(session('error'))
-        <div style="color: red; font-weight: bold;">
+    @if (session('error'))
+        <div class="alert alert-danger">
             <strong>{{ session('error') }}</strong>
         </div>
     @endif
@@ -209,7 +216,6 @@
     <div class="container">
         <div class="content-wrapper d-flex">
             <div class="left-column">
-                <!-- Citations Chart Card -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Number of Citations per Publication</h5>
@@ -217,7 +223,6 @@
                     </div>
                 </div>
 
-                <!-- Publications Chart Card -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Number of Publications per Year</h5>
@@ -227,7 +232,6 @@
             </div>
 
             <div class="right-column">
-                <!-- Publications Data Card -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Publication Data</h5>
@@ -238,18 +242,16 @@
                                     <th>Journal Name</th>
                                     <th>Publication Date</th>
                                     <th>Citations</th>
-                                    <th>DOI</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($publications as $pub)
+                                @foreach ($publications as $pub)
                                     <tr>
                                         <td>{{ $pub->title }}</td>
                                         <td>{{ $pub->journal_name }}</td>
                                         <td>{{ $pub->publication_date }}</td>
                                         <td>{{ $pub->citations }}</td>
-                                        <td>{{ $pub->doi }}</td>
                                         <td><a href="https://doi.org/{{ $pub->doi }}" target="_blank">Link Article</a></td>
                                     </tr>
                                 @endforeach
@@ -267,11 +269,13 @@
         });
 
         Highcharts.chart('citationsChart', {
-            chart: { type: 'column' },
+            chart: {
+                type: 'column'
+            },
             title: { text: '' },
             xAxis: {
                 categories: [
-                    @foreach($publications as $pub)
+                    @foreach ($publications as $pub)
                         '{{ $pub->title }}',
                     @endforeach
                 ],
@@ -284,7 +288,7 @@
             series: [{
                 name: 'Citations',
                 data: [
-                    @foreach($publications as $pub)
+                    @foreach ($publications as $pub)
                         {{ $pub->citations }},
                     @endforeach
                 ]
@@ -293,7 +297,7 @@
 
         let publicationData = {};
 
-        @foreach($publications as $pub)
+        @foreach ($publications as $pub)
             (function() {
                 let date = new Date('{{ $pub->publication_date }}');
                 let year = date.getFullYear();
@@ -307,21 +311,16 @@
         Highcharts.chart('publicationsChart', {
             chart: { type: 'line' },
             title: { text: '' },
-            xAxis: {
-                categories: years,
-                title: { text: 'Year' }
-            },
-            yAxis: {
-                min: 0,
-                title: { text: 'Number of Publications' }
-            },
+            xAxis: { categories: years, title: { text: 'Year' } },
+            yAxis: { min: 0, title: { text: 'Number of Publications' } },
             series: [{
                 name: 'Publications',
                 data: publications
             }]
         });
     </script>
-
 </body>
+
+
 
 </html>

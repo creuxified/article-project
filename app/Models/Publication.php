@@ -19,9 +19,8 @@ class Publication extends Model
         'journal_name',
         'publication_date',
         'citations',
-        'doi',
+        'link',
         'author_name',
-        'institution',
         'source',
     ];
 

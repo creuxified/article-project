@@ -111,3 +111,8 @@ Route::get('/users', ListUserController::class)->name('users.list');
 use App\Livewire\EditUserController;
 
 Route::get('/users/edit/{id}', EditUserController::class)->name('users.edit');
+
+
+Route::get('/scopus', [ScopusScraperController::class, 'index'])->name('scopus.index');
+Route::post('/scopus/fetch', [ScopusScraperController::class, 'fetchData'])->name('scopus.fetch');
+
