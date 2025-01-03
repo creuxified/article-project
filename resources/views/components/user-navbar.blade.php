@@ -1,13 +1,13 @@
-<div class="flex h-screen bg-gray-100 dark:bg-gray-900">
+<div class="flex h-screen bg-gray-900">
     <!-- Sidebar -->
-    <div class="bg-white dark:bg-gray-800 w-64 hidden md:block shadow-lg fixed inset-y-0 left-0 z-10">
+    <div class="bg-gray-800 w-64 hidden md:block shadow-lg fixed inset-y-0 left-0 z-10">
         <div class="flex flex-col h-full">
             <!-- Logo Section -->
             <div class="p-6 flex items-center space-x-3 rtl:space-x-reverse">
                 <img class="w-12 h-12" src="{{ asset('images/logo_UNS.png') }}" alt="logo">
                 <div>
-                    <span class="text-3xl font-bold whitespace-nowrap dark:text-white">UNS</span>
-                    <span class="text-sm font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">Citation Management</span>
+                    <span class="text-3xl font-bold whitespace-nowrap text-white">UNS</span>
+                    <span class="text-sm font-medium whitespace-nowrap text-gray-400 ">Citation Management</span>
                 </div>
             </div>
 
