@@ -60,14 +60,14 @@
     @livewireStyles()
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-900">
+<body class= "bg-gray-900">
     <div class="flex min-h-screen">
         <!-- Include Sidebar -->
         @include('components.user-navbar')
 
         <!-- Main Content -->
         <main class="flex-1 ml-64">
-            <header class="bg-white shadow dark:bg-gray-800 p-4">
+            <header class="bg-gray-800 p-4">
                 <div class="flex justify-between fa-align-right p-4 rounded-md">
                     <!-- Profile Dropdown -->
                     <div class="relative mr-4">
