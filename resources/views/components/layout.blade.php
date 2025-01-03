@@ -85,7 +85,7 @@
                         </button>
 
                         <!-- Dropdown Content -->
-                        <div id="profileDropdownMenu" class="hidden absolute right-0 mt-2 w-56 rounded-lg shadow-lg">
+                        <div id="profileDropdownMenu" class="hidden absolute right-0 mt-2 w-56 rounded-lg shadow-lg z-50">
                         <!-- Edit Profile Button -->
                         <ul class="p-2">
                             <li>
