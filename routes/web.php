@@ -42,7 +42,7 @@ Route::get('/profile-edit/{user:username}', function (User $user) {
 })->middleware('auth')->name('profile-edit');
 
 Route::get('/user-profile-edit/{user:username}', function (User $user) {
-    return view('user-profile-edit', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
+    return view('user-profile-edit', ['user' => $user, 'title' => 'Welcome '. $user->name .'!']);
 })->middleware('auth')->name('user-profile-edit');
 
 Route::get('/scrap-data/{user:username}', function (User $user) {
@@ -104,14 +104,16 @@ Route::get('/users/add/', function (User $user) {
     return view('user-add', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('users-add');
 
+Route::get('/users/edit/{user}', function (User $user) {
+    return view('user-edit', [
+        'title' => 'Edit User: ' . $user->name,
+        'user' => $user
+    ]);
+})->middleware('auth')->name('user.edit');
 
-// use App\Livewire\AddUserController;
+// use App\Livewire\EditUserController;
 
-// Route::get('/users/add', AddUserController::class)->name('users.add');
-
-use App\Livewire\EditUserController;
-
-Route::get('/users/edit/{id}', EditUserController::class)->name('users.edit');
+// Route::get('/users/edit/{id}', EditUserController::class)->name('users.edit');
 
 
 Route::get('/scopus', [ScopusScraperController::class, 'index'])->name('scopus.index');
@@ -125,11 +127,4 @@ Route::middleware(['auth'])->group(function () {
 
     // Route untuk menangani form submission dan scraping
     Route::post('/scopus/scrape', [ScopusController::class, 'scrapeAndShow'])->name('scopus.scrape');
-});
-
-use App\Http\Controllers\ScholarController;
-
-Route::middleware(['auth'])->group(function () {
-    // Menampilkan publikasi dari Google Scholar
-    Route::get('/scholar', [ScholarController::class, 'index'])->name('scraper.index');
 });
