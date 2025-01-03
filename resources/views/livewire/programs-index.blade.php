@@ -29,7 +29,7 @@
                 @forelse($programs as $program)
                     <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-200">
                         <td class="px-6 py-4 text-black">{{ $program->name }}</td>
-                        <td class="px-6 py-4 text-black">{{ $program->faculty->name ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 text-black">{{ $program->faculty ->name ?? 'N/A' }}</td>
                         <td class="px-6 py-4 text-black dark:text-gray-200 flex justify-center items-center space-x-2">
                             <a href="programs/edit/{{ $program->id }}"
                                class="btn flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">
@@ -49,5 +49,10 @@
                 @endforelse
             </tbody>
         </table>
+
+        <!-- Pagination Links -->
+        <div class="flex justify-center mt-4">
+            {{ $programs->links() }} <!-- Menampilkan tautan pagination -->
+        </div>
     </div>
 </div>
