@@ -173,21 +173,42 @@ class ScraperController extends Controller
      */
     public function scrapeScopus($author_id)
     {
-        $api_key = '1dad71e1f3b375d6c4f111ac047ed1e9'; // Scopus API Key
+        $api_key = '1dad71e1f3b375d6c4f111ac047ed1e9'; // API Key Scopus
         $base_url = 'https://api.elsevier.com/content/';
         $articles = $this->getScopusArticles($author_id, $api_key, $base_url);
+
+        // Misalnya, kita mendapatkan HTML string dari response
+        $htmlContent = '<div data-testid="author-list"><span class="Authors-module__umR1O"><a href="/authid/detail.uri?authorId=57200990968" class="Button-module__f8gtt Button-module__rphhF Button-module__XTcEt Button-module__MlsfC Button-module__hK_LA Button-module__qDdAl Button-module__rTQlw"><span class="Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt">Liantoni, F.</span></a>, </span><span class="Authors-module__umR1O"><a href="/authid/detail.uri?authorId=57201071505" class="Button-module__f8gtt Button-module__rphhF Button-module__XTcEt Button-module__MlsfC Button-module__hK_LA Button-module__qDdAl Button-module__rTQlw"><span class="Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt">Prakisya, N.P.T.</span></a>, </span><span class="Authors-module__umR1O"><a href="/authid/detail.uri?authorId=57222612490" class="Button-module__f8gtt Button-module__rphhF Button-module__XTcEt Button-module__MlsfC Button-module__hK_LA Button-module__qDdAl Button-module__rTQlw"><span class="Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt">Aristyagama, Y.H.</span></a>, </span><span class="Authors-module__umR1O"><a href="/authid/detail.uri?authorId=57201992580" class="Button-module__f8gtt Button-module__rphhF Button-module__XTcEt Button-module__MlsfC Button-module__hK_LA Button-module__qDdAl Button-module__rTQlw"><span class="Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt">Hatta, P.</span></a></span></div>';
+
+        // Inisialisasi DOMDocument untuk parsing HTML
+        $dom = new \DOMDocument();
+        @$dom->loadHTML($htmlContent); // Mengabaikan error parsing HTML
+
+        // Mengambil elemen penulis
+        $authors = $dom->getElementsByTagName('span');
+        $authorNames = [];
+
+        // Iterasi elemen span untuk menemukan nama penulis
+        foreach ($authors as $author) {
+            if ($author->getAttribute('class') == 'Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt') {
+                $authorNames[] = $author->textContent;
+            }
+        }
+
+        // Menyusun nama penulis dalam format yang diinginkan (misalnya koma untuk pemisah)
+        $authorNamesString = implode(', ', $authorNames);
 
         if ($articles) {
             foreach ($articles['search-results']['entry'] as $article) {
                 $doi = $article['prism:doi'] ?? null;
 
-                // Check if publication already exists by DOI
+                // Cari publikasi berdasarkan DOI
                 $existingPublication = Publication::where('link', $doi)->first();
 
-                // Data to be inserted or updated
+                // Data yang akan dimasukkan atau diperbarui
                 $newData = [
-                    'user_id' => auth()->id(), // Current User ID
-                    'author_name' => $article['dc:creator'] ?? 'Unknown',
+                    'user_id' => auth()->id(), // User ID saat ini
+                    'author_name' => $authorNamesString, // Menyimpan penulis dalam format string
                     'title' => $article['dc:title'] ?? 'Unknown',
                     'journal_name' => $article['prism:publicationName'] ?? 'Unknown',
                     'publication_date' => $article['prism:coverDate'] ?? null,
@@ -197,7 +218,7 @@ class ScraperController extends Controller
                 ];
 
                 if ($existingPublication) {
-                    // Update existing publication if data has changed
+                    // Periksa apakah ada perubahan di kolom lain
                     $isUpdated = false;
                     foreach ($newData as $key => $value) {
                         if ($existingPublication->$key !== $value) {
@@ -206,11 +227,12 @@ class ScraperController extends Controller
                         }
                     }
 
+                    // Jika ada perubahan, lakukan pembaruan data
                     if ($isUpdated) {
                         $existingPublication->update($newData);
                     }
                 } else {
-                    // Insert new publication if it doesn't exist
+                    // Jika DOI belum ada, tambahkan data baru
                     Publication::create($newData);
                 }
             }
@@ -269,6 +291,8 @@ class ScraperController extends Controller
 
         foreach ($rows as $row) {
             $titleNode = $xpath->query('.//a[@class="gsc_a_at"]', $row)->item(0);
+            $authorNode = $xpath->query('.//div[@class="gs_gray"]', $row)->item(0);
+            $journalNode = $xpath->query('.//div[@class="gs_gray"]', $row)->item(1);
             $citationsNode = $xpath->query('.//a[@class="gsc_a_ac gs_ibl"]', $row)->item(0);
             $linkNode = $xpath->query('.//a[@class="gsc_a_at"]', $row)->item(0);
             $yearNode = $xpath->query('.//span[@class="gsc_a_h gsc_a_hc gs_ibl"]', $row)->item(0);
@@ -276,6 +300,8 @@ class ScraperController extends Controller
             // Ensure nodes are not null before extracting values
             $articles[] = [
                 'title' => trim($titleNode ? $titleNode->nodeValue : 'No Title'),
+                'author_name' => trim($authorNode ? $authorNode->nodeValue : 'No Author'),
+                'journal_name' => trim($journalNode ? $journalNode->nodeValue : 'No Journal'),
                 'citations' => trim($citationsNode ? $citationsNode->nodeValue : '0'),
                 'link' => $linkNode ? "https://scholar.google.com" . $linkNode->getAttribute('href') : 'No Link',
                 'publication_date' => $this->formatPublicationDate(trim($yearNode ? $yearNode->nodeValue : 'Unknown')),

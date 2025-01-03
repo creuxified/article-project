@@ -489,6 +489,8 @@ class ScholarController extends Controller
 
         foreach ($rows as $row) {
             $titleNode = $xpath->query('.//a[@class="gsc_a_at"]', $row)->item(0);
+            $authorNode = $xpath->query('.//div[@class="gs_gray"]', $row)->item(0);
+            $journalNode = $xpath->query('.//div[@class="gs_gray"]', $row)->item(1);
             $citationsNode = $xpath->query('.//a[@class="gsc_a_ac gs_ibl"]', $row)->item(0);
             $linkNode = $xpath->query('.//a[@class="gsc_a_at"]', $row)->item(0);
             $yearNode = $xpath->query('.//span[@class="gsc_a_h gsc_a_hc gs_ibl"]', $row)->item(0);
@@ -496,6 +498,8 @@ class ScholarController extends Controller
             // Pastikan node tidak null sebelum mengambil nilai atau atribut
             $articles[] = [
                 'title' => trim($titleNode ? $titleNode->nodeValue : 'No Title'),
+                'author_name' => trim($authorNode ? $authorNode->nodeValue : 'No Author'),
+                'journal_name' => trim($journalNode ? $journalNode->nodeValue : 'No Journal'),
                 'citations' => trim($citationsNode ? $citationsNode->nodeValue : '0'),
                 'link' => $linkNode ? "https://scholar.google.com" . $linkNode->getAttribute('href') : 'No Link',
                 'publication_date' => $this->formatPublicationDate(trim($yearNode ? $yearNode->nodeValue : 'Unknown')),
