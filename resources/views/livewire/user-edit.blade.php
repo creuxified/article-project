@@ -16,7 +16,7 @@
                 </div>
             @endif
 
-            <form wire:submit.prevent="update">
+            <form wire:submit.prevent="editProfile">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" wire:model="username" required>
@@ -33,34 +33,20 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" wire:model="password">
-                </div>
-
-                <div class="mb-3">
-                    <label for="status" class="form-label">Status</label>
-                    <select class="form-control" id="status" wire:model="status" required>
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
                     <label for="role_id" class="form-label">Role</label>
                     <select id="role_id" class="form-control" wire:model="role_id" onchange="toggleFields()">
                         <option value="1">Guest</option>
                         <option value="2">Dosen</option>
                         <option value="3">Admin Program Studi</option>
                         <option value="4">Admin Fakultas</option>
-                        <option value="5">Admin Universitas</option>
                     </select>
                 </div>
 
                 <!-- Faculty Dropdown (Visible only for Dosen, Admin Prodi, Admin Fakultas) -->
                 <div class="mb-3" id="faculty-field" style="display: none;">
-                    <label for="faculty_id" class="form-label">Faculty ID</label>
-                    <select id="faculty_id" class="form-control" wire:model="faculty_id">
-                        <option value="">Select Faculty</option>
+                    <label for="selectedFaculty" class="form-label">Faculty</label>
+                    <select id="selectedFaculty" class="form-control" wire:model="selectedFaculty">
+                        <option>Select Faculty</option>
                         @foreach($faculties as $faculty)
                             <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
                         @endforeach
@@ -69,9 +55,9 @@
 
                 <!-- Program Dropdown (Visible only for Dosen and Admin Prodi) -->
                 <div class="mb-3" id="program-field" style="display: none;">
-                    <label for="program_id" class="form-label">Program ID</label>
-                    <select id="program_id" class="form-control" wire:model="program_id">
-                        <option value="">Select Program</option>
+                    <label for="selectedProgram" class="form-label">Study Program</label>
+                    <select id="selectedProgram" class="form-control" wire:model="selectedProgram">
+                        <option>Select Program</option>
                         @foreach($studyPrograms as $program)
                             <option value="{{ $program->id }}">{{ $program->name }}</option>
                         @endforeach
@@ -90,12 +76,6 @@
                     <input type="text" class="form-control" id="scopus" wire:model="scopus">
                 </div>
 
-                <!-- Revision (Visible for all roles) -->
-                <div class="mb-3">
-                    <label for="revision" class="form-label">Revision</label>
-                    <textarea class="form-control" id="revision" wire:model="revision"></textarea>
-                </div>
-
                 <button type="submit" class="btn btn-primary">Update User</button>
             </form>
         </div>
@@ -105,7 +85,7 @@
 <script>
     // JavaScript function to show/hide fields based on role selection
     function toggleFields() {
-        const roleId = document.getElementById('role_id').value;
+        const roleId = document.getElementById('selectedRole').value;
 
         // Hide all fields by default
         document.getElementById('faculty-field').style.display = 'none';

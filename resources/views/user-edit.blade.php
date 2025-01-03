@@ -1,3 +1,3 @@
 <x-layout :title="$title">
-    @livewire('users-edit', ['id' => $id])
+    @livewire('user-edit', ['user' => $user])
 </x-layout>
