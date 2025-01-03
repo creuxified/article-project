@@ -5,7 +5,7 @@
             <h2 class="text-xl font-semibold">
                 <i class="fas fa-users mr-2"></i> Add User
             </h2>
-            <a href="{{ route('users-add') }}"
+            <a href="/user-database/{{ Auth::user()->username }}"
                 class="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition-colors duration-200">
                 <i class="fas fa-list mr-2"></i> User List
             </a>
@@ -16,7 +16,7 @@
             <form wire:submit.prevent="submit" class="space-y-4">
                 <!-- Username -->
                 <div>
-                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900 ">
                         <i class="fas fa-user mr-2"></i> Username
                     </label>
                     <input type="text" id="username" wire:model="username"
@@ -29,7 +29,7 @@
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">
                         <i class="fas fa-envelope mr-2"></i> Email
                     </label>
                     <input type="email" id="email" wire:model="email"
@@ -42,7 +42,7 @@
 
                 <!-- Name -->
                 <div>
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">
                         <i class="fas fa-id-card mr-2"></i> Name
                     </label>
                     <input type="text" id="name" wire:model="name"
@@ -55,7 +55,7 @@
 
                 <!-- Password -->
                 <div>
-                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">
                         <i class="fas fa-lock mr-2"></i> Password
                     </label>
                     <input type="password" id="password" wire:model="password"
@@ -68,7 +68,7 @@
 
                 <!-- Role -->
                 <div>
-                    <label for="role_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                    <label for="role_id" class="block mb-2 text-sm font-medium text-gray-900 ">
                         <i class="fas fa-users-cog mr-2"></i> Role
                     </label>
                     <select id="role_id" wire:model="role_id"
@@ -89,7 +89,7 @@
 
                 <!-- Additional Fields -->
                 <div id="facultyField" style="display:none;">
-                    <label for="faculty_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                    <label for="faculty_id" class="block mb-2 text-sm font-medium text-gray-900 ">
                         <i class="fas fa-building mr-2"></i> Faculty
                     </label>
                     <select id="faculty_id" wire:model="faculty_id"
