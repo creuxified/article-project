@@ -143,3 +143,8 @@ use App\Http\Controllers\ScholarController;
 Route::get('/scholar', [ScholarController::class, 'showPublications'])->name('scholar.index');
 Route::post('/scholar/scrape', [ScholarController::class, 'scrapeAndShow'])->name('scholar.scrape');
 Route::delete('/scholar/deleteData', [ScholarController::class, 'deleteData'])->name('scholar.deleteData');
+
+
+Route::get('/scholar', [ScholarController::class, 'showPublications'])->name('scholar.index');
+Route::post('/scholar/scrape', [ScholarController::class, 'scrapeAndShow'])->name('scholar.scrape');
+Route::delete('/scholar/deleteData', [ScholarController::class, 'deleteData'])->name('scholar.deleteData');
