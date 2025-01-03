@@ -511,34 +511,6 @@ class ScraperService
         $this->client = new Client();
     }
 
-    /**
-     * Scrape artikel dari Scholar berdasarkan ID Author.
-     */
-    // public function scrapeArticles($author_id)
-    // {
-    //     $articles = [];
-    //     $start = 0;
-
-    //     // Melakukan iterasi sampai seluruh artikel diambil
-    //     while (true) {
-    //         $url = "https://scholar.google.com/citations?user=$author_id&cstart=$start&pagesize=50";
-    //         $html = $this->scrape($url);
-    //         $newArticles = $this->parseArticles($html);
-
-    //         // Jika tidak ada artikel yang ditemukan, berhenti
-    //         if (empty($newArticles)) {
-    //             break;
-    //         }
-
-    //         // Menambahkan artikel yang ditemukan pada iterasi ini
-    //         $articles = array_merge($articles, $newArticles);
-
-    //         // Increment start untuk mengambil artikel selanjutnya
-    //         $start += 50;
-    //     }
-
-    //     return $articles;
-    // }
     public function scrapeArticles($author_id)
     {
         $base_url = "https://scholar.google.com/citations?user=$author_id&cstart=0&pagesize=100";

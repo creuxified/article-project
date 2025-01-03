@@ -148,3 +148,8 @@ Route::delete('/scholar/deleteData', [ScholarController::class, 'deleteData'])->
 Route::get('/scholar', [ScholarController::class, 'showPublications'])->name('scholar.index');
 Route::post('/scholar/scrape', [ScholarController::class, 'scrapeAndShow'])->name('scholar.scrape');
 Route::delete('/scholar/deleteData', [ScholarController::class, 'deleteData'])->name('scholar.deleteData');
+
+use App\Http\Controllers\ScraperController;
+Route::get('/scraper', [ScraperController::class, 'showPublications'])->name('scraper.index'); // Menampilkan halaman publikasi
+Route::post('/scraper/scrape', [ScraperController::class, 'scrapeAndShow'])->name('scraper.scrape'); // Menangani scraping data
+Route::delete('/scraper/delete', [ScraperController::class, 'deleteData'])->name('scraper.deleteData'); // Menangani penghapusan data
