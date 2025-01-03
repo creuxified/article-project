@@ -33,17 +33,17 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="role_id" class="form-label">Role</label>
-                    <select id="role_id" class="form-control" wire:model="role_id" onchange="toggleFields()">
+                    <label for="selectedRole" class="form-label">Role</label>
+                    <select id="selectedRole" class="form-control" wire:model="selectedRole" onchange="toggleFields()">
                         <option value="1">Guest</option>
-                        <option value="2">Dosen</option>
-                        <option value="3">Admin Program Studi</option>
-                        <option value="4">Admin Fakultas</option>
+                        <option value="2" {{ Auth::user()->role_id == 3 || Auth::user()->role_id == 4 || Auth::user()->role_id == 5 ? '' : 'disabled' }}>Dosen</option>
+                        <option value="3" {{ Auth::user()->role_id == 4 || Auth::user()->role_id == 5 ? '' : 'disabled' }}>Admin Program Studi</option>
+                        <option value="4" {{ Auth::user()->role_id == 5 ? '' : 'disabled' }}>Admin Fakultas</option>
                     </select>
                 </div>
 
                 <!-- Faculty Dropdown (Visible only for Dosen, Admin Prodi, Admin Fakultas) -->
-                <div class="mb-3" id="faculty-field" style="display: none;">
+                <div class="mb-3" id="faculty-field" style="display: {{ $showFaculty ? 'block' : 'none' }};">
                     <label for="selectedFaculty" class="form-label">Faculty</label>
                     <select id="selectedFaculty" class="form-control" wire:model="selectedFaculty">
                         <option>Select Faculty</option>
@@ -54,7 +54,7 @@
                 </div>
 
                 <!-- Program Dropdown (Visible only for Dosen and Admin Prodi) -->
-                <div class="mb-3" id="program-field" style="display: none;">
+                <div class="mb-3" id="program-field" style="display: {{ $showProgram ? 'block' : 'none' }};">
                     <label for="selectedProgram" class="form-label">Study Program</label>
                     <select id="selectedProgram" class="form-control" wire:model="selectedProgram">
                         <option>Select Program</option>
@@ -65,13 +65,13 @@
                 </div>
 
                 <!-- Scholar (Visible only for Dosen) -->
-                <div class="mb-3" id="scholar-field" style="display: none;">
+                <div class="mb-3" id="scholar-field" style="display: {{ $showScholar ? 'block' : 'none' }};">
                     <label for="scholar" class="form-label">Scholar</label>
                     <input type="text" class="form-control" id="scholar" wire:model="scholar">
                 </div>
 
                 <!-- Scopus (Visible only for Dosen) -->
-                <div class="mb-3" id="scopus-field" style="display: none;">
+                <div class="mb-3" id="scopus-field" style="display: {{ $showScopus ? 'block' : 'none' }};">
                     <label for="scopus" class="form-label">Scopus</label>
                     <input type="text" class="form-control" id="scopus" wire:model="scopus">
                 </div>
@@ -110,5 +110,16 @@
     // Run the toggleFields function on page load to handle pre-selected roles
     document.addEventListener('DOMContentLoaded', function() {
         toggleFields(); // Check and display fields based on pre-selected role
+    });
+
+    Livewire.on('roleChanged', (roleId) => {
+        document.getElementById('faculty-field').style.display = 
+            [2, 3, 4].includes(Number(roleId)) ? 'block' : 'none';
+        document.getElementById('program-field').style.display = 
+            [2, 3].includes(Number(roleId)) ? 'block' : 'none';
+        document.getElementById('scholar-field').style.display = 
+            (roleId == 2) ? 'block' : 'none';
+        document.getElementById('scopus-field').style.display = 
+            (roleId == 2) ? 'block' : 'none';
     });
 </script>

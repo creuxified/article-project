@@ -104,9 +104,9 @@ Route::get('/users/add/', function (User $user) {
     return view('user-add', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('users-add');
 
-Route::get('/users/edit/{user}', function (User $user) {
+Route::get('/users/edit/{user:id}', function (User $user) {
     return view('user-edit', [
-        'title' => 'Edit User: ' . $user->name,
+        'title' => 'Edit User',
         'user' => $user
     ]);
 })->middleware('auth')->name('user.edit');
