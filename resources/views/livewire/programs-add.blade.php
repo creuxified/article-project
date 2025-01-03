@@ -1,7 +1,7 @@
 <div class="antialiased flex items-center justify-center px-4">
     <div class="max-w-lg w-full bg-white dark:bg-gray-900 shadow-lg rounded-lg p-6">
         <!-- Header Card -->
-        <div class="bg-gray-100 dark:bg-gray-800 text-black dark:text-white p-4 rounded-t-lg flex justify-between items-center">
+        <div class="bg-gray-100 dark:bg-gray-800 text-white p-4 rounded-t-lg flex justify-between items-center">
             <h2 class="text-xl font-semibold">
                 <i class="fas fa-plus-circle mr-2"></i> Add Study Program
             </h2>

@@ -9,14 +9,13 @@
                 </a>
             </div>
         </div>
-        <!-- Display success and error messages -->
+
         @if(session()->has('message'))
             <div class="alert alert-success bg-green-100 border-l-4 border-green-500 text-green-900 p-3 mb-4 rounded-lg">
                 <span>{{ session('message') }}</span>
             </div>
         @endif
 
-        <!-- Table -->
         <table class="table-auto w-full border-collapse">
             <thead>
                 <tr class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-t-lg">
@@ -29,7 +28,7 @@
                 @forelse($programs as $program)
                     <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-200">
                         <td class="px-6 py-4 text-black">{{ $program->name }}</td>
-                        <td class="px-6 py-4 text-black">{{ $program->faculty ->name ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 text-black">{{ $program->faculty->name ?? 'N/A' }}</td>
                         <td class="px-6 py-4 text-black dark:text-gray-200 flex justify-center items-center space-x-2">
                             <a href="programs/edit/{{ $program->id }}"
                                class="btn flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">
@@ -50,9 +49,13 @@
             </tbody>
         </table>
 
-        <!-- Pagination Links -->
-        <div class="flex justify-center mt-4">
-            {{ $programs->links() }} <!-- Menampilkan tautan pagination -->
+        <!-- Pagination and Result Info -->
+        <div class="flex flex-col items-center mt-4 space-y-4">
+            <!-- Pagination Links -->
+            <div class="flex justify-center">
+                {{ $programs->links() }}
+            </div>
         </div>
+
     </div>
 </div>

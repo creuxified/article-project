@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProgramsIndex extends Component
 {
-    public $perPage = 10; // Jumlah item per halaman
+    public $perPage = 7; // Jumlah item per halaman
     public $page = 1; // Halaman saat ini
 
     public function mount()

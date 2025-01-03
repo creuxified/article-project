@@ -1,7 +1,7 @@
-<section class="bg-white dark:bg-gray-900">
+<section class="dark:bg-gray-900">
     <div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
         @if (session()->has('message'))
-        <div class="flex p-4 mb-4 text-sm text-green-800 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+        <div class="flex p-4 mb-4 text-sm text-green-800 bg-green-200 rounded-lg dark:bg-green-200 dark:text-green-800"
             role="alert">
             <svg aria-hidden="true" class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
@@ -9,7 +9,7 @@
             </svg>
             <div class="flex-1">{{ session('message') }}</div>
             <button type="button"
-                class="ml-2 inline-flex items-center justify-center w-4 h-4 text-green-500 hover:bg-green-200 rounded-full focus:outline-none"
+                class="ml-2 inline-flex items-center justify-center w-4 h-4 text-green-800 hover:bg-green-300 rounded-full focus:outline-none"
                 wire:click="$set('message', null)" aria-label="Close">
                 <svg class="w-2 h-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd"
@@ -20,14 +20,14 @@
         </div>
         @endif
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Edit Profile</h2>
+            <h2 class="text-xl font-bold dark:text-white">Edit Profile</h2>
         </div>
         <form wire:submit.prevent="editProfile">
             <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                 <div class="sm:col-span-2">
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                    <label for="name" class="block mb-2 text-sm font-medium dark:text-white">Name</label>
                     <input type="name" name="name" id="name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                         placeholder="Full Name" wire:model='name'>
                         <div class="text-red-600 text-sm font-medium">
                             @error('name')
@@ -37,11 +37,10 @@
                 </div>
                 <div class="w-full">
                     <label for="username"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                        class="block mb-2 text-sm font-medium dark:text-white">Username</label>
                     <input type="username" name="username" id="username"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                         placeholder="username" wire:model='username'>
-                    </input>
                     <div class="text-red-600 text-sm font-medium">
                         @error('username')
                         {{ $message }}
@@ -50,11 +49,10 @@
                 </div>
                 <div class="w-full">
                     <label for="email"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                        class="block mb-2 text-sm font-medium dark:text-white">Email</label>
                     <input type="text" name="email" id="email"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                         placeholder="Email" wire:model='email'>
-                    </input>
                     <div class="text-red-600 text-sm font-medium">
                         @error('email')
                         {{ $message }}
@@ -64,9 +62,9 @@
                 @if(Auth::user()->role_id !== 5)
                 <div class="w-full">
                     <label for="faculty"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faculty</label>
+                            class="block mb-2 text-sm font-medium dark:text-white">Faculty</label>
                         <select id="faculty"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                             wire:model="selectedFaculty">
                             <option value={{ Auth::user()->faculty_id}} selected>{{ Auth::user()->faculty->name }}</option>
                             @foreach ($faculties as $faculty)
@@ -82,8 +80,8 @@
                 @if(Auth::user()->role_id !== 4)
                 <div>
                     <label for="selectedProgram"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Study Program</label>
-                    <select @if ($user->status == 2) disabled @endif id="selectedProgram" class="bg-gray-50 borderborder-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        class="block mb-2 text-sm font-medium dark:text-white">Study Program</label>
+                    <select @if ($user->status == 2) disabled @endif id="selectedProgram" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                         wire:model='selectedProgram'>
                         @if (Auth::user()->program->faculty_id != Auth::user()->faculty_id)
                             <option selected>Select Study Program</option>
@@ -105,10 +103,9 @@
                 @endif
                 @if(Auth::user()->role_id == 2)
                 <div class="w-full">
-                    <label for="scopus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scopus ID</label>
-                    <input type="text" name="scopus" id="scopus" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-6 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    <label for="scopus" class="block mb-2 text-sm font-medium dark:text-white">Scopus ID</label>
+                    <input type="text" name="scopus" id="scopus" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                     placeholder="Scopus ID" wire:model='scopus'>
-                    </input>
                     <div class="text-red-600 text-sm font-medium">
                         @error('scopus')
                         {{ $message }}
@@ -116,11 +113,10 @@
                     </div>
                 </div>
                 <div class="w-full">
-                    <label for="scholar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scholar ID</label>
+                    <label for="scholar" class="block mb-2 text-sm font-medium dark:text-white">Scholar ID</label>
                     <input type="text" name="scholar" id="scholar"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                     placeholder="{{ $user->scholar }}" wire:model='scholar'>
-                    </input>
                     <div class="text-red-600 text-sm font-medium">
                         @error('scholar')
                         {{ $message }}
