@@ -70,7 +70,6 @@ Route::get('/dashboard/{user:username}', function (User $user) {
     return view('dashboard', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('dashboard');
 
-// Request Role
 Route::get('/request-role/{user:username}', function (User $user) {
     $logs = ActivityLog::with(['user', 'faculty', 'program'])->get();
     return view('request-role', ['user' => $user, 'logs' => $logs, 'title' => 'Welcome ' . $user->name . '!']);
@@ -79,6 +78,13 @@ Route::get('/request-role/{user:username}', function (User $user) {
 Route::get('/user-database/{user:username}', function (User $user) {
     return view('user-database', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('user-database');
+
+
+Route::get('/dashboard/{user:username}', [DashboardController::class, 'show'])->middleware('auth')->name('dashboard');
+Route::get('/request-role/{user:username}', [RoleRequestController::class, 'show'])->middleware('auth')->name('request-role');
+Route::get('/user-database/{user:username}', [UserDatabaseController::class, 'show'])->middleware('auth')->name('user-database');
+
+
 
 
 Route::get('/profile-edit/{user:username}', function (User $user) {
