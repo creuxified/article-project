@@ -133,4 +133,15 @@ class ScopusController extends Controller
 
         return null;
     }
+
+    public function deleteData(Request $request)
+    {
+        // Ensure that the authenticated user owns the data and filter by source
+        Publication::where('user_id', auth()->id())
+            ->where('source', 'Scopus')
+            ->delete();
+
+        // Redirect back with a success message
+        return redirect()->route('scopus.index')->with('success', 'All your Scopus data has been deleted successfully.');
+    }
 }

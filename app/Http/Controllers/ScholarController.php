@@ -458,11 +458,13 @@ class ScholarController extends Controller
 
     public function deleteData(Request $request)
     {
-        // Ensure that the authenticated user owns the data
-        Publication::where('user_id', auth()->id())->delete();
+        // Ensure that the authenticated user owns the data and filter by source
+        Publication::where('user_id', auth()->id())
+                   ->where('source', 'Google Scholar')
+                   ->delete();
 
         // Redirect back with a success message
-        return redirect()->route('scholar.index')->with('success', 'All your data has been deleted successfully.');
+        return redirect()->route('scholar.index')->with('success', 'All your Google Scholar data has been deleted successfully.');
     }
 
     /**
