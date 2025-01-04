@@ -10,6 +10,7 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -71,77 +72,77 @@
         <div class="mt-8">
             <!-- Year Range Filter -->
             <div class="mb-4">
-                <label for="startYear" class="font-bold">Start Year:</label>
-                <input type="number" id="startYear" class="p-2 border rounded" placeholder="Start Year" min="1900"
-                    max="2100">
+                <label for="startPublicationTableYear" class="font-bold">Start Year:</label>
+                <input type="number" id="startPublicationTableYear" class="p-2 border rounded" placeholder="Start Year"
+                    min="1900" max="2100">
 
-                <label for="endYear" class="font-bold">End Year:</label>
-                <input type="number" id="endYear" class="p-2 border rounded" placeholder="End Year" min="1900"
-                    max="2100">
+                <label for="endPublicationTableYear" class="font-bold">End Year:</label>
+                <input type="number" id="endPublicationTableYear" class="p-2 border rounded" placeholder="End Year"
+                    min="1900" max="2100">
 
-                <button id="applyYearRange" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply Year
+                <button id="applyPublicationYearRange" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply Year
                     Range</button>
             </div>
 
             <h2 class="font-semibold text-xl">Publications</h2>
             <div class="mb-4">
-                <label for="publicationSourceFilter" class="font-bold">Filter by Source:</label>
-                <select id="publicationSourceFilter" class="p-2 border rounded">
+                <label for="publicationTableSourceFilter" class="font-bold">Filter by Source:</label>
+                <select id="publicationTableSourceFilter" class="p-2 border rounded">
                     <option value="all">All Sources</option>
                     <option value="Google Scholar">Google Scholar</option>
                     <option value="Scopus">Scopus</option>
                 </select>
             </div>
             <div class="overflow-x-auto">
-                @if ($publications->isEmpty())
-                    <p class="mt-4">Tidak ada data publikasi yang tersedia.</p>
-                @else
-                    <table id="publicationsTable" class="min-w-full mt-4 border-collapse border border-gray-300">
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th class="border p-2">#</th>
-                                <th class="border p-2">Author</th>
-                                <th class="border p-2">Title</th>
-                                <th class="border p-2">Journal</th>
-                                <th class="border p-2">Publication Date</th>
-                                <th class="border p-2">Citations</th>
-                                <th class="border p-2">Source</th>
-                                <th class="border p-2">Link</th>
+                <table id="publicationTable" class="min-w-full mt-4 border-collapse border border-gray-300">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th>#</th>
+                            {{-- @if (auth()->user()->role_id == 3)
+                                <th>Dosen</th>
+                            @endif --}}
+                            <th>Title</th>
+                            <th>Journal</th>
+                            <th>Publication Date</th>
+                            <th>Citations</th>
+                            <th>Source</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($publications as $index => $publication)
+                            <tr data-source="{{ $publication->source }}">
+                                <td>{{ $index + 1 }}</td>
+                                {{-- @if (auth()->user()->role_id == 3)
+                                    <td>{{ $publication->user->name ?? 'N/A' }}</td>
+                                @endif --}}
+                                <td>{{ $publication->title }}</td>
+                                <td>{{ $publication->journal_name }}</td>
+                                <td>{{ $publication->publication_date }}</td>
+                                <td>{{ $publication->citations }}</td>
+                                <td>{{ $publication->source }}</td>
+                                <td>
+                                    @if ($publication->link)
+                                        <a href="{{ $publication->link }}" target="_blank"
+                                            class="text-blue-500">View</a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($publications as $index => $publication)
-                                <tr data-source="{{ $publication->source }}"> <!-- Tambahkan atribut data-source -->
-                                    <td class="border p-2">{{ $index + 1 }}</td>
-                                    <td class="border p-2">{{ $publication->author_name }}</td>
-                                    <td class="border p-2">{{ $publication->title }}</td>
-                                    <td class="border p-2">{{ $publication->journal_name }}</td>
-                                    <td class="border p-2">{{ $publication->publication_date }}</td>
-                                    <td class="border p-2">{{ $publication->citations }}</td>
-                                    <td class="border p-2">{{ $publication->source }}</td>
-                                    <td class="border p-2">
-                                        @if ($publication->link)
-                                            <a href="{{ $publication->link }}" target="_blank"
-                                                class="text-blue-500">View</a>
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-
-                    </table>
-                @endif
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Highcharts Diagrams -->
+
+        <!-- Highcharts Publication Diagrams -->
         <div class="mt-8">
             <h1>Highcharts Diagram for Total Publications</h1>
             <div class="mb-4">
-                <label for="sourceFilter" class="font-bold">Filter by Source:</label>
-                <select id="sourceFilter" class="p-2 border rounded">
+                <label for="publicationChartSourceFilter" class="font-bold">Filter by Source:</label>
+                <select id="publicationChartSourceFilter" class="p-2 border rounded">
                     <option value="all">All Sources</option>
                     <option value="Scopus">Scopus</option>
                     <option value="Google Scholar">Google Scholar</option>
@@ -150,13 +151,14 @@
 
             <!-- Year Range Filter for Publications -->
             <div class="mb-4">
-                <label for="publicationStartYear" class="font-bold">Start Year:</label>
-                <input type="number" id="publicationStartYear" class="p-2 border rounded" placeholder="Start Year"
+                <label for="startPublicationChartYear" class="font-bold">Start Year:</label>
+                <input type="number" id="startPublicationChartYear" class="p-2 border rounded" placeholder="Start Year"
                     min="1900" max="2100">
-                <label for="publicationEndYear" class="font-bold">End Year:</label>
-                <input type="number" id="publicationEndYear" class="p-2 border rounded" placeholder="End Year"
+                <label for="endPublicationChartYear" class="font-bold">End Year:</label>
+                <input type="number" id="endPublicationChartYear" class="p-2 border rounded" placeholder="End Year"
                     min="1900" max="2100">
-                <button id="applyPublicationYearRange" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply
+                <button id="applyPublicationChartYearRange"
+                    class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply
                     Year Range</button>
             </div>
 
@@ -166,8 +168,8 @@
         <div class="mt-8">
             <h1>Highcharts Diagram for Citations</h1>
             <div class="mb-4">
-                <label for="citationSourceFilter" class="font-bold">Filter by Source:</label>
-                <select id="citationSourceFilter" class="p-2 border rounded">
+                <label for="citationChartSourceFilter" class="font-bold">Filter by Source:</label>
+                <select id="citationChartSourceFilter" class="p-2 border rounded">
                     <option value="all">All Sources</option>
                     <option value="Google Scholar">Google Scholar</option>
                     <option value="Scopus">Scopus</option>
@@ -176,13 +178,14 @@
 
             <!-- Year Range Filter for Citations -->
             <div class="mb-4">
-                <label for="citationStartYear" class="font-bold">Start Year:</label>
-                <input type="number" id="citationStartYear" class="p-2 border rounded" placeholder="Start Year"
+                <label for="startCitationChartYear" class="font-bold">Start Year:</label>
+                <input type="number" id="startCitationChartYear" class="p-2 border rounded"
+                    placeholder="Start Year" min="1900" max="2100">
+                <label for="endCitationChartYear" class="font-bold">End Year:</label>
+                <input type="number" id="endCitationChartYear" class="p-2 border rounded" placeholder="End Year"
                     min="1900" max="2100">
-                <label for="citationEndYear" class="font-bold">End Year:</label>
-                <input type="number" id="citationEndYear" class="p-2 border rounded" placeholder="End Year"
-                    min="1900" max="2100">
-                <button id="applyCitationYearRange" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply Year
+                <button id="applyCitationChartYearRange" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply
+                    Year
                     Range</button>
             </div>
             <div id="citationChartContainer" class="mt-4"></div>
@@ -190,205 +193,247 @@
 
     </div>
 
-    <!-- JS Scripts -->
     <script>
         $(document).ready(function() {
-            var table = $('#publicationsTable').DataTable({
+            // Initialize DataTable
+            var table = $('#publicationTable').DataTable({
                 paging: true,
                 searching: true,
                 ordering: true,
-                info: true,
-                lengthChange: false,
-                responsive: true
+                responsive: true,
+                lengthChange: true,
+                pageLength: 10,
+                lengthMenu: [5, 10, 50, 100],
+                // columnDefs: [{
+                //         targets: '_all',
+                //         defaultContent: '-'
+                //     }
+                // ]
+                // columnDefs: [{
+                //         targets: [0, 7],
+                //         orderable: false,
+                //     }, // Disable sorting on specific columns
+                // ],
             });
 
-            // Apply Year Range Filter
-            $('#applyYearRange').on('click', function() {
-                var startYear = $('#startYear').val();
-                var endYear = $('#endYear').val();
-
-                // Reset previous filters if any
-                table.column(4).search(''); // Clear previous search for publication date
-
-                if (startYear && endYear) {
-                    // Apply the filter based on the start and end year range
-                    table.rows().every(function() {
-                        var data = this.data();
-                        var publicationYear = new Date(data[4])
-                            .getFullYear(); // Assuming publication date is in the 5th column
-
-                        if (publicationYear >= startYear && publicationYear <= endYear) {
-                            // Show the row
-                            table.row(this).nodes().to$().show();
-                        } else {
-                            // Hide the row
-                            table.row(this).nodes().to$().hide();
-                        }
-                    });
-                } else {
-                    // If no range, reset and show all rows
-                    table.rows().every(function() {
-                        table.row(this).nodes().to$().show(); // Show all rows
-                    });
-                }
-
-                // Redraw the table after filtering
-                table.draw();
-            });
-
-            // Filter publications by source (Google Scholar, Scopus, or All)
-            $('#publicationSourceFilter').on('change', function() {
-                var selectedSource = $(this).val();
-
-                // Show or hide rows based on selected source
-                $('#publicationsTable tbody tr').each(function() {
-                    var source = $(this).data('source');
-                    if (selectedSource === 'all' || source === selectedSource) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
+            // Store the original dataset for filtering
+            var originalData = [];
+            $('#publicationTable tbody tr').each(function() {
+                var row = $(this);
+                originalData.push({
+                    element: row,
+                    source: row.data('source'),
+                    publicationYear: new Date(row.find('td:nth-child(5)').text()).getFullYear(),
                 });
             });
+
+            // Filter function
+            function applyFilters() {
+                var selectedSource = $('#publicationTableSourceFilter').val();
+                var startYear = parseInt($('#startPublicationTableYear').val());
+                var endYear = parseInt($('#endPublicationTableYear').val());
+
+                // Validate year range
+                if (!isNaN(startYear) && !isNaN(endYear) && startYear > endYear) {
+                    alert('Please provide a valid year range.');
+                    return;
+                }
+
+                // Clear existing table rows
+                table.clear().draw();
+
+                // Filter data and redraw
+                originalData.forEach(function(data) {
+                    var matchesSource =
+                        selectedSource === 'all' || data.source === selectedSource;
+                    var matchesYear =
+                        (!isNaN(startYear) &&
+                            !isNaN(endYear) &&
+                            startYear <= data.publicationYear &&
+                            data.publicationYear <= endYear) ||
+                        (isNaN(startYear) || isNaN(endYear));
+
+                    if (matchesSource && matchesYear) {
+                        table.row.add(data.element.clone().get(0)).draw(false);
+                    }
+                });
+            }
+
+            // Apply year range filter
+            $('#applyPublicationYearRange').on('click', applyFilters);
+
+            // Apply source filter
+            $('#publicationTableSourceFilter').on('change', applyFilters);
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+
+            var allPublicationChartData = @json($formattedChartData);
+
+            function updatePublicationChart(filteredData) {
+                // Memisahkan tahun dari tanggal dan mengurutkan data berdasarkan tahun
+                var categories = filteredData.map(item => {
+                    // Ambil tahun saja dari string tanggal
+                    return new Date(item.year).getFullYear();
+                });
+
+                // Menghapus duplikat tahun dan mengurutkannya secara numerik
+                categories = [...new Set(categories)].sort((a, b) => a - b);
+
+                // Menyesuaikan data berdasarkan kategori tahun yang sudah terurut
+                var publicationCounts = categories.map(year => {
+                    // Menjumlahkan publikasi berdasarkan tahun
+                    return filteredData.filter(item => new Date(item.year).getFullYear() === year)
+                        .reduce((sum, item) => sum + item.count, 0);
+                });
+
+                Highcharts.chart('publicationChartContainer', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Total Publications per Year'
+                    },
+                    xAxis: {
+                        categories: categories,
+                        title: {
+                            text: 'Year'
+                        },
+                        labels: {
+                            formatter: function() {
+                                return this.value;
+                            }
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Number of Publications'
+                        }
+                    },
+                    series: [{
+                        name: 'Publications',
+                        data: publicationCounts
+                    }]
+                });
+            }
+
+            function applyPublicationChartFilters() {
+                var selectedSource = $('#publicationChartSourceFilter').val();
+                var startYear = $('#startPublicationChartYear').val();
+                var endYear = $('#endPublicationChartYear').val();
+
+                // Filter by source
+                var filteredData = selectedSource === 'all' ?
+                    allPublicationChartData :
+                    allPublicationChartData.filter(item => item.source === selectedSource);
+
+                // Filter by year range
+                if (startYear && endYear && startYear <= endYear) {
+                    filteredData = filteredData.filter(item => new Date(item.year).getFullYear() >= startYear &&
+                        new Date(item.year).getFullYear() <= endYear);
+                } else if (startYear || endYear) {
+                    alert('Please provide a valid year range.');
+                    return;
+                }
+
+                // Update chart with sorted and filtered data
+                updatePublicationChart(filteredData);
+            }
+
+            $('#publicationChartSourceFilter').on('change', function() {
+                applyPublicationChartFilters();
+            });
+
+            $('#applyPublicationChartYearRange').on('click', function() {
+                applyPublicationChartFilters();
+            });
+
+            // Initial application of filters
+            applyPublicationChartFilters();
         });
     </script>
 
     <script>
-        var allChartData = @json($formattedChartData);
+        var allCitationChartData = @json($formattedCitationData);
 
-        // Function to update the Publications Chart
-        function updateChart(filteredData) {
-            var categories = filteredData.map(item => item.year);
-            var publicationCounts = filteredData.map(item => item.count);
+        function updateCitationChart(filteredData) {
+            // Memisahkan tahun dari tanggal dan mengurutkannya berdasarkan tahun
+            var categories = filteredData.map(item => {
+                // Ambil tahun saja dari string tanggal
+                return new Date(item.year).getFullYear();
+            });
 
-            Highcharts.chart('publicationChartContainer', {
+            // Menghapus duplikat tahun dan mengurutkannya secara numerik
+            categories = [...new Set(categories)].sort((a, b) => a - b);
+
+            // Menyesuaikan data berdasarkan kategori tahun yang sudah terurut
+            var citationCounts = categories.map(year => {
+                // Menjumlahkan sitasi berdasarkan tahun
+                return filteredData.filter(item => new Date(item.year).getFullYear() === year)
+                    .reduce((sum, item) => sum + item.count, 0);
+            });
+
+            Highcharts.chart('citationChartContainer', {
                 chart: {
-                    type: 'column'
+                    type: 'column',
                 },
                 title: {
-                    text: 'Total Publications per Year'
+                    text: 'Total Citations per Year',
                 },
                 xAxis: {
                     categories: categories,
                     title: {
-                        text: 'Year'
-                    }
+                        text: 'Year',
+                    },
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Number of Publications'
-                    }
+                        text: 'Number of Citations',
+                    },
                 },
                 series: [{
-                    name: 'Publications',
-                    data: publicationCounts
-                }]
+                    name: 'Citations',
+                    data: citationCounts,
+                }, ],
             });
         }
 
-        // Function to apply both filters and update the chart
-        function applyFilters() {
-            var selectedSource = $('#sourceFilter').val();
-            var startYear = $('#publicationStartYear').val();
-            var endYear = $('#publicationEndYear').val();
+        function applyCitationChartFilters() {
+            var selectedSource = $('#citationChartSourceFilter').val();
+            var startYear = $('#startCitationChartYear').val();
+            var endYear = $('#endCitationChartYear').val();
 
-            // Filter data based on source
-            var filteredData = selectedSource === 'all' ? allChartData : allChartData.filter(item => item.source ===
-                selectedSource);
+            // Filter by source
+            var filteredData = selectedSource === 'all' ? allCitationChartData :
+                allCitationChartData.filter(item => item.source === selectedSource);
 
-            // Filter data based on year range if both start and end years are provided and valid
+            // Filter by year range
             if (startYear && endYear && startYear <= endYear) {
-                filteredData = filteredData.filter(item => item.year >= startYear && item.year <= endYear);
+                filteredData = filteredData.filter(item => new Date(item.year).getFullYear() >= startYear && new Date(item
+                    .year).getFullYear() <= endYear);
             } else if (startYear || endYear) {
                 alert('Please provide a valid year range.');
                 return;
             }
 
-            // Update the chart with the filtered data
-            updateChart(filteredData);
+            // Update chart with sorted and filtered data
+            updateCitationChart(filteredData);
         }
 
-        // Update chart when source filter changes
-        $('#sourceFilter').on('change', function() {
-            applyFilters(); // Apply both filters and update chart
+        $('#citationChartSourceFilter').on('change', function() {
+            applyCitationChartFilters();
         });
 
-        // Update chart when year range filter changes
-        $('#applyPublicationYearRange').on('click', function() {
-            applyFilters(); // Apply both filters and update chart
+        $('#applyCitationChartYearRange').on('click', function() {
+            applyCitationChartFilters();
         });
 
-        // Initial chart rendering for both filters
-        applyFilters(); // Initial chart for Publications
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            var allCitationData = @json($formattedCitationData);
-
-            // Function to update citation chart
-            function updateCitationChart(filteredData) {
-                var categories = filteredData.map(item => item.year);
-                var citationCounts = filteredData.map(item => item.count);
-
-                Highcharts.chart('citationChartContainer', {
-                    chart: {
-                        type: 'column',
-                    },
-                    title: {
-                        text: 'Total Citations per Year',
-                    },
-                    xAxis: {
-                        categories: categories,
-                        title: {
-                            text: 'Year',
-                        },
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Number of Citations',
-                        },
-                    },
-                    series: [{
-                        name: 'Citations',
-                        data: citationCounts,
-                    }, ],
-                });
-            }
-
-            // Initial citation chart render
-            updateCitationChart(allCitationData);
-
-            // Handle filter change for citations
-            $('#citationSourceFilter').on('change', function() {
-                var selectedSource = $(this).val();
-
-                if (selectedSource === 'all') {
-                    updateCitationChart(allCitationData);
-                } else {
-                    var filteredData = allCitationData.filter(item => item.source === selectedSource);
-                    updateCitationChart(filteredData);
-                }
-            });
-        });
-
-        // Apply Year Range Filter for Citations
-        $('#applyCitationYearRange').on('click', function() {
-            var startYear = $('#citationStartYear').val();
-            var endYear = $('#citationEndYear').val();
-
-            if (startYear && endYear) {
-                var filteredData = allCitationData.filter(item => {
-                    var year = parseInt(item.year);
-                    return year >= startYear && year <= endYear;
-                });
-                updateCitationChart(filteredData); // Update the chart
-            }
-        });
-
-        // Initial citation chart render
-        updateCitationChart(allCitationData);
+        // Initial application of filters
+        applyCitationChartFilters();
     </script>
 </body>

@@ -20,7 +20,6 @@ class Publication extends Model
         'publication_date',
         'citations',
         'link',
-        'author_name',
         'source',
     ];
 
