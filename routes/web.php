@@ -12,19 +12,40 @@ use App\Http\Controllers\ScholarController;
 use App\Http\Controllers\ScopusController;
 use App\Http\Controllers\ScraperController;
 
+use App\Http\Controllers\AuthController;
+
 // ==================== NO AUTHENTICATED ROUTES (Guest) ====================
-Route::get('/', function () {
-    return view('landing', ['title' => 'Landing Page']);
-})->name('landing');
+// Route::get('/', [AuthController::class, 'landingPage'])->name('landing');
+// Route::get('/register', [AuthController::class, 'register'])->name('register');
+// Route::get('/login', [AuthController::class, 'login'])->name('login');
 
-Route::get('/register', function () {
-    $faculties = Faculty::all();
-    return view('auth.register', ['faculties' => $faculties, 'title' => 'register']);
-})->name('register');
+use App\Livewire\LandingPage;
+use App\Livewire\Auth\Register;
+use App\Livewire\Auth\Login;
 
-Route::get('/login', function () {
-    return view('auth.login', ['title' => 'Login']);
-})->name('login');
+// ==================== NO AUTHENTICATED ROUTES (Guest) ====================
+Route::get('/', LandingPage::class)->name('landing');
+Route::get('/register', Register::class)->name('register');
+Route::get('/login', Login::class)->name('login');
+
+
+
+// Route::get('/', function () {
+//     return view('landing', ['title' => 'Landing Page']);
+// })->name('landing');
+
+// Route::get('/register', function () {
+//     // $faculties = Faculty::all();
+//     // return view('auth.register', ['faculties' => $faculties, 'title' => 'register']);
+//     return view('auth.register', ['title' => 'register']);
+// })->name('register');
+
+// Route::get('/login', function () {
+//     return view('auth.login', ['title' => 'Login']);
+// })->name('login');
+
+
+
 
 // ==================== LOGOUT ROUTES ====================
 Route::post('logout', function (Request $request): RedirectResponse {
@@ -80,12 +101,9 @@ Route::get('/user-database/{user:username}', function (User $user) {
 })->middleware('auth')->name('user-database');
 
 
-Route::get('/dashboard/{user:username}', [DashboardController::class, 'show'])->middleware('auth')->name('dashboard');
-Route::get('/request-role/{user:username}', [RoleRequestController::class, 'show'])->middleware('auth')->name('request-role');
-Route::get('/user-database/{user:username}', [UserDatabaseController::class, 'show'])->middleware('auth')->name('user-database');
-
-
-
+// Route::get('/dashboard/{user:username}', [DashboardController::class, 'show'])->middleware('auth')->name('dashboard');
+// Route::get('/request-role/{user:username}', [RoleRequestController::class, 'show'])->middleware('auth')->name('request-role');
+// Route::get('/user-database/{user:username}', [UserDatabaseController::class, 'show'])->middleware('auth')->name('user-database');
 
 Route::get('/profile-edit/{user:username}', function (User $user) {
     return view('profile-edit', ['user' => $user, 'title' => 'Welcome to profile editor!']);

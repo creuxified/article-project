@@ -44,27 +44,6 @@ class ScopusController extends Controller
         $base_url = 'https://api.elsevier.com/content/';
         $articles = $this->getScopusArticles($author_id, $api_key, $base_url);
 
-        // Misalnya, kita mendapatkan HTML string dari response
-        $htmlContent = '<div data-testid="author-list"><span class="Authors-module__umR1O"><a href="/authid/detail.uri?authorId=57200990968" class="Button-module__f8gtt Button-module__rphhF Button-module__XTcEt Button-module__MlsfC Button-module__hK_LA Button-module__qDdAl Button-module__rTQlw"><span class="Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt">Liantoni, F.</span></a>, </span><span class="Authors-module__umR1O"><a href="/authid/detail.uri?authorId=57201071505" class="Button-module__f8gtt Button-module__rphhF Button-module__XTcEt Button-module__MlsfC Button-module__hK_LA Button-module__qDdAl Button-module__rTQlw"><span class="Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt">Prakisya, N.P.T.</span></a>, </span><span class="Authors-module__umR1O"><a href="/authid/detail.uri?authorId=57222612490" class="Button-module__f8gtt Button-module__rphhF Button-module__XTcEt Button-module__MlsfC Button-module__hK_LA Button-module__qDdAl Button-module__rTQlw"><span class="Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt">Aristyagama, Y.H.</span></a>, </span><span class="Authors-module__umR1O"><a href="/authid/detail.uri?authorId=57201992580" class="Button-module__f8gtt Button-module__rphhF Button-module__XTcEt Button-module__MlsfC Button-module__hK_LA Button-module__qDdAl Button-module__rTQlw"><span class="Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt">Hatta, P.</span></a></span></div>';
-
-        // Inisialisasi DOMDocument untuk parsing HTML
-        $dom = new \DOMDocument();
-        @$dom->loadHTML($htmlContent); // Mengabaikan error parsing HTML
-
-        // Mengambil elemen penulis
-        $authors = $dom->getElementsByTagName('span');
-        $authorNames = [];
-
-        // Iterasi elemen span untuk menemukan nama penulis
-        foreach ($authors as $author) {
-            if ($author->getAttribute('class') == 'Typography-module__lVnit Typography-module__Nfgvc Button-module__Imdmt') {
-                $authorNames[] = $author->textContent;
-            }
-        }
-
-        // Menyusun nama penulis dalam format yang diinginkan (misalnya koma untuk pemisah)
-        $authorNamesString = implode(', ', $authorNames);
-
         if ($articles) {
             foreach ($articles['search-results']['entry'] as $article) {
                 $doi = $article['prism:doi'] ?? null;
@@ -75,7 +54,6 @@ class ScopusController extends Controller
                 // Data yang akan dimasukkan atau diperbarui
                 $newData = [
                     'user_id' => auth()->id(), // User ID saat ini
-                    'author_name' => $authorNamesString, // Menyimpan penulis dalam format string
                     'title' => $article['dc:title'] ?? 'Unknown',
                     'journal_name' => $article['prism:publicationName'] ?? 'Unknown',
                     'publication_date' => $article['prism:coverDate'] ?? null,

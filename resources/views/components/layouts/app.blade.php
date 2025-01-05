@@ -1,17 +1,53 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {{-- and here is our page title --}}
-        <title>{{ $title ?? 'Page Title' }}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        {{-- through here... --}}
-        {{ $slot }}
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ $title }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalToggleButton = document.querySelector('[data-modal-toggle="crud-modal"]');
+            const modal = document.getElementById('crud-modal');
+
+            // Toggle modal visibility
+            modalToggleButton.addEventListener('click', () => {
+                modal.classList.toggle('hidden');
+            });
+
+            // Close modal when clicking the close button
+            const closeButton = modal.querySelector('[data-modal-toggle="crud-modal"]');
+            closeButton.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('alert', (data) => {
+                Swal.fire({
+                    icon: data.type, // 'success', 'error', 'warning', etc.
+                    title: 'Notification',
+                    text: data.message,
+                    confirmButtonText: 'OK',
+                });
+            });
+        });
+    </script>
+    @vite('resources/css/app.css')
+    @livewireStyles()
+</head>
+
+<body>
+    {{-- through here... --}}
+    {{ $slot }}
+    @livewireScripts
+</body>
+
 </html>
 
 {{-- this is our layout and every page will be rendered inside of it.. --}}

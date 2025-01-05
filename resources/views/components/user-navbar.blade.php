@@ -15,35 +15,54 @@
             <nav class="flex-1 mt-6">
                 <ul class="space-y-2">
                     <li>
-                        <a href="/dashboard/{{ Auth::user()->username }}" class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('dashboard/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                        <a href="/dashboard/{{ Auth::user()->username }}" wire:navigate
+                            class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('dashboard/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
                             <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
                         </a>
                     </li>
-                    @if(Auth::user()->role_id != 2)
+                    <li>
+                        <a href="/user-profile-edit/{{ Auth::user()->username }}" wire:navigate
+                            class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('request-role/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                            <i class="fas fa-hand-paper mr-3"></i> Request
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/user-profile-edit/{{ Auth::user()->username }}" wire:navigate
+                            class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('request-role/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                            <i class="fas fa-hand-paper mr-3"></i> Request
+                        </a>
+                    </li>
+
+                    @if (Auth::user()->role_id != 2)
                         <li>
-                            <a href="/request-role/{{ Auth::user()->username }}" class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('request-role/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                            <a href="/request-role/{{ Auth::user()->username }}"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('request-role/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
                                 <i class="fas fa-hand-paper mr-3"></i> Request
                             </a>
                         </li>
                         <li>
-                            <a href="/user-database/{{ Auth::user()->username }}" class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('user-database/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                            <a href="/user-database/{{ Auth::user()->username }}"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('user-database/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
                                 <i class="fas fa-users mr-3"></i> User Database
                             </a>
                         </li>
                         <li>
-                            <a href="/scrap-data/{{ Auth::user()->username }}" class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('scrap-data/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                            <a href="/scrap-data/{{ Auth::user()->username }}"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('scrap-data/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
                                 <i class="fas fa-cogs mr-3"></i> Scrap Data
                             </a>
                         </li>
                     @endif
                     @if (Auth::user()->role_id == 5)
                         <li>
-                            <a href="/faculty" class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('faculty') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                            <a href="/faculty"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('faculty') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
                                 <i class="fas fa-chalkboard-teacher mr-3"></i> Faculty Management
                             </a>
                         </li>
                         <li>
-                            <a href="/programs" class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('programs') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                            <a href="/programs"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('programs') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
                                 <i class="fas fa-clipboard-list mr-3"></i> Programs Management
                             </a>
                         </li>
@@ -58,7 +77,8 @@
         <!-- Responsive Toggle Button -->
         <div class="bg-gray-100 dark:bg-gray-800 p-4 md:hidden flex justify-between items-center">
             <button id="sidebarToggle" class="text-gray-600 dark:text-gray-300 hover:text-blue-600">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>

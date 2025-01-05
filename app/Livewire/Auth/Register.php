@@ -11,17 +11,17 @@ use Ramsey\Uuid\Type\Integer;
 
 class Register extends Component
 {
-    public $faculties;
+    // public $faculties;
     public $username;
     public $email;
     public $name;
-    public int $selectedFaculty;
+    // public int $selectedFaculty; // Set default
     public $password;
     public $password_confirmation;
 
     public function mount()
     {
-        $this->faculties = Faculty::all();
+        // $this->faculties = Faculty::all();
     }
 
     public function register()
@@ -30,7 +30,7 @@ class Register extends Component
             'email' => 'required|email|unique:users',
             'name' => 'required',
             'username' => 'required|unique:users',
-            'selectedFaculty' => 'required',
+            // 'selectedFaculty' => 'required',
             'password' => 'required|min:8|confirmed',
             'password_confirmation' => 'required'
         ]);
@@ -48,7 +48,8 @@ class Register extends Component
             'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password),
-            'faculty_id' => $this->selectedFaculty,
+            // 'faculty_id' => $this->selectedFaculty,
+            'faculty_id' => 1, //default
         ]);
 
         User::create([
@@ -56,7 +57,8 @@ class Register extends Component
             'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password),
-            'faculty_id' => $this->selectedFaculty,
+            // 'faculty_id' => $this->selectedFaculty,
+            'faculty_id' => 1, //default
         ]);
 
         session()->flash('success', 'Registration successful! Please log in.');
@@ -67,6 +69,6 @@ class Register extends Component
 
     public function render()
     {
-        return view('livewire.auth.register');
+        return view('livewire.auth.register', ['title' => 'Register']);
     }
 }

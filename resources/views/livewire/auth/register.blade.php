@@ -11,15 +11,15 @@
                     Create an account
                 </h1>
                 @if (session()->has('error'))
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: "{{ session('error') }}",
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: "{{ session('error') }}",
+                            });
                         });
-                    });
-                </script>
+                    </script>
                 @endif
 
                 <form class="space-y-4 md:space-y-6" wire:submit.prevent="register">
@@ -31,7 +31,7 @@
                             placeholder="name@company.com">
                         <div class="text-red-600 text-sm font-medium">
                             @error('email')
-                            {{ $message }}
+                                {{ $message }}
                             @enderror
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <div class="invalid-feedback text-red-600 text-sm font-medium">
                             <div class="text-red-600 text-sm font-medium">
                                 @error('username')
-                                {{ $message }}
+                                    {{ $message }}
                                 @enderror
                             </div>
                         </div>
@@ -58,36 +58,20 @@
                         <div class="invalid-feedback text-red-600 text-sm font-medium">
                             <div class="text-red-600 text-sm font-medium">
                                 @error('name')
-                                {{ $message }}
+                                    {{ $message }}
                                 @enderror
                             </div>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="faculty"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faculty</label>
-                        <select id="faculty"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            wire:model="selectedFaculty">
-                            <option selected>Chose your faculty</option>
-                            @foreach ($faculties as $faculty)
-                            <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="text-red-600 text-sm font-medium">
-                            @error('selectedFaculty')
-                            {{ $message }}
-                            @enderror
                         </div>
                     </div>
                     <div>
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                         <input type="password" name="password" id="password" placeholder="••••••••"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" wire:model="password">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            wire:model="password">
                         <div class="text-red-600 text-sm font-medium">
                             @error('password')
-                            {{ $message }}
+                                {{ $message }}
                             @enderror
                         </div>
                     </div>
@@ -101,7 +85,7 @@
                             wire:model="password_confirmation">
                         <div class="text-red-600 text-sm font-medium">
                             @error('password_confirmation')
-                            {{ $message }}
+                                {{ $message }}
                             @enderror
                         </div>
                     </div>
@@ -109,9 +93,8 @@
                         class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create
                         an account</button>
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                        Already have an account? <a href="/login"
-                            class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login
-                            here</a>
+                        Already have an account? <a href="/login" wire:navigate
+                            class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</a>
                     </p>
                 </form>
             </div>
