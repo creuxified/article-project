@@ -76,14 +76,34 @@
                             <svg class="w-5 h-5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path d="M12 11a4 4 0 1 0-4-4 4 4 0 0 0 4 4ZM4 21h16v-1a7 7 0 0 0-14 0v1Z" />
                             </svg>
-                            @if(Auth::user()->role_id == 5) University Admin @endif
-                            @if(Auth::user()->role_id == 4) Faculty Admin @endif
-                            @if(Auth::user()->role_id == 3) Program Admin @endif
-                            @if(Auth::user()->role_id == 2) Lecturer @endif
+                            @php
+                                $username = Auth::user()->username; // Mendapatkan username dari user yang sedang login
+                                $role = '';
+
+                                // Tentukan role berdasarkan role_id
+                                switch (Auth::user()->role_id) {
+                                    case 5:
+                                        $role = 'University Admin';
+                                        break;
+                                    case 4:
+                                        $role = 'Faculty Admin';
+                                        break;
+                                    case 3:
+                                        $role = 'Program Admin';
+                                        break;
+                                    case 2:
+                                        $role = 'Lecturer';
+                                        break;
+                                    default:
+                                        $role = 'Unknown Role'; // Jika tidak ada role_id yang cocok
+                                }
+                            @endphp
+                            {{ $username }} - {{ $role }} <!-- Tampilkan username dan role -->
                             <svg class="w-4 h-4 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
+
 
                         <!-- Dropdown Content -->
                         <div id="profileDropdownMenu" class="hidden absolute right-0 mt-2 w-56 rounded-lg shadow-lg z-50">
