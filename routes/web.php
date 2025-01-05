@@ -25,8 +25,8 @@ use App\Livewire\Auth\Login;
 
 // ==================== NO AUTHENTICATED ROUTES (Guest) ====================
 Route::get('/', LandingPage::class)->name('landing');
-Route::get('/register', Register::class)->name('register');
-Route::get('/login', Login::class)->name('login');
+// Route::get('/register', Register::class)->name('register');
+// Route::get('/login', Login::class)->name('login');
 
 
 
@@ -34,15 +34,15 @@ Route::get('/login', Login::class)->name('login');
 //     return view('landing', ['title' => 'Landing Page']);
 // })->name('landing');
 
-// Route::get('/register', function () {
-//     // $faculties = Faculty::all();
-//     // return view('auth.register', ['faculties' => $faculties, 'title' => 'register']);
-//     return view('auth.register', ['title' => 'register']);
-// })->name('register');
+Route::get('/register', function () {
+    // $faculties = Faculty::all();
+    // return view('auth.register', ['faculties' => $faculties, 'title' => 'register']);
+    return view('auth.register', ['title' => 'register']);
+})->name('register');
 
-// Route::get('/login', function () {
-//     return view('auth.login', ['title' => 'Login']);
-// })->name('login');
+Route::get('/login', function () {
+    return view('auth.login', ['title' => 'Login']);
+})->name('login');
 
 
 
