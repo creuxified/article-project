@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ScholarController;
 use App\Http\Controllers\ScopusController;
 use App\Http\Controllers\ScraperController;
+use App\Http\Controllers\TestScraperController;
 
 use App\Http\Controllers\AuthController;
 
@@ -54,6 +55,10 @@ Route::post('logout', function (Request $request): RedirectResponse {
     $request->session()->regenerateToken();
     return redirect('/');
 })->name('logout');
+
+Route::get('/test/scraper', [TestScraperController::class, 'showPublications'])->name('test-scraper.index'); // View scraper
+    Route::post('/test/scraper/scrape', [TestScraperController::class, 'scrapeAndShow'])->name('test-scraper.scrape'); // Start scraping
+    Route::delete('/test/scraper/delete', [TestScraperController::class, 'deleteData'])->name('test-scraper.deleteData'); // Delete scraper data
 
 // ==================== AUTHENTICATED ROUTES ====================
 Route::middleware(['auth'])->group(function () {
