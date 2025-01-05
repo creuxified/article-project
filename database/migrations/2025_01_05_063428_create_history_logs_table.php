@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('role_id');
             $table->foreign('role_id')->references('id')->on('roles');
-            $table->unsignedBigInteger('faculty_id');
+            $table->unsignedBigInteger('faculty_id')->nullable();
             $table->foreign('faculty_id')->references('id')->on('faculties');
-            $table->unsignedBigInteger('program_id');
+            $table->unsignedBigInteger('program_id')->nullable();
             $table->foreign('program_id')->references('id')->on('study_programs');
             $table->string('activity');
             $table->timestamps();

@@ -63,7 +63,7 @@ class UserAdd extends Component
             'role_id' => Auth::user()->role->id,
             'faculty_id' => $this->user->faculty->id,
             'program_id' => $this->user->program_id,
-            'activity' => $this->user->username. ' Profile Updated by '. Auth::user()->username,
+            'activity' => Auth::user()->username. ' Created User '. $this->user->username,
         ]);
         
         $this->reset();

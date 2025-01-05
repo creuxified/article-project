@@ -3,8 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\Faculty;
-use App\Models\study_program;
 use Livewire\Component;
+use App\Models\HistoryLog;
+use App\Models\study_program;
+use Illuminate\Support\Facades\Auth;
 
 class ProgramsAdd extends Component
 {
@@ -36,7 +38,12 @@ class ProgramsAdd extends Component
             $studyProgram->save();
 
             session()->flash('message', 'Study Program has been successfully added!');
-
+            HistoryLog::create([
+                'role_id' => Auth::user()->role->id,
+                'faculty_id' => $this->selectedFaculty,
+                'program_id' => study_program::where('name', $this->name)->first()->id,
+                'activity' => Auth::user()->username.' Added ['. $this->name . '] Study Program',
+            ]);
             return redirect()->route('programs-index'); // Redirect to the list page with the flash message
         } catch (\Exception $e) {
             // Log atau tampilkan error

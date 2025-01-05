@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Faculty;
 use Livewire\Component;
+use App\Models\HistoryLog;
+use Illuminate\Support\Facades\Auth;
 
 class FacultyAdd extends Component
 {
@@ -29,6 +31,13 @@ class FacultyAdd extends Component
 
             // Set a flash message for success
             session()->flash('message', 'Faculty has been successfully added!');
+            
+            HistoryLog::create([
+                'role_id' => Auth::user()->role->id,
+                'faculty_id' => Faculty::where('name', $this->name)->first()->id,
+                'program_id' => null,
+                'activity' => Auth::user()->username.' Added ['. $this->name . '] Faculty',
+            ]);
 
             // Redirect to the faculty list page after saving
             return redirect()->route('faculty-index'); // Redirect to the list page with the flash message

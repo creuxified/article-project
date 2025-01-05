@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Faculty;
 use Livewire\Component;
+use App\Models\HistoryLog;
+use Illuminate\Support\Facades\Auth;
 
 class FacultyEdit extends Component
 {
@@ -33,6 +35,12 @@ class FacultyEdit extends Component
         try {
             Faculty::where('id', $this->faculty->id)->update([
                 'name' => $this->name,
+            ]);
+            HistoryLog::create([
+                'role_id' => Auth::user()->role->id,
+                'faculty_id' => $this->faculty->id,
+                'program_id' => null,
+                'activity' => Auth::user()->username.' Updated ['. $this->name . '] Faculty',
             ]);
             return redirect()->route('faculty-index'); // Redirect after update
         } catch (\Exception $e) {
