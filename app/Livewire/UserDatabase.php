@@ -63,7 +63,7 @@ class UserDatabase extends Component
 
         if ($user) {
             HistoryLog::create([
-                'role_id' => $user->role->id,
+                'role_id' => Auth::user()->role->id,
                 'faculty_id' => $user->faculty->id,
                 'program_id' => $user->program->id,
                 'activity' => $user->username.' Deleted by '. Auth::user()->username,

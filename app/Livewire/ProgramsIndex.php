@@ -3,10 +3,12 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use App\Models\Faculty;
 use Livewire\Component;
+use App\Models\HistoryLog;
 use App\Models\ActivityLog;
-use App\Models\study_program; // Pastikan nama model sesuai dengan konvensi
 use Illuminate\Support\Facades\Auth;
+use App\Models\study_program; // Pastikan nama model sesuai dengan konvensi
 
 class ProgramsIndex extends Component
 {
@@ -32,7 +34,14 @@ class ProgramsIndex extends Component
     public function delete($id)
     {
         try {
+            HistoryLog::create([
+                'role_id' => Auth::user()->role->id,
+                'faculty_id' => study_program::find($id)->faculty_id,
+                'program_id' => null,
+                'activity' => Auth::user()->username.' deleted ['. Faculty::find($id)->name . '] Study Program',
+            ]);
             ActivityLog::where('program_id', $id)->delete();
+            HistoryLog::where('program_id', $id)->delete();
             User::where('program_id', $id)->delete();
             study_program::findOrFail($id)->delete();
             session()->flash('message', 'Study Program deleted successfully!');
