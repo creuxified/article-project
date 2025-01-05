@@ -38,17 +38,34 @@ class ScraperController extends Controller
             $publications = Publication::whereHas('user', function ($query) use ($facultyId) {
                 $query->where('faculty_id', $facultyId); // Filter berdasarkan faculty_id
             })
-                ->with(['user.studyProgram' => function ($query) {
+                ->with(['user.program' => function ($query) {
                     $query->select('id', 'name'); // Ambil kolom id dan name dari tabel study_programs
                 }])
                 ->get();
 
-            // Map hasil publikasi dan tambahkan study_program name
+            // Map hasil publikasi dan tambahkan program (study_program) name
             $publicationsWithStudyProgram = $publications->map(function ($publication) {
-                $publication->study_program = $publication->user->studyProgram->name; // Menambahkan study_program ke publikasi
+                $publication->study_program = $publication->user->program->name; // Menambahkan program studi (study_program) ke publikasi
                 return $publication;
             });
         }
+        // // Role 4: Admin Fakultas
+        // elseif ($user->role_id == 4) {
+        //     $facultyId = $user->faculty_id;
+        //     $publications = Publication::whereHas('user', function ($query) use ($facultyId) {
+        //         $query->where('faculty_id', $facultyId); // Filter berdasarkan faculty_id
+        //     })
+        //         ->with(['user.studyProgram' => function ($query) {
+        //             $query->select('id', 'name'); // Ambil kolom id dan name dari tabel study_programs
+        //         }])
+        //         ->get();
+
+        //     // Map hasil publikasi dan tambahkan study_program name
+        //     $publicationsWithStudyProgram = $publications->map(function ($publication) {
+        //         $publication->study_program = $publication->user->studyProgram->name; // Menambahkan study_program ke publikasi
+        //         return $publication;
+        //     });
+        // }
         // Role 5: Admin Universitas
         elseif ($user->role_id == 5) {
             $publications = Publication::with(['user.studyProgram' => function ($query) {
