@@ -21,23 +21,54 @@ class ScraperController extends Controller
     {
         $user = auth()->user();
 
-        // Role-based publication fetching
+        // Role 2: Dosen
         if ($user->role_id == 2) {
-            // Dosen: Hanya publikasi miliknya
             $publications = Publication::where('user_id', $user->id)->get();
-        } elseif ($user->role_id == 3) {
-            // Admin Prodi: Data berdasarkan relasi program_id
-            $programId = $user->program_id; // Misalnya kolom program_id ada di tabel users
+        }
+        // Role 3: Admin Prodi
+        elseif ($user->role_id == 3) {
+            $programId = $user->program_id;
             $publications = Publication::whereHas('user', function ($query) use ($programId) {
-                $query->where('program_id', $programId);
+                $query->where('program_id', $programId); // Filter berdasarkan program_id
             })->get();
-        } elseif (in_array($user->role_id, [4, 5])) {
-            // Admin Fakultas dan Universitas: Semua data publikasi
-            $publications = Publication::all();
+        }
+        // Role 4: Admin Fakultas
+        elseif ($user->role_id == 4) {
+            $facultyId = $user->faculty_id;
+            $publications = Publication::whereHas('user', function ($query) use ($facultyId) {
+                $query->where('faculty_id', $facultyId); // Filter berdasarkan faculty_id
+            })
+                ->with(['user.studyProgram' => function ($query) {
+                    $query->select('id', 'name'); // Ambil kolom id dan name dari tabel study_programs
+                }])
+                ->get();
+
+            // Map hasil publikasi dan tambahkan study_program name
+            $publicationsWithStudyProgram = $publications->map(function ($publication) {
+                $publication->study_program = $publication->user->studyProgram->name; // Menambahkan study_program ke publikasi
+                return $publication;
+            });
+        }
+        // Role 5: Admin Universitas
+        elseif ($user->role_id == 5) {
+            $publications = Publication::with(['user.studyProgram' => function ($query) {
+                $query->select('id', 'name'); // Ambil nama program studi
+            }, 'user.faculty' => function ($query) {
+                $query->select('id', 'name'); // Ambil nama fakultas
+            }])
+                ->get();
+
+            // Map hasil publikasi dan tambahkan study_program dan faculty_name
+            $publicationsWithDetails = $publications->map(function ($publication) {
+                $publication->study_program = $publication->user->studyProgram->name; // Tambahkan study_program ke publikasi
+                $publication->faculty_name = $publication->user->faculty->name; // Tambahkan faculty_name ke publikasi
+                return $publication;
+            });
         } else {
             // Role tidak dikenal
             $publications = collect(); // Koleksi kosong
         }
+
 
         // Prepare data for publication counts
         $chartData = $publications->groupBy('publication_date')->map(function ($yearGroup) {
