@@ -270,7 +270,10 @@ class Index extends Component
     }
 
     public function render()
-    {
-        return view('livewire.scraper.index');
-    }
+{
+    return view('livewire.scraper.index', [
+        'formattedChartData' => $this->formattedChartData,
+        'formattedCitationData' => $this->formattedCitationData,
+    ]);
+}
 }
