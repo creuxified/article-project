@@ -4,8 +4,9 @@ namespace App\Livewire;
 
 use App\Models\User;
 use App\Models\Faculty;
-use App\Models\study_program;
 use Livewire\Component;
+use App\Models\HistoryLog;
+use App\Models\study_program;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -173,6 +174,13 @@ class UserEdit extends Component
         ]);
         session()->flash('error', 'An error occurred while updating the profile.');
     }
+    
+    HistoryLog::create([
+        'role_id' => Auth::user()->role->id,
+        'faculty_id' => $this->user->faculty->id,
+        'program_id' => $this->user->program->id,
+        'activity' => $this->user->username. ' Profile Updated by '. Auth::user()->username,
+    ]);
     }
 
     public function saveUser($validatedData)

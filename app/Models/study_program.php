@@ -31,4 +31,9 @@ class study_program extends Model
     {
         return $this->hasMany(ActivityLog::class, 'program_id');
     }
+
+    public function historyLog(): HasMany
+    {
+        return $this->hasMany(HistoryLog::class, 'program_id');
+    }
 }

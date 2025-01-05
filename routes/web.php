@@ -160,5 +160,6 @@ Route::get('/users/add/', function (User $user) {
 Route::get('/users/edit/{user:id}', function (User $user) {
     return view('user-edit', [
         'title' => 'Edit User',
+        'user' => $user,
     ]);
 })->middleware('auth')->name('user.edit');

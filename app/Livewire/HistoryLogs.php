@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\ActivityLog;
+use App\Models\HistoryLog;
 use Illuminate\Support\Facades\Auth;
 
 class HistoryLogs extends Component
@@ -13,20 +14,20 @@ class HistoryLogs extends Component
     public function mount() // Initialize the component
     {
         if(Auth::user()->role->id == 3){
-            $this->logs = ActivityLog::where('requestrole_id', 2)
+            $this->logs = HistoryLog::whereIn('role_id', [2, 3])
             ->where('program_id', Auth::user()
-            ->program->id)->with(['user', 'faculty', 'program', 'role'])
+            ->program->id)->with([ 'faculty', 'program', 'role'])
             ->get();
         }
         elseif(Auth::user()->role->id == 4){
-            $this->logs = ActivityLog::whereIn('requestrole_id', [2, 3])
+            $this->logs = HistoryLog::whereIn('role_id', [2, 3, 4])
             ->where('faculty_id', Auth::user()->faculty->id)
-            ->with(['user', 'faculty', 'program', 'role'])
+            ->with(['faculty', 'program', 'role'])
             ->get();        
         }
         elseif(Auth::user()->role->id == 5){
-            $this->logs = ActivityLog::whereIn('requestrole_id', [2, 3, 4])
-            ->with(['user', 'faculty', 'program', 'role'])
+            $this->logs = HistoryLog::whereIn('role_id', [2, 3, 4,5])
+            ->with(['faculty', 'program', 'role'])
             ->get();
         }
     }

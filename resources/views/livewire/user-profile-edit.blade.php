@@ -136,7 +136,9 @@
                     items-center {{ $user->status == 2 ? 'opacity-50 cursor-not-allowed' : ' hover:text-white border
                     border-red-600 hover:bg-red-600' }} focus:ring-4 focus:outline-none focus:ring-red-300
                     font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500
-                    dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
+                    dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                    wire:click="delete({{ $user->id }})"
+                    wire:confirm="Are you sure you want to delete your account?">
                     <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"

@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Livewire\Component;
+use App\Models\HistoryLog;
+use App\Models\ActivityLog;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,6 +62,13 @@ class UserDatabase extends Component
         $user = User::find($id);
 
         if ($user) {
+            HistoryLog::create([
+                'role_id' => $user->role->id,
+                'faculty_id' => $user->faculty->id,
+                'program_id' => $user->program->id,
+                'activity' => $user->username.' Deleted by '. Auth::user()->username,
+            ]);
+            ActivityLog::where('user_id', $id)->delete();
             $user->delete();
             session()->flash('message', 'User deleted successfully!');
         } else {

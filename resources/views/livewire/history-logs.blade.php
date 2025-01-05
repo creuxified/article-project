@@ -21,13 +21,10 @@
                         Time
                     </th>
                     <th class="px-6 py-3 text-center">
-                        Name
+                        Role
                     </th>
                     <th class="px-6 py-3 text-center">
-                        Email
-                    </th>
-                    <th class="px-6 py-3 text-center">
-                        Programs
+                        Study Program
                     </th>
                     <th class="px-6 py-3 text-center rounded-tr-lg">
                         Logs
@@ -38,10 +35,9 @@
                 @forelse ($logs as $log)
                 <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-200">
                     <td class="px-6 py-4 text-center">{{ $log->created_at }}</td>
-                    <td class="px-6 py-4 text-center">{{ $log->user->name }}</td>
-                    <td class="px-6 py-4 text-center">{{ $log->user->email }}</td>
-                    <td class="px-6 py-4 text-center">{{ $log->program->name }}</td>
-                    <td class="px-6 py-4 text-center">{{ $log->action }}</td>
+                    <td class="px-6 py-4 text-center">{{ $log->role->name }}</td>
+                    <td class="px-6 py-4 text-center">{{ $log->program_id ? $log->program->name : 'Staff' }}</td>
+                    <td class="px-6 py-4 text-center">{{ $log->activity }}</td>
                 </tr>
                 @empty
                 <tr>

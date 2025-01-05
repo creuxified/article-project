@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\ActivityLog;
+use App\Models\HistoryLog;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -51,13 +52,11 @@ class ModalRole extends Component
 
         Log::info('accept method called for log: ' . $this->log->action);
 
-        ActivityLog::create([
-            'user_id' => Auth::user()->id,
-            'type' => 2,
+        HistoryLog::create([
+            'role_id' => Auth::user()->role->id,
             'faculty_id' => $log->user->faculty->id,
             'program_id' => $log->program->id,
-            'requestrole_id' => $log->requestrole_id,
-            'action' => Auth::user()->username. ' gave role '. $user->name . ': [' . $log->action. ']',
+            'activity' => Auth::user()->username. ' gave role '. $user->username . ': [' . $log->action. ']',
         ]);
 
         return redirect()->route('request-role', ['user' => Auth::user()->username])->with('message', 'User succesfully accepted!');
@@ -77,13 +76,11 @@ class ModalRole extends Component
 
         Log::info('reject method called for log: ' . $this->log->action);
 
-        ActivityLog::create([
-            'user_id' => Auth::user()->id,
-            'type' => 2,
+        HistoryLog::create([
+            'role_id' => Auth::user()->role->id,
             'faculty_id' => $log->user->faculty->id,
             'program_id' => $log->program->id,
-            'requestrole_id' => $log->requestrole_id,
-            'action' => Auth::user()->username. ' Rejected '. $user->name . ': [' . $log->action. ']',
+            'activity' => Auth::user()->username. ' rejected '. $user->username . ': [' . $log->action. ']',
         ]);
 
         Log::info('Reject ActivityLog created for : ' . Auth::user()->username. ' toward ' . $user->username);

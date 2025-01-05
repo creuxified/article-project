@@ -20,4 +20,9 @@ class Role extends Model
     {
         return $this->hasMany(ActivityLog::class, 'requestrole_id');
     }
+    
+    public function historyLog(): HasMany
+    {
+        return $this->hasMany(HistoryLog::class, 'requestrole_id');
+    }
 }

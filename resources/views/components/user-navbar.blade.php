@@ -26,13 +26,14 @@
                             <i class="fas fa-user-edit mr-3"></i> Edit Profile
                         </a>
                     </li>
+                    @if (Auth::user()->role_id == 2)
                     <li>
                         <a href="/scraper"
                             class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('scrap-data/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
                             <i class="fas fa-cogs mr-3"></i> Scrap Data
                         </a>
                     </li>
-
+                    @endif
                     @if (Auth::user()->role_id != 2)
                         <li>
                             <a href="/request-role/{{ Auth::user()->username }}"

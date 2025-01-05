@@ -143,7 +143,9 @@
 
             <div class="flex justify-end space-x-4">
                 <button type="submit" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300">Send Request</button>
-                <button type="button" class="px-5 py-2 text-sm font-medium text-red-600 border border-red-600 rounded-lg hover:bg-red-600 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300">Delete Account</button>
+                <button type="button" class="px-5 py-2 text-sm font-medium text-red-600 border border-red-600 rounded-lg hover:bg-red-600 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300"
+                wire:click="delete({{ $user->id }})"
+                wire:confirm="Are you sure you want to delete your account?">Delete Account</button>
             </div>
         </form>
     </div>

@@ -55,13 +55,21 @@ class ProfileEdit extends Component
         Log::info('sendRequest method called for user: ' . $this->user->id);
         Log::info('Selected Role: ' . $this->selectedRole);
 
+        $validatedData = [
+            'selectedProgram' => 'required|exists:study_programs,id',
+            'selectedRole' => 'required|exists:roles,id|not_in:1',
+        ];
 
-            $this->validate([
-                'selectedProgram' => 'required|exists:study_programs,id',
-                'selectedRole' => 'required|exists:roles,id|not_in:1',
-                'scopus' => 'required|unique:users',
-                'scholar' => 'required|unique:users',
-            ]);
+        if ($this->scopus !== $this->user->scopus) {
+            $validatedData['scopus'] = 'nullable|unique:users,scopus,' . $this->user->id;
+        }
+
+        if ($this->scholar !== $this->user->scholar) {
+            $validatedData['scholar'] = 'nullable|unique:users,scholar,' . $this->user->id;
+        }
+        
+
+        $this->validate($validatedData);
 
             $role = $this->roles->where('id', $this->selectedRole)->first();
 
@@ -104,11 +112,17 @@ class ProfileEdit extends Component
 
     }
 
-    public function deleteAccount()
+    public function delete($id)
     {
-        User::find(Auth::user())->delete();
+        $user = User::find($id);
 
-        return session()->flash('message', 'wrong email or password');
+        if ($user) {
+            ActivityLog::where('user_id', $id)->delete();
+            $user->delete();
+            session()->flash('message', 'User deleted successfully!');
+        } else {
+            session()->flash('error', 'User not found!');
+        }
     }
 
     public function render()

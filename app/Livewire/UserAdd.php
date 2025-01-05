@@ -5,9 +5,10 @@ namespace App\Livewire;
 use App\Models\User;
 use App\Models\Faculty;
 use Livewire\Component;
+use App\Models\HistoryLog;
 use App\Models\study_program;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserAdd extends Component
 {
@@ -17,8 +18,8 @@ class UserAdd extends Component
     $password, 
     $status = 1, 
     $role_id = 1, 
-    $faculty_id, 
-    $program_id, 
+    $selectedFaculty, 
+    $selectedProgram, 
     $scholar, 
     $scopus, 
     $revision;
@@ -50,17 +51,48 @@ class UserAdd extends Component
             'password' => Hash::make($this->password),
             'status' => $status,
             'role_id' => $this->role_id,
-            'faculty_id' => $this->faculty_id,
-            'program_id' => $this->program_id,
+            'faculty_id' => $this->selectedFaculty,
+            'program_id' => $this->selectedProgram,
             'scholar' => $this->scholar,
             'scopus' => $this->scopus,
             'revision' => $this->revision,
         ]);
 
         session()->flash('message', 'User added successfully!');
+        HistoryLog::create([
+            'role_id' => Auth::user()->role->id,
+            'faculty_id' => $this->user->faculty->id,
+            'program_id' => $this->user->program_id,
+            'activity' => $this->user->username. ' Profile Updated by '. Auth::user()->username,
+        ]);
+        
         $this->reset();
 
         return redirect()->route('user-database', ['user' => Auth::user()->username]);
+    }
+
+    public $showFaculty = false;
+    public $showProgram = false;
+    public $showScholar = false;
+    public $showScopus = false;
+
+    public function updatedSelectedRole($value)
+    {
+        $this->updateFieldVisibility();
+        $this->dispatch('roleChanged', $value);
+    }
+
+    protected function updateFieldVisibility()
+    {
+        $this->showFaculty = in_array($this->selectedRole, [2, 3, 4]); // Dosen, Admin Prodi, Admin Fakultas
+        $this->showProgram = in_array($this->selectedRole, [2, 3]); // Dosen, Admin Prodi
+        $this->showScholar = ($this->selectedRole == 2); // Only Dosen
+        $this->showScopus = ($this->selectedRole == 2); // Only Dosen
+
+        // Reset program selection when faculty changes and program is not visible
+        if (!$this->showProgram) {
+            $this->selectedProgram = null;
+        }
     }
 
     public function render()

@@ -23,5 +23,10 @@ class Faculty extends Model
     public function RequestLog(): HasMany
     {
         return $this->hasMany(ActivityLog::class, 'faculty_id');
-    } 
+    }
+    
+    public function historyLog(): HasMany
+    {
+        return $this->hasMany(HistoryLog::class, 'faculty_id');
+    }
 }

@@ -68,10 +68,10 @@
 
                 <!-- Role -->
                 <div>
-                    <label for="role_id" class="block mb-2 text-sm font-medium text-gray-900 ">
+                    <label for="selectedRole" class="block mb-2 text-sm font-medium text-gray-900 ">
                         <i class="fas fa-users-cog mr-2"></i> Role
                     </label>
-                    <select id="role_id" wire:model="role_id"
+                    <select id="selectedRole" wire:model="selectedRole"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                         <option value="1">Guest</option>
                         <option value="2">Dosen</option>
@@ -86,22 +86,50 @@
                         <span class="text-sm text-red-600">{{ $message }}</span>
                     @enderror
                 </div>
-
-                <!-- Additional Fields -->
-                <div id="facultyField" style="display:none;">
-                    <label for="faculty_id" class="block mb-2 text-sm font-medium text-gray-900 ">
-                        <i class="fas fa-building mr-2"></i> Faculty
+                <!-- Faculty Dropdown (Visible only for Dosen, Admin Prodi, Admin Fakultas) -->
+                <div class="mb-3" id="faculty-field" style="display: {{ $showFaculty ? 'block' : 'none' }};">
+                    <label for="selectedFaculty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-600">
+                        <i class="fas fa-school mr-2"></i> Faculty
                     </label>
-                    <select id="faculty_id" wire:model="faculty_id"
-                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        <option value="">Select Faculty</option>
+                    <select id="selectedFaculty" class="form-control w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        wire:model="selectedFaculty">
+                        <option>Select Faculty</option>
                         @foreach($faculties as $faculty)
                             <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
                         @endforeach
                     </select>
-                    @error('faculty_id')
-                        <span class="text-sm text-red-600">{{ $message }}</span>
-                    @enderror
+                </div>
+
+                <!-- Program Dropdown (Visible only for Dosen and Admin Prodi) -->
+                <div class="mb-3" id="program-field" style="display: {{ $showProgram ? 'block' : 'none' }};">
+                    <label for="selectedProgram" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-600">
+                        <i class="fas fa-book-open mr-2"></i> Study Program
+                    </label>
+                    <select id="selectedProgram" class="form-control w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        wire:model="selectedProgram">
+                        <option>Select Program</option>
+                        @foreach($studyPrograms as $program)
+                            <option value="{{ $program->id }}">{{ $program->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Scholar (Visible only for Dosen) -->
+                <div class="mb-3" id="scholar-field" style="display: {{ $showScholar ? 'block' : 'none' }};">
+                    <label for="scholar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-600">
+                        <i class="fas fa-graduation-cap mr-2"></i> Scholar
+                    </label>
+                    <input type="text" wire:model="scholar" id="scholar"
+                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                </div>
+
+                <!-- Scopus (Visible only for Dosen) -->
+                <div class="mb-3" id="scopus-field" style="display: {{ $showScopus ? 'block' : 'none' }};">
+                    <label for="scopus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-600">
+                        <i class="fas fa-search mr-2"></i> Scopus
+                    </label>
+                    <input type="text" wire:model="scopus" id="scopus"
+                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
 
                 <!-- Submit Button -->
@@ -113,3 +141,46 @@
         </div>
     </div>
 </div>
+
+<script>
+    // JavaScript function to show/hide fields based on role selection
+    function toggleFields() {
+        const roleId = document.getElementById('selectedRole').value;
+
+        // Hide all fields by default
+        document.getElementById('faculty-field').style.display = 'none';
+        document.getElementById('program-field').style.display = 'none';
+        document.getElementById('scholar-field').style.display = 'none';
+        document.getElementById('scopus-field').style.display = 'none';
+
+        // Show fields based on selected role
+        if (roleId == 2) { // Dosen
+            document.getElementById('faculty-field').style.display = 'block';
+            document.getElementById('program-field').style.display = 'block';
+            document.getElementById('scholar-field').style.display = 'block';
+            document.getElementById('scopus-field').style.display = 'block';
+        } else if (roleId == 3) { // Admin Prodi
+            document.getElementById('faculty-field').style.display = 'block';
+            document.getElementById('program-field').style.display = 'block';
+        } else if (roleId == 4) { // Admin Fakultas
+            document.getElementById('faculty-field').style.display = 'block';
+        }
+    }
+
+    // Run the toggleFields function on page load to handle pre-selected roles
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleFields(); // Check and display fields based on pre-selected role
+    });
+
+    Livewire.on('roleChanged', (roleId) => {
+        document.getElementById('faculty-field').style.display =
+            [2, 3, 4].includes(Number(roleId)) ? 'block' : 'none';
+        document.getElementById('program-field').style.display =
+            [2, 3].includes(Number(roleId)) ? 'block' : 'none';
+        document.getElementById('scholar-field').style.display =
+            (roleId == 2) ? 'block' : 'none';
+        document.getElementById('scopus-field').style.display =
+            (roleId == 2) ? 'block' : 'none';
+    });
+
+</script>

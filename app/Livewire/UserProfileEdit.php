@@ -3,8 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\Role;
+use App\Models\User;
 use App\Models\Faculty;
 use Livewire\Component;
+use App\Models\HistoryLog;
+use App\Models\ActivityLog;
 use App\Models\study_program;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -104,7 +107,33 @@ class UserProfileEdit extends Component
         $user->updated_at = now();
         $user->save();
 
+        HistoryLog::create([
+            'role_id' => $this->user->role->id,
+            'faculty_id' => $this->user->faculty->id,
+            'program_id' => $this->user->program->id,
+            'activity' => Auth::user()->username. ' Profile Self Updated',
+        ]);
+
         return redirect()->route('user-profile-edit', ['user' => $user->username])
             ->with('message', 'Information Successfully Edited!');
+    }
+
+    public function delete($id)
+    {
+        $user = User::find($id);
+
+        if ($user) {
+            HistoryLog::create([
+                'role_id' => $user->role->id,
+                'faculty_id' => $user->faculty->id,
+                'program_id' => $user->program->id,
+                'activity' => $user->username.' Self Deleted Profile',
+            ]);
+            ActivityLog::where('user_id', $id)->delete();
+            $user->delete();
+            session()->flash('message', 'User deleted successfully!');
+        } else {
+            session()->flash('error', 'User not found!');
+        }
     }
 }
