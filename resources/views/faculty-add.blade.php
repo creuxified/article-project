@@ -1,3 +1,3 @@
-<x-layout :title="$title">
+<x-layout :title="'Add Faculty - UNS Citation Management'">
     @livewire('faculty-add')
 </x-layout>
