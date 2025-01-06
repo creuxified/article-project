@@ -83,105 +83,111 @@
         @endif
 
         {{-- HIGHCHARTS ADMIN FAKULTAS --}}
-        <div class="bg-gray-800 p-6 rounded-lg shadow mb-6">
-            <!-- Filter Section -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <!-- Filter by Source -->
-                <div class="bg-blue-100 p-4 rounded shadow">
-                    <label for="publicationChartSourceFilter" class="font-bold text-gray-700">Filter by Source:</label>
-                    <select id="publicationChartSourceFilter" class="p-2 border rounded w-full">
-                        <option value="all">All Sources</option>
-                        <option value="Scopus">Scopus</option>
-                        <option value="Google Scholar">Google Scholar</option>
-                    </select>
-                </div>
+        @if (auth()->user()->role_id != 2)
+            <div class="bg-gray-800 p-6 rounded-lg shadow mb-6">
+                <!-- Filter Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <!-- Filter by Source -->
+                    <div class="bg-blue-100 p-4 rounded shadow">
+                        <label for="publicationChartSourceFilter" class="font-bold text-gray-700">Filter by Source:</label>
+                        <select id="publicationChartSourceFilter" class="p-2 border rounded w-full">
+                            <option value="all">All Sources</option>
+                            <option value="Scopus">Scopus</option>
+                            <option value="Google Scholar">Google Scholar</option>
+                        </select>
+                    </div>
 
-                <!-- Filter by Faculty -->
-                <div class="bg-blue-100 p-4 rounded shadow">
-                    <label for="publicationChartFaclutyFilter" class="font-bold text-gray-700">Filter by Faculty:</label>
-                    <select id="publicationChartFaclutyFilter" class="p-2 border rounded w-full">
-                        <option value="all">All Faculty</option>
-                        @foreach ($faculties as $faculty)
-                            <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                    <!-- Filter by Faculty -->
+                    <div class="bg-blue-100 p-4 rounded shadow">
+                        <label for="publicationChartFaclutyFilter" class="font-bold text-gray-700">Filter by Faculty:</label>
+                        <select id="publicationChartFaclutyFilter" class="p-2 border rounded w-full">
+                            @if (auth()->user()->role_id == 4 || auth()->user()->role_id == 3)
+                                @php
+                                    // Ambil ID fakultas pengguna yang sedang login
+                                    $facultyId = auth()->user()->faculty_id;
+                                    $faculty = \App\Models\Faculty::find($facultyId); // Ganti dengan model yang sesuai
+                                @endphp
 
-                <!-- Filter by Study Program -->
-                <div class="bg-blue-100 p-4 rounded shadow">
-                    <label for="publicationChartStudyProgramFilter" class="font-bold text-gray-700">Filter by Study Program:</label>
-                    <select id="publicationChartStudyProgramFilter" class="p-2 border rounded w-full">
-                        <option value="all">All Study Program</option>
-                        <!-- The options for study programs will be populated dynamically based on faculty selection -->
-                    </select>
-                </div>
-
-                <!-- Year Range Filter -->
-                <div class="bg-blue-100 p-4 rounded shadow col-span-1 md:col-span-2 lg:col-span-3">
-                    <label for="startPublicationChartYear" class="font-bold text-gray-700">Start Year:</label>
-                    <input type="number" id="startPublicationChartYear" class="p-2 border rounded w-full" placeholder="Start Year" min="1900" max="2100">
-
-                    <label for="endPublicationChartYear" class="font-bold text-gray-700 mt-2">End Year:</label>
-                    <input type="number" id="endPublicationChartYear" class="p-2 border rounded w-full" placeholder="End Year" min="1900" max="2100">
-
-                    <button id="applyPublicationChartYearRange" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full">Apply Year Range</button>
-                </div>
-            </div>
-
-            <!-- Highcharts Container for Chart -->
-            <div id="publicationChartContainer" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6">
-            </div>
-        </div>
-
-
-
-    {{-- <!-- Publications Table -->
-    <div class="overflow-x-auto mt-8">
-        <table id="publicationTable" class="table-auto w-full border-collapse border border-gray-300">
-            <thead class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white">
-                <tr>
-                    <th class="px-6 py-3">#</th>
-                    @if (auth()->user()->role_id == 4)
-                        <th class="px-6 py-3">Lecturer</th>
-                        <th class="px-6 py-3">Study Program</th>
-                    @endif
-                    <th class="px-6 py-3">Title</th>
-                    <th class="px-6 py-3">Journal</th>
-                    <th class="px-6 py-3">Publication Date</th>
-                    <th class="px-6 py-3">Citations</th>
-                    <th class="px-6 py-3">Source</th>
-                    <th class="px-6 py-3">Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($publications as $index => $publication)
-                    <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-200"
-                        data-source="{{ $publication->source }}"
-                        data-lecturer="{{ $publication->user->name ?? 'N/A' }}"
-                        data-year="{{ \Carbon\Carbon::parse($publication->publication_date)->year }}">
-                        <td class="px-6 py-4">{{ $index + 1 }}</td>
-                        @if (auth()->user()->role_id == 3)
-                            <td class="px-6 py-4">{{ $publication->user->name ?? 'N/A' }}</td>
-                        @endif
-                        <td class="px-6 py-4">{{ $publication->lecturer }}</td>
-                        <td class="px-6 py-4">{{ $publication->study_program }}</td>
-                        <td class="px-6 py-4">{{ $publication->title }}</td>
-                        <td class="px-6 py-4">{{ $publication->journal_name }}</td>
-                        <td class="px-6 py-4">{{ $publication->publication_date }}</td>
-                        <td class="px-6 py-4">{{ $publication->citations }}</td>
-                        <td class="px-6 py-4">{{ $publication->source }}</td>
-                        <td class="px-6 py-4">
-                            @if ($publication->link)
-                                <a href="{{ $publication->link }}" target="_blank" class="text-blue-500">View</a>
+                                @if ($faculty)
+                                    <!-- Menampilkan fakultas yang sesuai dengan faculty_id user yang login -->
+                                    <option value="{{ $faculty->id }}" selected>{{ $faculty->name }}</option>
+                                @else
+                                    <!-- Jika fakultas tidak ditemukan -->
+                                    <option value="none">Faculty not found</option>
+                                @endif
                             @else
-                                -
+                                <!-- Jika role bukan 4 (misalnya role_id == 5), tampilkan semua fakultas -->
+                                <option value="all">All Faculty</option>
+                                @foreach ($faculties as $faculty)
+                                    <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
+                                @endforeach
                             @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div> --}}
+                        </select>
+                    </div>
+
+                    <!-- Filter by Study Program -->
+                    <div class="bg-blue-100 p-4 rounded shadow">
+                        <label for="publicationChartStudyProgramFilter" class="font-bold text-gray-700">Filter by Study Program: </label>
+                        <select id="publicationChartStudyProgramFilter" class="p-2 border rounded w-full">
+                            @if (auth()->user()->role_id == 3)
+                                @php
+                                    // Ambil program_id pengguna yang sedang login
+                                    $userProgramId = auth()->user()->program_id;
+                                    $userStudyPrograms = \App\Models\study_program::where('id', $userProgramId)->get();
+                                @endphp
+
+                                @if ($userStudyPrograms->count() > 0)
+                                    <!-- Menampilkan program studi sesuai dengan program_id pengguna -->
+                                    <option value="all">All Study Programs</option>
+                                    @foreach ($userStudyPrograms as $program)
+                                        <option value="{{ $program->id }}" selected>{{ $program->name }}</option>
+                                    @endforeach
+                                @else
+                                    <!-- Jika tidak ada program studi ditemukan untuk program_id pengguna -->
+                                    <option value="none">No Study Program Found</option>
+                                @endif
+
+                            @elseif (auth()->user()->role_id == 4)
+                                @php
+                                    // Ambil faculty_id pengguna yang sedang login
+                                    $facultyId = auth()->user()->faculty_id;
+                                    $userStudyPrograms = \App\Models\study_program::where('faculty_id', $facultyId)->get();
+                                @endphp
+
+                                <!-- Menampilkan program studi sesuai fakultas pengguna dan masih bisa memilih -->
+                                <option value="all">All Study Programs</option>
+                                @foreach ($userStudyPrograms as $program)
+                                    <option value="{{ $program->id }}">{{ $program->name }}</option>
+                                @endforeach
+
+                            @elseif (auth()->user()->role_id == 5)
+                                <!-- Untuk role_id == 5, tampilkan semua program studi dari semua fakultas -->
+                                <option value="all">All Study Programs</option>
+                                @foreach ($study_programs as $program)
+                                    <option value="{{ $program->id }}">{{ $program->name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
+
+                    <!-- Year Range Filter -->
+                    <div class="bg-blue-100 p-4 rounded shadow col-span-1 md:col-span-2 lg:col-span-3">
+                        <label for="startPublicationChartYear" class="font-bold text-gray-700">Start Year:</label>
+                        <input type="number" id="startPublicationChartYear" class="p-2 border rounded w-full" placeholder="Start Year" min="1900" max="2100">
+
+                        <label for="endPublicationChartYear" class="font-bold text-gray-700 mt-2">End Year:</label>
+                        <input type="number" id="endPublicationChartYear" class="p-2 border rounded w-full" placeholder="End Year" min="1900" max="2100">
+
+                        <button id="applyPublicationChartYearRange" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full">Apply Year Range</button>
+                    </div>
+                </div>
+
+                <!-- Highcharts Container for Chart -->
+                <div id="publicationChartContainer" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6">
+                </div>
+            </div>
+        @endif
 
         <!-- Chart Cards -->
 
@@ -281,6 +287,9 @@
 
         var faculties = @json($faculties); // Data fakultas yang sudah ada
         var study_programs = @json($study_programs); // Data program studi yang sudah ada
+        var userRoleId = @json(auth()->user()->role_id); // Mengambil role pengguna yang sedang login
+        var userFacultyId = @json(auth()->user()->faculty_id); // Mengambil faculty_id pengguna yang login
+        var userProgramId = @json(auth()->user()->program_id); // Mengambil program_id pengguna yang login
 
         // Function to load study programs based on faculty selection
         function loadStudyPrograms(facultyId) {
@@ -302,7 +311,7 @@
 
             // Menambahkan program studi yang sesuai ke dalam select
             filteredPrograms.forEach(function(program) {
-                studyProgramSelect.append('<option value="' + program.name + '">' + program.name + '</option>');
+                studyProgramSelect.append('<option value="' + program.id + '">' + program.name + '</option>');
             });
         }
 
@@ -364,13 +373,12 @@
 
             // Filter by faculty
             if (selectedFaculty !== 'all') {
-                // filteredData = filteredData.filter(item => item.faculty === selectedFaculty);
-                filteredData = filteredData.filter(item => item.faculty_id = selectedFaculty);
+                filteredData = filteredData.filter(item => item.faculty_id == selectedFaculty);
             }
 
             // Filter by study program
             if (selectedStudyProgram !== 'all') {
-                filteredData = filteredData.filter(item => item.study_program === selectedStudyProgram);
+                filteredData = filteredData.filter(item => item.study_program == selectedStudyProgram);
             }
 
             // Filter by year range
@@ -385,6 +393,21 @@
             }
 
             updatePublicationChart(filteredData);
+        }
+
+        // Initial population of the filters based on user role
+        if (userRoleId == 3) {
+            // Role 3: Filter by user’s own program
+            $('#publicationChartStudyProgramFilter').val(userProgramId); // Set program_id for role 3
+            applyPublicationChartFilters(); // Ensure the filter is applied
+        } else if (userRoleId == 4) {
+            // Role 4: Filter by user's faculty and program, but allow selection
+            loadStudyPrograms(userFacultyId);
+            $('#publicationChartStudyProgramFilter').val(userProgramId); // Set program_id for role 4
+            applyPublicationChartFilters(); // Ensure the filter is applied
+        } else if (userRoleId == 5) {
+            // Role 5: Show all programs, user can select any program
+            loadStudyPrograms('all'); // Allow to choose all faculty programs
         }
 
         // Event listeners for filters
@@ -406,7 +429,8 @@
             applyPublicationChartFilters();
         });
 
-        // Initial application of filters
+        // Initial application of filters when page loads
         applyPublicationChartFilters();
     });
 </script>
+
