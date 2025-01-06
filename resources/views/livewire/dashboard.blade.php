@@ -140,7 +140,7 @@
                                     <!-- Menampilkan program studi sesuai dengan program_id pengguna -->
                                     <option value="all">All Study Programs</option>
                                     @foreach ($userStudyPrograms as $program)
-                                        <option value="{{ $program->id }}" selected>{{ $program->name }}</option>
+                                        <option value="{{ $program->name }}" selected>{{ $program->name }}</option>
                                     @endforeach
                                 @else
                                     <!-- Jika tidak ada program studi ditemukan untuk program_id pengguna -->
@@ -157,7 +157,7 @@
                                 <!-- Menampilkan program studi sesuai fakultas pengguna dan masih bisa memilih -->
                                 <option value="all">All Study Programs</option>
                                 @foreach ($userStudyPrograms as $program)
-                                    <option value="{{ $program->id }}">{{ $program->name }}</option>
+                                    <option value="{{ $program->name }}">{{ $program->name }}</option>
                                 @endforeach
 
                             @elseif (auth()->user()->role_id == 5)
