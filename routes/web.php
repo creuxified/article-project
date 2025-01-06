@@ -21,6 +21,7 @@ use App\Http\Controllers\AuthController;
 // Route::get('/login', [AuthController::class, 'login'])->name('login');
 
 use App\Livewire\LandingPage;
+use App\Livewire\Scraper\PublicationList;
 use App\Livewire\Auth\Register;
 use App\Livewire\Auth\Login;
 
@@ -45,7 +46,8 @@ Route::get('/login', function () {
     return view('auth.login', ['title' => 'Login']);
 })->name('login');
 
-
+Route::get('/testing', PublicationList::class)->name('publication-list');
+Route::get('/testing', PublicationList::class)->name('publication-chart');
 
 
 // ==================== LOGOUT ROUTES ====================
@@ -57,8 +59,8 @@ Route::post('logout', function (Request $request): RedirectResponse {
 })->name('logout');
 
 Route::get('/test/scraper', [TestScraperController::class, 'showPublications'])->name('test-scraper.index'); // View scraper
-    Route::post('/test/scraper/scrape', [TestScraperController::class, 'scrapeAndShow'])->name('test-scraper.scrape'); // Start scraping
-    Route::delete('/test/scraper/delete', [TestScraperController::class, 'deleteData'])->name('test-scraper.deleteData'); // Delete scraper data
+Route::post('/test/scraper/scrape', [TestScraperController::class, 'scrapeAndShow'])->name('test-scraper.scrape'); // Start scraping
+Route::delete('/test/scraper/delete', [TestScraperController::class, 'deleteData'])->name('test-scraper.deleteData'); // Delete scraper data
 
 // ==================== AUTHENTICATED ROUTES ====================
 Route::middleware(['auth'])->group(function () {
@@ -80,7 +82,10 @@ Route::middleware(['auth'])->group(function () {
 
     // GUEST ROUTES
 
-    // DOSEN ROUTES
+    // LECTURER ROUTES
+    Route::get('/publication-data', [ScraperController::class, 'showPublicationData'])->name('publication-data'); // Delete Scopus data
+    Route::get('/reports-and-statistics', [ScraperController::class, 'reports'])->name('reports-and-statistics'); // Delete Scopus data
+
 
     // PROGRAM STUDY ADMIN ROUTES
 
@@ -118,9 +123,9 @@ Route::get('/user-profile-edit/{user:username}', function (User $user) {
     return view('user-profile-edit', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
 })->middleware('auth')->name('user-profile-edit');
 
-Route::get('/scrap-data/{user:username}', function (User $user) {
-    return view('scrap-data', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
-})->middleware('auth')->name('scrap-data');
+// Route::get('/scrap-data/{user:username}', function (User $user) {
+//     return view('scrap-data', ['user' => $user, 'title' => 'Welcome ' . $user->name . '!']);
+// })->middleware('auth')->name('scrap-data');
 
 
 

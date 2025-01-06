@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Scraper;
+namespace App\Livewire;
 
 use Livewire\Component;
 use GuzzleHttp\Client;
@@ -9,7 +9,7 @@ use DOMXPath;
 use App\Models\Publication;
 use Illuminate\Support\Facades\Auth;
 
-class Index extends Component
+class ReportsAndStatistics extends Component
 {
     public $publications;
     public $formattedChartData;
@@ -271,9 +271,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.scraper.index', [
-            'formattedChartData' => $this->formattedChartData,
-            'formattedCitationData' => $this->formattedCitationData,
-        ]);
+        return view('livewire.reports-and-statistics');
     }
 }

@@ -20,19 +20,37 @@
                             <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="/user-profile-edit/{{ Auth::user()->username }}"
                             class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('user-profile-edit/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
                             <i class="fas fa-user-edit mr-3"></i> Edit Profile
                         </a>
-                    </li>
+                    </li> --}}
                     @if (Auth::user()->role_id == 2)
-                    <li>
-                        <a href="/scraper"
-                            class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('scrap-data/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
-                            <i class="fas fa-cogs mr-3"></i> Scrap Data
-                        </a>
-                    </li>
+                        <li>
+                            <a href="/data-synchronization"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('data-synchronization/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                                <i class="fas fa-cogs mr-3"></i> Data Synchronization
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/publication-data"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('publication-data/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                                <i class="fas fa-cogs mr-3"></i> Publication Data
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/reports-and-statistics"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('reports-and-statistics/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                                <i class="fas fa-cogs mr-3"></i> Reports and Statistics
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/scraper"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('scraper/*') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                                <i class="fas fa-cogs mr-3"></i> Scrap Data
+                            </a>
+                        </li>
                     @endif
                     @if (Auth::user()->role_id != 2)
                         <li>
@@ -47,7 +65,6 @@
                                 <i class="fas fa-users mr-3"></i> User Database
                             </a>
                         </li>
-
                     @endif
                     @if (Auth::user()->role_id == 5)
                         <li>

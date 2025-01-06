@@ -17,6 +17,228 @@ class ScraperController extends Controller
         $this->client = new Client();
     }
 
+    public function showPublicationData()
+    {
+        $user = auth()->user();
+
+        // Role 2: Dosen
+        if ($user->role_id == 2) {
+            $publications = Publication::where('user_id', $user->id)->get();
+        }
+        // Role 3: Admin Prodi
+        elseif ($user->role_id == 3) {
+            $programId = $user->program_id;
+            $publications = Publication::whereHas('user', function ($query) use ($programId) {
+                $query->where('program_id', $programId); // Filter berdasarkan program_id
+            })->get();
+        }
+        // Role 4: Admin Fakultas
+        elseif ($user->role_id == 4) {
+            $facultyId = $user->faculty_id;
+            $publications = Publication::whereHas('user', function ($query) use ($facultyId) {
+                $query->where('faculty_id', $facultyId); // Filter berdasarkan faculty_id
+            })
+                ->with(['user.program' => function ($query) {
+                    $query->select('id', 'name'); // Ambil kolom id dan name dari tabel study_programs
+                }])
+                ->get();
+
+            // Map hasil publikasi dan tambahkan program (study_program) name
+            $publicationsWithStudyProgram = $publications->map(function ($publication) {
+                $publication->study_program = $publication->user->program->name; // Menambahkan program studi (study_program) ke publikasi
+                return $publication;
+            });
+        }
+        // // Role 4: Admin Fakultas
+        // elseif ($user->role_id == 4) {
+        //     $facultyId = $user->faculty_id;
+        //     $publications = Publication::whereHas('user', function ($query) use ($facultyId) {
+        //         $query->where('faculty_id', $facultyId); // Filter berdasarkan faculty_id
+        //     })
+        //         ->with(['user.studyProgram' => function ($query) {
+        //             $query->select('id', 'name'); // Ambil kolom id dan name dari tabel study_programs
+        //         }])
+        //         ->get();
+
+        //     // Map hasil publikasi dan tambahkan study_program name
+        //     $publicationsWithStudyProgram = $publications->map(function ($publication) {
+        //         $publication->study_program = $publication->user->studyProgram->name; // Menambahkan study_program ke publikasi
+        //         return $publication;
+        //     });
+        // }
+        // Role 5: Admin Universitas
+        elseif ($user->role_id == 5) {
+            $publications = Publication::with(['user.studyProgram' => function ($query) {
+                $query->select('id', 'name'); // Ambil nama program studi
+            }, 'user.faculty' => function ($query) {
+                $query->select('id', 'name'); // Ambil nama fakultas
+            }])
+                ->get();
+
+            // Map hasil publikasi dan tambahkan study_program dan faculty_name
+            $publicationsWithDetails = $publications->map(function ($publication) {
+                $publication->study_program = $publication->user->studyProgram->name; // Tambahkan study_program ke publikasi
+                $publication->faculty_name = $publication->user->faculty->name; // Tambahkan faculty_name ke publikasi
+                return $publication;
+            });
+        } else {
+            // Role tidak dikenal
+            $publications = collect(); // Koleksi kosong
+        }
+
+
+        // Prepare data for publication counts
+        $chartData = $publications->groupBy('publication_date')->map(function ($yearGroup) {
+            return $yearGroup->groupBy('source')->map(function ($sourceGroup) {
+                return $sourceGroup->count();
+            });
+        });
+
+        // Format data for publication Highcharts
+        $formattedChartData = [];
+        foreach ($chartData as $year => $sources) {
+            foreach ($sources as $source => $count) {
+                $formattedChartData[] = [
+                    'year' => $year,
+                    'source' => $source,
+                    'count' => $count,
+                ];
+            }
+        }
+
+        // Prepare data for citation counts
+        $citationData = $publications->groupBy('publication_date')->map(function ($yearGroup) {
+            return $yearGroup->groupBy('source')->map(function ($sourceGroup) {
+                return $sourceGroup->sum('citations'); // Summing up citations
+            });
+        });
+
+        // Format data for citation Highcharts
+        $formattedCitationData = [];
+        foreach ($citationData as $year => $sources) {
+            foreach ($sources as $source => $count) {
+                $formattedCitationData[] = [
+                    'year' => $year,
+                    'source' => $source,
+                    'count' => $count,
+                ];
+            }
+        }
+
+        return view('publication-data', compact('publications', 'formattedChartData', 'formattedCitationData'));
+    }
+
+    public function reports()
+    {
+        $user = auth()->user();
+
+        // Role 2: Dosen
+        if ($user->role_id == 2) {
+            $publications = Publication::where('user_id', $user->id)->get();
+        }
+        // Role 3: Admin Prodi
+        elseif ($user->role_id == 3) {
+            $programId = $user->program_id;
+            $publications = Publication::whereHas('user', function ($query) use ($programId) {
+                $query->where('program_id', $programId); // Filter berdasarkan program_id
+            })->get();
+        }
+        // Role 4: Admin Fakultas
+        elseif ($user->role_id == 4) {
+            $facultyId = $user->faculty_id;
+            $publications = Publication::whereHas('user', function ($query) use ($facultyId) {
+                $query->where('faculty_id', $facultyId); // Filter berdasarkan faculty_id
+            })
+                ->with(['user.program' => function ($query) {
+                    $query->select('id', 'name'); // Ambil kolom id dan name dari tabel study_programs
+                }])
+                ->get();
+
+            // Map hasil publikasi dan tambahkan program (study_program) name
+            $publicationsWithStudyProgram = $publications->map(function ($publication) {
+                $publication->study_program = $publication->user->program->name; // Menambahkan program studi (study_program) ke publikasi
+                return $publication;
+            });
+        }
+        // // Role 4: Admin Fakultas
+        // elseif ($user->role_id == 4) {
+        //     $facultyId = $user->faculty_id;
+        //     $publications = Publication::whereHas('user', function ($query) use ($facultyId) {
+        //         $query->where('faculty_id', $facultyId); // Filter berdasarkan faculty_id
+        //     })
+        //         ->with(['user.studyProgram' => function ($query) {
+        //             $query->select('id', 'name'); // Ambil kolom id dan name dari tabel study_programs
+        //         }])
+        //         ->get();
+
+        //     // Map hasil publikasi dan tambahkan study_program name
+        //     $publicationsWithStudyProgram = $publications->map(function ($publication) {
+        //         $publication->study_program = $publication->user->studyProgram->name; // Menambahkan study_program ke publikasi
+        //         return $publication;
+        //     });
+        // }
+        // Role 5: Admin Universitas
+        elseif ($user->role_id == 5) {
+            $publications = Publication::with(['user.studyProgram' => function ($query) {
+                $query->select('id', 'name'); // Ambil nama program studi
+            }, 'user.faculty' => function ($query) {
+                $query->select('id', 'name'); // Ambil nama fakultas
+            }])
+                ->get();
+
+            // Map hasil publikasi dan tambahkan study_program dan faculty_name
+            $publicationsWithDetails = $publications->map(function ($publication) {
+                $publication->study_program = $publication->user->studyProgram->name; // Tambahkan study_program ke publikasi
+                $publication->faculty_name = $publication->user->faculty->name; // Tambahkan faculty_name ke publikasi
+                return $publication;
+            });
+        } else {
+            // Role tidak dikenal
+            $publications = collect(); // Koleksi kosong
+        }
+
+
+        // Prepare data for publication counts
+        $chartData = $publications->groupBy('publication_date')->map(function ($yearGroup) {
+            return $yearGroup->groupBy('source')->map(function ($sourceGroup) {
+                return $sourceGroup->count();
+            });
+        });
+
+        // Format data for publication Highcharts
+        $formattedChartData = [];
+        foreach ($chartData as $year => $sources) {
+            foreach ($sources as $source => $count) {
+                $formattedChartData[] = [
+                    'year' => $year,
+                    'source' => $source,
+                    'count' => $count,
+                ];
+            }
+        }
+
+        // Prepare data for citation counts
+        $citationData = $publications->groupBy('publication_date')->map(function ($yearGroup) {
+            return $yearGroup->groupBy('source')->map(function ($sourceGroup) {
+                return $sourceGroup->sum('citations'); // Summing up citations
+            });
+        });
+
+        // Format data for citation Highcharts
+        $formattedCitationData = [];
+        foreach ($citationData as $year => $sources) {
+            foreach ($sources as $source => $count) {
+                $formattedCitationData[] = [
+                    'year' => $year,
+                    'source' => $source,
+                    'count' => $count,
+                ];
+            }
+        }
+
+        return view('reports-and-statistics', compact('publications', 'formattedChartData', 'formattedCitationData'));
+    }
+
     public function showPublications()
     {
         $user = auth()->user();
@@ -161,12 +383,14 @@ class ScraperController extends Controller
             }
 
             // Provide feedback with the count of publications fetched from each source
-            return redirect()->route('scraper.index')
+            // return redirect()->route('scraper.index')
+            return redirect()->route('publication-data')
                 ->with('success', "$scholarCount publications fetched from Google Scholar and $scopusCount publications fetched from Scopus. Total: $totalCount publications fetched successfully.")
                 ->with('scrapedData', $allData);
         } else {
             // If no articles were scraped, show an error message
-            return redirect()->route('scraper.index')
+            // return redirect()->route('scraper.index')
+            return redirect()->route('publication-data')
                 ->with('error', 'No publications found or failed to scrape data.');
         }
     }
@@ -344,7 +568,8 @@ class ScraperController extends Controller
         // Delete all publications associated with the current user
         Publication::where('user_id', auth()->id())->delete();
 
-        return redirect()->route('scraper.index')
+        // return redirect()->route('scraper.index')
+        return redirect()->route('publication-data')
             ->with('success', 'All your data has been deleted successfully.');
     }
 }

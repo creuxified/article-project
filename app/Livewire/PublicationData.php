@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Scraper;
+namespace App\Livewire;
 
 use Livewire\Component;
 use GuzzleHttp\Client;
@@ -9,8 +9,13 @@ use DOMXPath;
 use App\Models\Publication;
 use Illuminate\Support\Facades\Auth;
 
-class Index extends Component
+class PublicationData extends Component
 {
+    public $author_id_scholar;
+    public $author_id_scopus;
+    public $scrapedData = [];
+    public $successMessage;
+    public $errorMessage;
     public $publications;
     public $formattedChartData;
     public $formattedCitationData;
@@ -28,6 +33,9 @@ class Index extends Component
     public function mount()
     {
         $this->loadPublications();
+         // Isi dengan data default jika ada
+         $this->author_id_scholar = auth()->user()->scholar;
+         $this->author_id_scopus = auth()->user()->scopus;
     }
 
     public function loadPublications()
@@ -91,39 +99,43 @@ class Index extends Component
         }
     }
 
-    public function scrapeAndShow()
+    public function scrapeData()
     {
-        $this->validate([
-            'scholar_id' => 'required|string',
-            'scopus_id' => 'required|string',
-        ]);
+        // Validasi data yang diterima
+        if (empty($this->author_id_scholar) || empty($this->author_id_scopus)) {
+            $this->errorMessage = 'Both Scholar and Scopus author IDs are required.';
+            return;
+        }
 
-        // Scrape data from Google Scholar and Scopus simultaneously
-        $scholarData = $this->scrapeScholar($this->scholar_id) ?? [];
-        $scopusData = $this->scrapeScopus($this->scopus_id) ?? [];
+        $scholar_id = $this->author_id_scholar;
+        $scopus_id = $this->author_id_scopus;
 
-        // Merge data from both sources
+        // Scrape data dari Google Scholar dan Scopus secara bersamaan
+        $scholarData = $this->scrapeScholar($scholar_id) ?? [];
+        $scopusData = $this->scrapeScopus($scopus_id) ?? [];
+
+        // Gabungkan data dari kedua sumber
         $allData = array_merge($scholarData, $scopusData);
 
-        // Count publications from each source
+        // Hitung jumlah publikasi dari setiap sumber
         $scholarCount = count($scholarData);
         $scopusCount = Publication::where('source', 'Scopus')->count();
         $totalCount = $scholarCount + $scopusCount;
 
-        // Check if data is scraped
+        // Cek jika data berhasil di-scrape
         if ($totalCount > 0) {
-            // Save or update publications in the database
+            // Simpan atau perbarui publikasi ke dalam database
             foreach ($allData as $article) {
                 $this->saveOrUpdatePublication($article);
             }
 
-            $this->message = "$scholarCount publications fetched from Google Scholar and $scopusCount publications fetched from Scopus. Total: $totalCount publications fetched successfully.";
+            // Berikan umpan balik tentang jumlah publikasi yang berhasil diambil
+            $this->successMessage = "$scholarCount publications fetched from Google Scholar and $scopusCount publications fetched from Scopus. Total: $totalCount publications fetched successfully.";
+            $this->scrapedData = $allData;
         } else {
-            $this->message = 'No publications found or failed to scrape data.';
+            // Jika tidak ada artikel yang di-scrape, tampilkan pesan kesalahan
+            $this->errorMessage = 'No publications found or failed to scrape data.';
         }
-
-        // Reload the publications data after scraping
-        $this->loadPublications();
     }
 
     protected function saveOrUpdatePublication($article)
@@ -271,9 +283,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.scraper.index', [
-            'formattedChartData' => $this->formattedChartData,
-            'formattedCitationData' => $this->formattedCitationData,
-        ]);
+        return view('livewire.publication-data');
     }
 }
