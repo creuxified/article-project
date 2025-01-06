@@ -1,29 +1,32 @@
+ <section>
  <!-- Highcharts Citations Diagrams -->
- <div class="">
-    <div class="mb-4">
-        <label for="filterSourceCitationChartLecturer" class="font-bold">Filter by Source:</label>
-        <select id="filterSourceCitationChartLecturer" class="p-2 border rounded">
-            <option value="all">All Sources</option>
-            <option value="Google Scholar">Google Scholar</option>
-            <option value="Scopus">Scopus</option>
-        </select>
-    </div>
+    <div class="card bg-gray-800 shadow-lg rounded-lg overflow-hidden w-full max-w-9xl p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 
-    <!-- Year Range Filter for Citations -->
-    <div class="mb-4">
-        <label for="startYearCitationChartLecturer" class="font-bold">Start Year:</label>
-        <input type="number" id="startYearCitationChartLecturer" class="p-2 border rounded"
-            placeholder="Start Year" min="1900" max="2100">
-        <label for="endYearCitationChartLecturer" class="font-bold">End Year:</label>
-        <input type="number" id="endYearCitationChartLecturer" class="p-2 border rounded"
-            placeholder="End Year" min="1900" max="2100">
-        <button id="applyCitationChartYearRangeLecturer"
-            class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply
-            Year
-            Range</button>
+            <!-- Filter by Source -->
+            <div class="bg-blue-100 p-4 rounded shadow">
+                <label for="publicationChartSourceFilter" class="font-bold text-gray-700">Filter by Source:</label>
+                <select id="publicationChartSourceFilter" class="p-2 border rounded w-full">
+                    <option value="all">All Sources</option>
+                    <option value="Scopus">Scopus</option>
+                    <option value="Google Scholar">Google Scholar</option>
+                </select>
+            </div>
+
+            <!-- Year Range Filter -->
+            <div class="bg-blue-100 p-4 rounded shadow col-span-1 md:col-span-2 lg:col-span-3">
+                <label for="startPublicationChartYear" class="font-bold text-gray-700">Start Year:</label>
+                <input type="number" id="startPublicationChartYear" class="p-2 border rounded w-full" placeholder="Start Year" min="1900" max="2100">
+
+                <label for="endPublicationChartYear" class="font-bold text-gray-700 mt-2">End Year:</label>
+                <input type="number" id="endPublicationChartYear" class="p-2 border rounded w-full" placeholder="End Year" min="1900" max="2100">
+
+                <button id="applyPublicationChartYearRange" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full">Apply Year Range</button>
+            </div>
+        </div>
+        <div id="containerCitationChartLecturer" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6"></div>
     </div>
-    <div id="containerCitationChartLecturer" class="mt-4"></div>
-</div>
+</section>
 
 <script>
     $(document).ready(function() {

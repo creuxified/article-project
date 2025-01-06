@@ -1,123 +1,141 @@
-<section
-    class="bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 antialiased min-h-screen flex flex-col justify-between">
-    @if (session('success'))
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    ul
-                    text: "{{ session('success') }}",
-                    showConfirmButton: false,
-                    timer: 1500
+<section>
+    <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24">
+        <!-- Welcome Card -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow mb-6">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-4xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-5xl dark:text-white">
+                    Welcome to <br>
+                    <span class="text-blue-600 dark:text-blue-400">UNS Citation Management</span>
+                </h2>
+                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+                    The best platform to help you manage academic references efficiently and easily.
+                </p>
+            </div>
+        </div>
+
+        @if (session('success'))
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        ul
+                        text: "{{ session('success') }}",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 });
-            });
-        </script>
-    @endif
+            </script>
+        @endif
 
-    <h4 class="font-bold">ID Prodi {{ $userProgramId }}</h4>
+        <h4 class="font-bold">ID Prodi {{ $userProgramId }}</h4>
 
-    @if (auth()->user()->role_id == 2)
-        <div class="grid grid-cols-2 w-full gap-3">
-            <div class="bg-blue-100 p-4 rounded shadow text-center ">
-                <h4 class="font-bold">Jumlah Publikasi</h4>
-                <p id="" class="text-4xl font-semibold">{{ $totalPublicationUsers }}</p>
+        @if (auth()->user()->role_id == 2)
+            <div class="grid grid-cols-2 w-full gap-3">
+                <div class="bg-blue-100 p-4 rounded shadow text-center ">
+                    <h4 class="font-bold">Jumlah Publikasi</h4>
+                    <p id="" class="text-4xl font-semibold">{{ $totalPublicationUsers }}</p>
+                </div>
+                <div class="bg-blue-100 p-4 rounded shadow text-center">
+                    <h4 class="font-bold">Jumlah Sitasi</h4>
+                    <p id="" class="text-4xl font-semibold">{{ $totalCitationUsers }}</p>
+                </div>
             </div>
-            <div class="bg-blue-100 p-4 rounded shadow text-center">
-                <h4 class="font-bold">Jumlah Sitasi</h4>
-                <p id="" class="text-4xl font-semibold">{{ $totalCitationUsers }}</p>
+        @endif
+
+        @if (auth()->user()->role_id == 3)
+            <div class="grid grid-cols-3 w-full gap-3">
+                <div class="bg-blue-100 p-4 rounded shadow text-center">
+                    <h4 class="font-bold">Total Dosen</h4>
+                    <p id="" class="text-4xl font-semibold">{{ $userCount }}</p>
+                </div>
+                <div class="bg-blue-100 p-4 rounded shadow text-center">
+                    <h4 class="font-bold">Jumlah Publikasi</h4>
+                    <p id="" class="text-4xl font-semibold">{{ $totalPublicationUsers }}</p>
+                </div>
+                <div class="bg-blue-100 p-4 rounded shadow text-center">
+                    <h4 class="font-bold">Jumlah Sitasi</h4>
+                    <p id="" class="text-4xl font-semibold">{{ $totalCitationUsers }}</p>
+                </div>
+            </div>
+        @endif
+
+        @if (auth()->user()->role_id == 4)
+            <div class="grid grid-cols-4 w-full gap-3">
+                <div class="bg-blue-100 p-4 rounded shadow text-center">
+                    <h4 class="font-bold">Total Lecturer</h4>
+                    <p id="" class="text-4xl font-semibold">{{ $totalLecturer }}</p>
+                </div>
+                <div class="bg-blue-100 p-4 rounded shadow text-center">
+                    <h4 class="font-bold">Total Study Program</h4>
+                    <p id="" class="text-4xl font-semibold">{{ $totalStudyProgram }}</p>
+                </div>
+                <div class="bg-blue-100 p-4 rounded shadow text-center">
+                    <h4 class="font-bold">Jumlah Publikasi</h4>
+                    <p id="" class="text-4xl font-semibold">{{ $totalPublicationUsers }}</p>
+                </div>
+                <div class="bg-blue-100 p-4 rounded shadow text-center">
+                    <h4 class="font-bold">Jumlah Sitasi</h4>
+                    <p id="" class="text-4xl font-semibold">{{ $totalCitationUsers }}</p>
+                </div>
+            </div>
+        @endif
+
+        {{-- HIGHCHARTS ADMIN FAKULTAS --}}
+        <div class="bg-gray-800 p-6 rounded-lg shadow mb-6">
+            <!-- Filter Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <!-- Filter by Source -->
+                <div class="bg-blue-100 p-4 rounded shadow">
+                    <label for="publicationChartSourceFilter" class="font-bold text-gray-700">Filter by Source:</label>
+                    <select id="publicationChartSourceFilter" class="p-2 border rounded w-full">
+                        <option value="all">All Sources</option>
+                        <option value="Scopus">Scopus</option>
+                        <option value="Google Scholar">Google Scholar</option>
+                    </select>
+                </div>
+
+                <!-- Filter by Faculty -->
+                <div class="bg-blue-100 p-4 rounded shadow">
+                    <label for="publicationChartFaclutyFilter" class="font-bold text-gray-700">Filter by Faculty:</label>
+                    <select id="publicationChartFaclutyFilter" class="p-2 border rounded w-full">
+                        <option value="all">All Faculty</option>
+                        @foreach ($faculties as $faculty)
+                            <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Filter by Study Program -->
+                <div class="bg-blue-100 p-4 rounded shadow">
+                    <label for="publicationChartStudyProgramFilter" class="font-bold text-gray-700">Filter by Study Program:</label>
+                    <select id="publicationChartStudyProgramFilter" class="p-2 border rounded w-full">
+                        <option value="all">All Study Program</option>
+                        <!-- The options for study programs will be populated dynamically based on faculty selection -->
+                    </select>
+                </div>
+
+                <!-- Year Range Filter -->
+                <div class="bg-blue-100 p-4 rounded shadow col-span-1 md:col-span-2 lg:col-span-3">
+                    <label for="startPublicationChartYear" class="font-bold text-gray-700">Start Year:</label>
+                    <input type="number" id="startPublicationChartYear" class="p-2 border rounded w-full" placeholder="Start Year" min="1900" max="2100">
+
+                    <label for="endPublicationChartYear" class="font-bold text-gray-700 mt-2">End Year:</label>
+                    <input type="number" id="endPublicationChartYear" class="p-2 border rounded w-full" placeholder="End Year" min="1900" max="2100">
+
+                    <button id="applyPublicationChartYearRange" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full">Apply Year Range</button>
+                </div>
+            </div>
+
+            <!-- Highcharts Container for Chart -->
+            <div id="publicationChartContainer" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6">
             </div>
         </div>
-    @endif
-
-    @if (auth()->user()->role_id == 3)
-        <div class="grid grid-cols-3 w-full gap-3">
-            <div class="bg-blue-100 p-4 rounded shadow text-center">
-                <h4 class="font-bold">Total Dosen</h4>
-                <p id="" class="text-4xl font-semibold">{{ $userCount }}</p>
-            </div>
-            <div class="bg-blue-100 p-4 rounded shadow text-center">
-                <h4 class="font-bold">Jumlah Publikasi</h4>
-                <p id="" class="text-4xl font-semibold">{{ $totalPublicationUsers }}</p>
-            </div>
-            <div class="bg-blue-100 p-4 rounded shadow text-center">
-                <h4 class="font-bold">Jumlah Sitasi</h4>
-                <p id="" class="text-4xl font-semibold">{{ $totalCitationUsers }}</p>
-            </div>
-        </div>
-    @endif
-
-    @if (auth()->user()->role_id == 4)
-        <div class="grid grid-cols-4 w-full gap-3">
-            <div class="bg-blue-100 p-4 rounded shadow text-center">
-                <h4 class="font-bold">Total Lecturer</h4>
-                <p id="" class="text-4xl font-semibold">{{ $totalLecturer }}</p>
-            </div>
-            <div class="bg-blue-100 p-4 rounded shadow text-center">
-                <h4 class="font-bold">Total Study Program</h4>
-                <p id="" class="text-4xl font-semibold">{{ $totalStudyProgram }}</p>
-            </div>
-            <div class="bg-blue-100 p-4 rounded shadow text-center">
-                <h4 class="font-bold">Jumlah Publikasi</h4>
-                <p id="" class="text-4xl font-semibold">{{ $totalPublicationUsers }}</p>
-            </div>
-            <div class="bg-blue-100 p-4 rounded shadow text-center">
-                <h4 class="font-bold">Jumlah Sitasi</h4>
-                <p id="" class="text-4xl font-semibold">{{ $totalCitationUsers }}</p>
-            </div>
-        </div>
-    @endif
-
-    {{-- HIGHCHARTS ADMIN FAKULTAS --}}
-    <div class="mt-8">
-        <h1>Highcharts Diagram for Total Publications</h1>
-
-        <div class="mb-4">
-            <label for="publicationChartSourceFilter" class="font-bold">Filter by Source:</label>
-            <select id="publicationChartSourceFilter" class="p-2 border rounded">
-                <option value="all">All Sources</option>
-                <option value="Scopus">Scopus</option>
-                <option value="Google Scholar">Google Scholar</option>
-            </select>
-        </div>
-
-        <div class="mb-4">
-            <label for="publicationChartFaclutyFilter" class="font-bold">Filter by Faculty:</label>
-            <select id="publicationChartFaclutyFilter" class="p-2 border rounded">
-                <option value="all">All Faculty</option>
-                @foreach ($faculties as $faculty)
-                    <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="mb-4">
-            <label for="publicationChartStudyProgramFilter" class="font-bold">Filter by Study Program:</label>
-            <select id="publicationChartStudyProgramFilter" class="p-2 border rounded">
-                <option value="all">All Study Program</option>
-                <!-- The options for study programs will be populated dynamically based on faculty selection -->
-            </select>
-        </div>
-
-        <!-- Year Range Filter for Publications -->
-        <div class="mb-4">
-            <label for="startPublicationChartYear" class="font-bold">Start Year:</label>
-            <input type="number" id="startPublicationChartYear" class="p-2 border rounded" placeholder="Start Year"
-                min="1900" max="2100">
-            <label for="endPublicationChartYear" class="font-bold">End Year:</label>
-            <input type="number" id="endPublicationChartYear" class="p-2 border rounded" placeholder="End Year"
-                min="1900" max="2100">
-            <button id="applyPublicationChartYearRange" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply Year
-                Range</button>
-        </div>
-
-        <div id="publicationChartContainer" class="mt-4"></div>
-    </div>
 
 
 
-    <!-- Publications Table -->
+    {{-- <!-- Publications Table -->
     <div class="overflow-x-auto mt-8">
         <table id="publicationTable" class="table-auto w-full border-collapse border border-gray-300">
             <thead class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white">
@@ -163,67 +181,18 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
+    </div> --}}
 
+        <!-- Chart Cards -->
 
-
-    {{-- @livewire('scraper.publication-chart') --}}
-    {{-- @livewire('scraper.citation-chart') --}}
-
-    <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24 bg-primary-600">
-
-
-
-    </div>
-
-    <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24">
-        <div class="max-w-3xl mx-auto text-center">
-            <h2 class="text-4xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-5xl dark:text-white">
-                Welcome to <br>
-                <span class="text-blue-600 dark:text-blue-400">UNS Citation Management</span>
-            </h2>
-            <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                The best platform to help you manage academic references efficiently and easily.
-            </p>
+            @livewire('scraper.publication-chart')
+        <div class="mt-6">
+            @livewire('scraper.citation-chart')
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-            <div
-                class="text-center p-6 bg-gray-800 shadow-md rounded-lg transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-blue-50 dark:hover:bg-blue-900">
-                <div
-                    class="w-16 h-16 mx-auto flex items-center justify-center bg-blue-100 dark:bg-blue-700 rounded-full">
-                    <i class="fa-solid fa-bars-progress fa-2xl" style="color: #ffffff;"></i>
-                </div>
-                <h3 class="mt-6 text-xl font-semibold text-white">Easy Management</h3>
-                <p class="mt-2 text-gray-600 dark:text-gray-400">Manage your references quickly and easily using our
-                    advanced tools.</p>
-            </div>
+    {{-- <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24 bg-primary-600"> --}}
 
-            <div
-                class="text-center p-6 bg-gray-800 shadow-md rounded-lg transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-blue-50 dark:hover:bg-blue-900">
-                <div
-                    class="w-16 h-16 mx-auto flex items-center justify-center bg-blue-100 dark:bg-blue-700 rounded-full">
-                    <i class="fa-solid fa-cloud fa-2xl" style="color: #ffffff;"></i>
-                </div>
-                <h3 class="mt-6 text-xl font-semibold text-white">Cloud Synchronization</h3>
-                <p class="mt-2 text-gray-600 dark:text-gray-400">Access your references from anywhere with
-                    synchronization features.</p>
-            </div>
-
-            <div
-                class="text-center p-6 bg-gray-800 shadow-md rounded-lg transition-transform transform hover:scale-105 hover:shadow-xl hover:bg-blue-50 dark:hover:bg-blue-900">
-                <div
-                    class="w-16 h-16 mx-auto flex items-center justify-center bg-blue-100 dark:bg-blue-700 rounded-full">
-                    <i class="fa-solid fa-clock fa-2xl" style="color: #ffffff;"></i>
-                </div>
-                <h3 class="mt-6 text-xl font-semibold text-white">Time Management</h3>
-                <p class="mt-2 text-gray-600 dark:text-gray-400">Save time with the citation management automation
-                    feature.</p>
-            </div>
-        </div>
     </div>
-
-
 
     <footer class="bg-gray-100 dark:bg-gray-800 py-6">
         <div class="max-w-screen-xl mx-auto text-center">
