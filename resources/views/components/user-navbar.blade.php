@@ -62,6 +62,14 @@
                             </a>
                         </li>
                     @endif
+                    @if (Auth::user()->role_id == 4)
+                        <li>
+                            <a href="/programs"
+                                class="block px-6 py-2 text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:dark:bg-gray-700 rounded {{ request()->is('programs') ? 'bg-blue-200 dark:bg-gray-700' : '' }}">
+                                <i class="fas fa-clipboard-list mr-3"></i> Programs Management
+                            </a>
+                        </li>
+                    @endif
                     @if (Auth::user()->role_id == 5)
                         <li>
                             <a href="/faculty"
