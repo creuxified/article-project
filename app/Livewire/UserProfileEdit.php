@@ -92,6 +92,10 @@ class UserProfileEdit extends Component
         }
 
         // Validate only the fields that have rules
+        if (empty($validatedData)) {
+            session()->flash('message', 'No changes were made.');
+            return;
+        }
         $this->validate($validatedData);
 
         // Update fields only if they have been changed
