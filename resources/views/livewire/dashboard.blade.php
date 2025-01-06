@@ -102,7 +102,7 @@
                         <label for="publicationChartFaclutyFilter" class="font-bold text-gray-700">Filter by Faculty:</label>
                         <select id="publicationChartFaclutyFilter" class="p-2 border rounded w-full">
                             @if (auth()->user()->role_id == 4 || auth()->user()->role_id == 3)
-                                @php
+                                {{-- @php
                                     // Ambil ID fakultas pengguna yang sedang login
                                     $facultyId = auth()->user()->faculty_id;
                                     $faculty = \App\Models\Faculty::find($facultyId); // Ganti dengan model yang sesuai
@@ -115,7 +115,7 @@
                                     <!-- Jika fakultas tidak ditemukan -->
                                     <option value="none">Faculty not found</option>
                                 @endif
-                            @else
+                            @else --}}
                                 <!-- Jika role bukan 4 (misalnya role_id == 5), tampilkan semua fakultas -->
                                 <option value="all">All Faculty</option>
                                 @foreach ($faculties as $faculty)
@@ -130,16 +130,16 @@
                         <label for="publicationChartStudyProgramFilter" class="font-bold text-gray-700">Filter by Study Program: </label>
                         <select id="publicationChartStudyProgramFilter" class="p-2 border rounded w-full">
                             @if (auth()->user()->role_id == 3)
-                                @php
+                                {{-- @php
                                     // Ambil program_id pengguna yang sedang login
                                     $userProgramId = auth()->user()->program_id;
                                     $userStudyPrograms = \App\Models\study_program::where('id', $userProgramId)->get();
                                 @endphp
 
-                                @if ($userStudyPrograms->count() > 0)
+                                @if ($userStudyPrograms->count() > 0) --}}
                                     <!-- Menampilkan program studi sesuai dengan program_id pengguna -->
                                     <option value="all">All Study Programs</option>
-                                    @foreach ($userStudyPrograms as $program)
+                                    @foreach ($study_programs as $program)
                                         <option value="{{ $program->name }}" selected>{{ $program->name }}</option>
                                     @endforeach
                                 @else
@@ -148,15 +148,15 @@
                                 @endif
 
                             @elseif (auth()->user()->role_id == 4)
-                                @php
+                                {{-- @php
                                     // Ambil faculty_id pengguna yang sedang login
                                     $facultyId = auth()->user()->faculty_id;
                                     $userStudyPrograms = \App\Models\study_program::where('faculty_id', $facultyId)->get();
-                                @endphp
+                                @endphp --}}
 
                                 <!-- Menampilkan program studi sesuai fakultas pengguna dan masih bisa memilih -->
                                 <option value="all">All Study Programs</option>
-                                @foreach ($userStudyPrograms as $program)
+                                @foreach ($study_programs as $program)
                                     <option value="{{ $program->name }}">{{ $program->name }}</option>
                                 @endforeach
 
@@ -164,7 +164,7 @@
                                 <!-- Untuk role_id == 5, tampilkan semua program studi dari semua fakultas -->
                                 <option value="all">All Study Programs</option>
                                 @foreach ($study_programs as $program)
-                                    <option value="{{ $program->id }}">{{ $program->name }}</option>
+                                    <option value="{{ $program->name }}">{{ $program->name }}</option>
                                 @endforeach
                             @endif
                         </select>
