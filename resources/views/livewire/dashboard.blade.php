@@ -17,6 +17,20 @@
 
     <h4 class="font-bold">ID Prodi {{ $userProgramId }}</h4>
 
+    @if (auth()->user()->role_id == 2)
+    <div class="grid grid-cols-2 w-full gap-3">
+        <div class="bg-blue-100 p-4 rounded shadow text-center ">
+            <h4 class="font-bold">Jumlah Publikasi</h4>
+            <p id="" class="text-4xl font-semibold">{{ $totalPublicationUsers }}</p>
+        </div>
+        <div class="bg-blue-100 p-4 rounded shadow text-center">
+            <h4 class="font-bold">Jumlah Sitasi</h4>
+            <p id="" class="text-4xl font-semibold">{{ $totalCitationUsers }}</p>
+        </div>
+    </div>
+    @endif
+
+    @if (auth()->user()->role_id == 3)
     <div class="grid grid-cols-3 w-full gap-3">
         <div class="bg-blue-100 p-4 rounded shadow text-center">
             <h4 class="font-bold">Total Dosen</h4>
@@ -31,6 +45,7 @@
             <p id="" class="text-4xl font-semibold">{{ $totalCitationUsers }}</p>
         </div>
     </div>
+    @endif
 
 
     @livewire('scraper.publication-chart')

@@ -48,7 +48,7 @@
     </div>
 
 
-    @if (auth()->user()->role_id == 3)
+    {{-- @if (auth()->user()->role_id == 3) --}}
         <!-- Highcharts Publication Diagrams -->
         <div class="mt-8">
             <h1>Highcharts Diagram for Total Publications</h1>
@@ -86,7 +86,7 @@
 
             <div id="publicationChartContainer" class="mt-4"></div>
         </div>
-    @endif
+    {{-- @endif --}}
 </section>
 
 
