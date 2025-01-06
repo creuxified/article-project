@@ -24,42 +24,47 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'email' => 'dummy1@gmail.com',
-            'username' => 'dummy1',
-            'name' => 'dummy fkip dosen',
+            'email' => 'ptik1@dosen',
+            'username' => 'dosenptik1',
+            'name' => 'Dosen PTIK',
             'password' => bcrypt('password'),
-            'faculty_id' => 1,
+            'faculty_id' => 7,
+            'program_id' => 50,
+            'status' => 4,
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         User::create([
-            'email' => 'dummy2@gmail.com',
-            'username' => 'dummy2',
-            'name' => 'dummy fisip dosen',
+            'email' => 'ptik2@dosen',
+            'username' => 'dosenptik2',
+            'name' => 'Dosen PTIK2',
             'password' => bcrypt('password'),
-            'faculty_id' => 2,
+            'faculty_id' => 7,
+            'program_id' => 50,
+            'status' => 4,
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         User::create([
-            'email' => 'dummy3@gmail.com',
-            'username' => 'dummy3',
-            'name' => 'dummy fkip admin prodi',
+            'email' => 'ptik@prodi',
+            'username' => 'adminPTIK',
+            'name' => 'Admin Prodi PTIK',
             'password' => bcrypt('password'),
-            'faculty_id' => 1,
+            'faculty_id' => 7,
+            'program_id' => 50,
+            'status' => 4,
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
         User::create([
-            'email' => 'prodifkip@admin',
-            'username' => 'admprodifkip',
-            'name' => 'Admin Prodi FKIP',
+            'email' => 'fkip@admin',
+            'username' => 'adminFKIP',
+            'name' => 'Admin Fak FKIP',
             'password' => bcrypt('password'),
-            'faculty_id' => 1,
-            'program_id' => 1,
+            'faculty_id' => 7,
             'role_id' => 3,
             'status' => 4,
             'created_at' => now(),
