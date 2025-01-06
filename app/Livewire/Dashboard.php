@@ -35,6 +35,7 @@ class Dashboard extends Component
                 ->join('users as u', 'p.user_id', '=', 'u.id')
                 ->where('u.id', $this->userId) // Menggunakan $this->userId
                 ->sum('p.citations');
+
         } elseif ($this->userRoleId == 3) {
             // Mendapatkan program_id pengguna yang sedang login
             $this->userProgramId = Auth::user()->program_id;

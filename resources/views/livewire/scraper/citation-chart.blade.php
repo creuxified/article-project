@@ -1,6 +1,5 @@
  <!-- Highcharts Citations Diagrams -->
- <div class="mt-8">
-    <h1>Highcharts Diagram for Citations</h1>
+ <div class="">
     <div class="mb-4">
         <label for="filterSourceCitationChartLecturer" class="font-bold">Filter by Source:</label>
         <select id="filterSourceCitationChartLecturer" class="p-2 border rounded">

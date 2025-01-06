@@ -1,83 +1,78 @@
 <div class="antialiased flex justify-center px-4">
-    <div class="card bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-9xl p-3">
-        <div class="card-header text-black p-4 rounded-t-lg">
-            <div class="flex justify-between items-center">
-                <h1 class="text-xl font-semibold">Publication Data</h1>
+    <div class="flex flex-col gap-6">
+        <div class="card bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-9xl p-3 mb-6">
+            <div class="card-header text-black p-4 rounded-t-lg">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-xl font-semibold">Publication Data</h1>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="publicationTableSourceFilter" class="font-bold">Filter by Source:</label>
+                <select id="publicationTableSourceFilter" class="p-2 border rounded">
+                    <option value="all sources">All Sources</option>
+                    <option value="Google Scholar">Google Scholar</option>
+                    <option value="Scopus">Scopus</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="startPublicationTableYear" class="font-bold">Start Year:</label>
+                <input type="number" id="startPublicationTableYear" class="p-2 border rounded" placeholder="Start Year"
+                    min="1900" max="2100">
+                <label for="endPublicationTableYear" class="font-bold">End Year:</label>
+                <input type="number" id="endPublicationTableYear" class="p-2 border rounded" placeholder="End Year"
+                    min="1900" max="2100">
+                <button id="applyPublicationYearRange" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply Year Range</button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table id="publicationTable" class="table-auto w-full border-collapse border border-gray-300">
+                    <thead class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white">
+                        <tr>
+                            <th class="px-6 py-3">#</th>
+                            @if (auth()->user()->role_id == 3)
+                                <th class="px-6 py-3">Lecturer</th>
+                            @endif
+                            <th class="px-6 py-3">Title</th>
+                            <th class="px-6 py-3">Journal</th>
+                            <th class="px-6 py-3">Publication Date</th>
+                            <th class="px-6 py-3">Citations</th>
+                            <th class="px-6 py-3">Source</th>
+                            <th class="px-6 py-3">Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($publications as $index => $publication)
+                            <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-200">
+                                <td class="px-6 py-4">{{ $index + 1 }}</td>
+                                @if (auth()->user()->role_id == 3)
+                                    <td class="px-6 py-4">{{ $publication->user->name ?? 'N/A' }}</td>
+                                @endif
+                                <td class="px-6 py-4">{{ $publication->title }}</td>
+                                <td class="px-6 py-4">{{ $publication->journal_name }}</td>
+                                <td class="px-6 py-4">{{ $publication->publication_date }}</td>
+                                <td class="px-6 py-4">{{ $publication->citations }}</td>
+                                <td class="px-6 py-4">{{ $publication->source }}</td>
+                                <td class="px-6 py-4">
+                                    @if ($publication->link)
+                                        <a href="{{ $publication->link }}" target="_blank" class="text-blue-500">View</a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div class="mb-4">
-            <label for="publicationTableSourceFilter" class="font-bold">Filter by Source:</label>
-            <select id="publicationTableSourceFilter" class="p-2 border rounded">
-                <option value="all sources">All Sources</option>
-                <option value="Google Scholar">Google Scholar</option>
-                <option value="Scopus">Scopus</option>
-            </select>
-        </div>
+        <div class="card bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-9xl p-3 mb-6">
+            <div class="card-header text-black p-4 rounded-t-lg">
+                <h1 class="text-xl font-semibold">Publication Chart</h1>
+            </div>
 
-        <!-- Year Range Filter -->
-        <div class="mb-4">
-            <label for="startPublicationTableYear" class="font-bold">Start Year:</label>
-            <input type="number" id="startPublicationTableYear" class="p-2 border rounded" placeholder="Start Year"
-                min="1900" max="2100">
-
-            <label for="endPublicationTableYear" class="font-bold">End Year:</label>
-            <input type="number" id="endPublicationTableYear" class="p-2 border rounded" placeholder="End Year"
-                min="1900" max="2100">
-
-            <button id="applyPublicationYearRange" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply Year
-                Range</button>
-        </div>
-
-        <!-- Publications Table -->
-        <div class="overflow-x-auto">
-            <table id="publicationTable" class="table-auto w-full border-collapse border border-gray-300">
-                <thead class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white">
-                    <tr>
-                        <th class="px-6 py-3">#</th>
-                        @if (auth()->user()->role_id == 3)
-                            <th class="px-6 py-3">Lecturer</th>
-                        @endif
-                        <th class="px-6 py-3">Title</th>
-                        <th class="px-6 py-3">Journal</th>
-                        <th class="px-6 py-3">Publication Date</th>
-                        <th class="px-6 py-3">Citations</th>
-                        <th class="px-6 py-3">Source</th>
-                        <th class="px-6 py-3">Link</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($publications as $index => $publication)
-                        <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-200"
-                            data-source="{{ $publication->source }}"
-                            data-lecturer="{{ $publication->user->name ?? 'N/A' }}"
-                            data-year="{{ \Carbon\Carbon::parse($publication->publication_date)->year }}">
-                            <td class="px-6 py-4">{{ $index + 1 }}</td>
-                            @if (auth()->user()->role_id == 3)
-                                <td class="px-6 py-4">{{ $publication->user->name ?? 'N/A' }}</td>
-                            @endif
-                            <td class="px-6 py-4">{{ $publication->title }}</td>
-                            <td class="px-6 py-4">{{ $publication->journal_name }}</td>
-                            <td class="px-6 py-4">{{ $publication->publication_date }}</td>
-                            <td class="px-6 py-4">{{ $publication->citations }}</td>
-                            <td class="px-6 py-4">{{ $publication->source }}</td>
-                            <td class="px-6 py-4">
-                                @if ($publication->link)
-                                    <a href="{{ $publication->link }}" target="_blank" class="text-blue-500">View</a>
-                                @else
-                                    -
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-
-        <!-- Highcharts Publications Diagram -->
-        <div class="mt-8">
-            <h1>Highcharts Diagram for Publications Lecturer</h1>
             <div class="mb-4">
                 <label for="filterSourcePublicationChartLecturer" class="font-bold">Filter by Source:</label>
                 <select id="filterSourcePublicationChartLecturer" class="p-2 border rounded">
@@ -87,45 +82,22 @@
                 </select>
             </div>
 
-            <!-- Year Range Filter for Publications -->
             <div class="mb-4">
                 <label for="startYearPublicationChartLecturer" class="font-bold">Start Year:</label>
-                <input type="number" id="startYearPublicationChartLecturer" class="p-2 border rounded"
-                    placeholder="Start Year" min="1900" max="2100">
+                <input type="number" id="startYearPublicationChartLecturer" class="p-2 border rounded" placeholder="Start Year" min="1900" max="2100">
                 <label for="endYearPublicationChartLecturer" class="font-bold">End Year:</label>
-                <input type="number" id="endYearPublicationChartLecturer" class="p-2 border rounded"
-                    placeholder="End Year" min="1900" max="2100">
-                <button id="applyPublicationChartYearRangeLecturer"
-                    class="bg-blue-500 text-white px-4 py-2 rounded ml-2">
-                    Apply Year Range
-                </button>
+                <input type="number" id="endYearPublicationChartLecturer" class="p-2 border rounded" placeholder="End Year" min="1900" max="2100">
+                <button id="applyPublicationChartYearRangeLecturer" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply Year Range</button>
             </div>
-            <section>
-                <!-- Statistik Singkat untuk Publications -->
-                <div class="mt-4">
-                    <h3 class="font-bold">Statistik Singkat</h3>
-                    <div id="publicationStats" class="flex gap-4 mt-2">
-                        <div class="bg-blue-100 p-4 rounded shadow">
-                            <h4 class="font-bold">Banyak Publikasi</h4>
-                            <p id="totalPublications" class="text-xl font-semibold">0</p>
-                        </div>
-                        <div class="bg-blue-100 p-4 rounded shadow">
-                            <h4 class="font-bold">Banyak Publikasi Google Scholar</h4>
-                            <p id="publicationScholar" class="text-xl font-semibold">0</p>
-                        </div>
-                        <div class="bg-blue-100 p-4 rounded shadow">
-                            <h4 class="font-bold">Banyak Publikasi Scopus</h4>
-                            <p id="publicationScopus" class="text-xl font-semibold">0</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+
             <div id="containerPublicationChartLecturer" class="mt-4"></div>
         </div>
 
-        <!-- Highcharts Citations Diagrams -->
-        <div class="mt-8">
-            <h1>Highcharts Diagram for Citations</h1>
+        <div class="card bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-9xl p-3">
+            <div class="card-header text-black p-4 rounded-t-lg">
+                <h1 class="text-xl font-semibold">Citation Chart</h1>
+            </div>
+
             <div class="mb-4">
                 <label for="filterSourceCitationChartLecturer" class="font-bold">Filter by Source:</label>
                 <select id="filterSourceCitationChartLecturer" class="p-2 border rounded">
@@ -135,38 +107,20 @@
                 </select>
             </div>
 
-            <!-- Year Range Filter for Citations -->
             <div class="mb-4">
                 <label for="startYearCitationChartLecturer" class="font-bold">Start Year:</label>
-                <input type="number" id="startYearCitationChartLecturer" class="p-2 border rounded"
-                    placeholder="Start Year" min="1900" max="2100">
+                <input type="number" id="startYearCitationChartLecturer" class="p-2 border rounded" placeholder="Start Year" min="1900" max="2100">
                 <label for="endYearCitationChartLecturer" class="font-bold">End Year:</label>
-                <input type="number" id="endYearCitationChartLecturer" class="p-2 border rounded"
-                    placeholder="End Year" min="1900" max="2100">
-                <button id="applyCitationChartYearRangeLecturer"
-                    class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply
-                    Year
-                    Range</button>
+                <input type="number" id="endYearCitationChartLecturer" class="p-2 border rounded" placeholder="End Year" min="1900" max="2100">
+                <button id="applyCitationChartYearRangeLecturer" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">Apply Year Range</button>
             </div>
-            <section>
-                <!-- Statistik Singkat untuk Citations -->
-                <div class="mt-4">
-                    <h3 class="font-bold">Statistik Singkat</h3>
-                    <div id="citationStats" class="flex gap-4 mt-2">
-                        <div class="bg-blue-100 p-4 rounded shadow">
-                            <h4 class="font-bold">Banyak Publikasi</h4>
-                            <p id="totalPublicationsCitation" class="text-xl font-semibold">0</p>
-                        </div>
-                        <div class="bg-green-100 p-4 rounded shadow">
-                            <h4 class="font-bold">Total Sitasi</h4>
-                            <p id="totalCitations" class="text-xl font-semibold">0</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+
             <div id="containerCitationChartLecturer" class="mt-4"></div>
         </div>
     </div>
+
+
+
 
     <script>
         $(document).ready(function() {
@@ -631,3 +585,4 @@
             updateCitationStats('all', null, null);
         });
     </script>
+</div>
