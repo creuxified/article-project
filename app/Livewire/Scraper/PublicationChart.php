@@ -43,10 +43,10 @@ class PublicationChart extends Component
         $user = Auth::user();
 
         // Role-based publication fetching
-        if ($user->role_id == 2) {
-            // Dosen: Hanya publikasi miliknya
-            $this->publications = Publication::where('user_id', $user->id)->get();
-        } elseif ($user->role_id == 3) {
+        // if ($user->role_id == 2 ) {
+        //     // Dosen: Hanya publikasi miliknya
+        //     $this->publications = Publication::where('user_id', $user->id)->get();
+        if ($user->role_id == 2 || $user->role_id == 3 ) {
             // Admin Prodi: Data berdasarkan relasi program_id
             $programId = $user->program_id;
             $this->publications = Publication::whereHas('user', function ($query) use ($programId) {
