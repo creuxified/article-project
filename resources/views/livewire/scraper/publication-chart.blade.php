@@ -1,6 +1,6 @@
 <section>
     <!-- Statistik Singkat untuk Publications -->
-    <div class="">
+    {{-- <div class="">
         <h1 class="font-bold">Statistik Singkat</h3>
             <div id="publicationStats" class="flex gap-4 mt-2">
                 <div class="grid grid-cols-3 w-full gap-3">
@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-    </div>
+    </div> --}}
 
     <!-- Highcharts Publications Diagram -->
     <div class="mt-4">
