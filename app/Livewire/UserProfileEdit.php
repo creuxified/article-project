@@ -113,8 +113,8 @@ class UserProfileEdit extends Component
 
         HistoryLog::create([
             'role_id' => $this->user->role->id,
-            'faculty_id' => $this->user->faculty->id,
-            'program_id' => $this->user->program->id,
+            'faculty_id' => $this->user->faculty_id ?? null,
+            'program_id' => $this->user->program_id ?? null,
             'activity' => Auth::user()->username. ' Profile Self Updated',
         ]);
 
