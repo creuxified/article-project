@@ -187,7 +187,7 @@
                 <div id="publicationChartContainer" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6">
                 </div>
             </div>
-        @endif
+        {{-- @endif --}}
 
         <!-- Chart Cards -->
 
